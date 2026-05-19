@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../**/*.jsx';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-mint-50: #f0fdfa;
+    --color-mint-100: #ccfbf1;
+    --color-mint-200: #99f6e4;
+    --color-mint-300: #5eead4;
+    --color-mint-400: #2dd4bf;
+    --color-mint-500: #14b8a6;
+    --color-mint-600: #0d9488;
+    --color-mint-700: #0f766e;
+    --color-mint-800: #115e59;
+    --color-mint-900: #134e4a;
+
+    --color-accent-50: #fff7ed;
+    --color-accent-100: #ffedd5;
+    --color-accent-200: #fed7aa;
+    --color-accent-300: #fdba74;
+    --color-accent-400: #fb923c;
+    --color-accent-500: #f97316;
+    --color-accent-600: #ea580c;
+    --color-accent-700: #c2410c;
+}
+
+html, body, #app {
+    min-height: 100%;
+}
+
+body {
+    background-color: #fafaf9;
+    color: #1c1917;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+}
