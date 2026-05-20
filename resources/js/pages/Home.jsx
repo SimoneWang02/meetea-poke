@@ -169,6 +169,18 @@ export default function Home() {
             {/* Poke */}
             <section className="relative overflow-hidden bg-white py-16 sm:py-24">
                 <img
+                    src="/images/blob.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-0 right-0 z-0 h-auto w-[34rem] select-none sm:w-[47rem] md:w-[60rem]"
+                />
+                <img
+                    src="/images/blob_2.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-[34rem] select-none sm:left-auto sm:right-0 sm:w-[47rem] sm:-scale-x-100 md:w-[60rem] lg:left-0 lg:right-auto lg:scale-x-100"
+                />
+                <img
                     src="/images/poke.png"
                     alt=""
                     aria-hidden="true"
