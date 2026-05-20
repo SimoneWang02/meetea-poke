@@ -42,7 +42,7 @@ export default function StepTipo({ items, onChoose, onProcedi }) {
                     <span className="text-5xl">🥗</span>
                     <span className="mt-4 text-xl font-bold">Poke Bowl</span>
                     <span className="mt-1 text-sm text-stone-600">
-                        Base, proteina, topping, salsa
+                        Dimensione, basi, proteine, green, crispy, salse
                     </span>
                     <span className="mt-6 text-sm font-semibold text-mint-700 group-hover:text-mint-800">
                         Componi →

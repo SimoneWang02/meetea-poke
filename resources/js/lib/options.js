@@ -1,16 +1,97 @@
-export const POKE_BASI = ["riso bianco", "riso integrale", "mix insalata"];
-export const POKE_PROTEINE = ["salmone", "tonno", "pollo", "tofu"];
-export const POKE_TOPPING = [
-    "edamame",
-    "avocado",
-    "mango",
-    "cipollotto",
-    "cetriolo",
-    "carota",
-    "mais",
+export const POKE_DIMENSIONI = [
+    { id: "small",   nome: "Small",   prezzo: 9.90,  proteine: 1, green: 3, crispy: 1, salse: 1 },
+    { id: "regular", nome: "Regular", prezzo: 11.90, proteine: 2, green: 4, crispy: 2, salse: 2 },
+    { id: "large",   nome: "Large",   prezzo: 13.90, proteine: 3, green: 5, crispy: 3, salse: 3 },
 ];
-export const POKE_SALSE = ["shoyu", "spicy mayo", "teriyaki", "ponzu"];
-export const POKE_MAX_TOPPING = 4;
+
+export const POKE_BASI_MAX = 2;
+
+export const POKE_BASI = [
+    "Riso Sushi",
+    "Riso Bianco",
+    "Riso Integrale",
+    "Riso Venere",
+    "Quinoa",
+    "Insalata",
+];
+
+export const POKE_PROTEINE = [
+    "Salmone",
+    "Tonno",
+    "Salmone Marinato Spicy",
+    "Salmone Cotto",
+    "Tonno Cotto sott'Olio",
+    "Pollo Impanato",
+    "Tacchino",
+    "Uova Sodo",
+    "Tofu",
+    "Polipo Cotto",
+    "Gambero Cotto",
+    "Gambero in Tempura",
+];
+
+export const POKE_GREEN = [
+    "Avocado",
+    "Edamame",
+    "Goma Wakame",
+    "Zucchine",
+    "Cetrioli",
+    "Carote",
+    "Pomodorini",
+    "Ceci",
+    "Mais",
+    "Ananas",
+    "Mango",
+    "Cavolo Viola",
+    "Cipolla Rossa",
+    "Germogli di Soia",
+    "Zenzero Marinato",
+    "Jalapenos",
+    "Fagioli Rossi",
+    "Olive",
+    "Feta Greca",
+    "Mozzarella",
+    "Philadelphia",
+];
+
+export const POKE_CRISPY = [
+    "Alga Nori",
+    "Cipolla Fritta",
+    "Sesamo",
+    "Semi di Girasole",
+    "Noci",
+    "Arachidi",
+    "Mandorle a Scaglie",
+    "Granella di Pistacchio",
+    "Chips di Kataifi",
+    "Nachos",
+    "Arachidi al Wasabi",
+    "Parmigiano",
+];
+
+export const POKE_SALSE = [
+    "Salsa di Soia",
+    "Salsa di Soia senza Glutine",
+    "Salsa Teriyaki",
+    "Salsa Poke",
+    "Salsa Sweet Chili",
+    "Salsa Ponzu",
+    "Olio Evo",
+    "Guacamole",
+    "Mayo Kewpie",
+    "Maionese",
+    "Maionese Vegana",
+    "Salsa Yogurt",
+    "Spicy Maionese",
+    "Glassa di Aceto Balsamico",
+];
+
+export const POKE_EXTRA_PREZZI = {
+    proteine: 1.80,
+    green: 1.20,
+    crispy: 0.30,
+    salse: 1.30,
+};
 
 export const TEA_BASI = ["tè nero", "tè verde", "taro", "matcha"];
 export const TEA_LATTE = ["con latte", "senza latte"];

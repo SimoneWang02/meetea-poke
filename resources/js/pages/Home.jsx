@@ -1,10 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+    POKE_DIMENSIONI,
     POKE_BASI,
+    POKE_BASI_MAX,
     POKE_PROTEINE,
-    POKE_TOPPING,
+    POKE_GREEN,
+    POKE_CRISPY,
     POKE_SALSE,
+    POKE_EXTRA_PREZZI,
     TEA_BASI,
     TEA_LATTE,
     TEA_PEARLS,
@@ -28,6 +32,23 @@ function MenuList({ titolo, items }) {
                     >
                         {item}
                     </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+function BentoTile({ etichetta, items, className = "" }) {
+    return (
+        <div
+            className={`flex flex-col rounded-3xl bg-white p-6 ring-1 ring-stone-300 ${className}`}
+        >
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
+                {etichetta}
+            </div>
+            <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-stone-700 marker:text-mint-500">
+                {items.map((item) => (
+                    <li key={item}>{item}</li>
                 ))}
             </ul>
         </div>
@@ -89,74 +110,218 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Menu preview */}
+            {/* Boba */}
             <section id="menu" className="bg-stone-50 py-16 sm:py-24">
                 <div className="mx-auto max-w-5xl px-6">
-                    <div className="text-center">
-                        <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
-                            Il nostro menu
-                        </div>
-                        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                            Tutto su misura, niente di standard
-                        </h2>
-                    </div>
-
-                    <div className="mt-12 grid gap-6 md:grid-cols-2">
-                        {/* Poke */}
-                        <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-stone-200">
-                            <div className="flex items-center gap-3">
-                                <span className="text-4xl">🥗</span>
-                                <h3 className="text-2xl font-bold">
-                                    Poke Bowl
-                                </h3>
+                    <div className="grid items-center gap-12 md:grid-cols-2">
+                        <div>
+                            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
+                                Bubble Tea
                             </div>
-                            <p className="mt-3 text-stone-600">
-                                Componi la tua bowl con ingredienti freschi.
-                            </p>
-                            <MenuList titolo="Basi" items={POKE_BASI} />
-                            <MenuList titolo="Proteine" items={POKE_PROTEINE} />
-                            <MenuList titolo="Topping" items={POKE_TOPPING} />
-                            <MenuList titolo="Salse" items={POKE_SALSE} />
-                        </div>
-
-                        {/* Bubble Tea */}
-                        <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-stone-200">
-                            <div className="flex items-center gap-3">
-                                <span className="text-4xl">🧋</span>
-                                <h3 className="text-2xl font-bold">
-                                    Bubble Tea
-                                </h3>
-                            </div>
-                            <p className="mt-3 text-stone-600">
-                                Personalizza il tuo drink dal tè alla dolcezza.
+                            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                                Il tuo bubble tea,
+                                <br />
+                                come piace a te
+                            </h2>
+                            <p className="mt-4 text-stone-600">
+                                Scegli la base, il livello di dolcezza, le perle
+                                e il ghiaccio. Ogni drink è preparato al
+                                momento.
                             </p>
                             <MenuList titolo="Tea" items={TEA_BASI} />
                             <MenuList titolo="Latte" items={TEA_LATTE} />
                             <MenuList titolo="Pearls" items={TEA_PEARLS} />
                             <MenuList titolo="Dolcezza" items={TEA_DOLCEZZA} />
                             <MenuList titolo="Ghiaccio" items={TEA_GHIACCIO} />
+
+                            <Link
+                                to="/ordina"
+                                className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-mint-500 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-mint-500/30 transition hover:bg-mint-600 sm:text-lg"
+                            >
+                                Ordina il tuo bubble tea
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.6"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="h-5 w-5"
+                                >
+                                    <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />
+                                    <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+                                </svg>
+                            </Link>
+                        </div>
+
+                        <div className="relative order-first md:order-last">
+                            <div className="absolute inset-0 -z-10 rounded-[3rem] bg-gradient-to-br from-accent-200 via-accent-100 to-mint-200 blur-2xl opacity-70" />
+                            <div className="aspect-square rounded-[3rem] bg-gradient-to-br from-accent-100 to-mint-100 p-12 ring-1 ring-stone-200/60 flex items-center justify-center">
+                                <span className="text-[12rem] leading-none drop-shadow-lg">
+                                    🧋
+                                </span>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <div className="mt-12 text-center">
-                        <Link
-                            to="/ordina"
-                            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-mint-500 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-mint-500/30 transition hover:bg-mint-600 sm:text-lg"
-                        >
-                            Ordina d'asporto
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.6"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="h-5 w-5"
+            {/* Poke */}
+            <section className="relative overflow-hidden bg-white py-16 sm:py-24">
+                <img
+                    src="/images/poke.png"
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -top-28 -right-20 z-0 h-64 w-64 select-none object-contain sm:-top-32 sm:-right-32 sm:h-80 sm:w-80 md:-top-40 md:-right-40 md:h-[28rem] md:w-[28rem]"
+                />
+                <img
+                    src="/images/poke_2.png"
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute z-0 hidden select-none object-contain sm:block sm:-bottom-32 sm:-right-32 sm:h-80 sm:w-80 md:-bottom-40 md:-right-40 md:h-[28rem] md:w-[28rem] lg:right-auto lg:-left-40"
+                />
+                <div className="relative z-10 mx-auto max-w-6xl px-6">
+                    <div className="max-w-lg">
+                        <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
+                            Poke Bowl
+                        </div>
+                        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                            Una bowl,
+                            <br />
+                            infinite combinazioni
+                        </h2>
+                        <p className="mt-4 text-stone-600">
+                            Scegli la dimensione, componi la tua base e
+                            arricchisci con proteine, green, crispy e salse.
+                        </p>
+                    </div>
+
+                    <div className="mt-10 space-y-4">
+                        {/* Dimensione (full width) */}
+                        <div className="rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8">
+                            <div className="flex flex-wrap items-baseline justify-between gap-2">
+                                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-600">
+                                    Scegli la dimensione
+                                </div>
+                            </div>
+                            <div className="mt-6 grid divide-y divide-stone-300 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                                {POKE_DIMENSIONI.map((d) => (
+                                    <div
+                                        key={d.id}
+                                        className="px-0 py-5 first:pt-0 last:pb-0 sm:px-6 sm:py-0 sm:first:pl-0 sm:last:pr-0"
+                                    >
+                                        <div className="flex items-baseline justify-between gap-2">
+                                            <div className="text-xl font-bold">
+                                                {d.nome}
+                                            </div>
+                                            <div className="text-2xl font-extrabold text-mint-700">
+                                                {d.prezzo.toFixed(2)} €
+                                            </div>
+                                        </div>
+                                        <ul className="mt-3 space-y-1 text-sm text-stone-600">
+                                            <li>
+                                                <span className="font-semibold text-mint-600">
+                                                    {d.proteine}
+                                                </span>{" "}
+                                                {d.proteine > 1
+                                                    ? "proteine"
+                                                    : "proteina"}
+                                            </li>
+                                            <li>
+                                                <span className="font-semibold text-mint-600">
+                                                    {d.green}
+                                                </span>{" "}
+                                                green
+                                            </li>
+                                            <li>
+                                                <span className="font-semibold text-mint-600">
+                                                    {d.crispy}
+                                                </span>{" "}
+                                                crispy
+                                            </li>
+                                            <li>
+                                                <span className="font-semibold text-mint-600">
+                                                    {d.salse}
+                                                </span>{" "}
+                                                sals{d.salse > 1 ? "e" : "a"}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Masonry */}
+                        <div className="gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4 [&>*]:break-inside-avoid">
+                            <BentoTile
+                                etichetta={`Scegli fino a ${POKE_BASI_MAX} basi`}
+                                items={POKE_BASI}
+                            />
+                            <BentoTile
+                                etichetta={`Proteine (extra +${POKE_EXTRA_PREZZI.proteine.toFixed(2)} €)`}
+                                items={POKE_PROTEINE}
+                            />
+                            <BentoTile
+                                etichetta={`Green & co (extra +${POKE_EXTRA_PREZZI.green.toFixed(2)} €)`}
+                                items={POKE_GREEN}
+                            />
+                            <BentoTile
+                                etichetta={`Crispy (extra +${POKE_EXTRA_PREZZI.crispy.toFixed(2)} €)`}
+                                items={POKE_CRISPY}
+                            />
+                            <BentoTile
+                                etichetta={`Salse (extra +${POKE_EXTRA_PREZZI.salse.toFixed(2)} €)`}
+                                items={POKE_SALSE}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Foto */}
+            <section className="bg-stone-50 py-16 sm:py-24">
+                <div className="mx-auto max-w-5xl px-6">
+                    <div className="text-center">
+                        <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
+                            Galleria
+                        </div>
+                        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                            Uno sguardo da MeeTea&amp;Poke
+                        </h2>
+                        <p className="mx-auto mt-4 max-w-2xl text-stone-600">
+                            Le nostre bowl, i nostri drink, il nostro locale.
+                            Seguici su{" "}
+                            <a
+                                href={CONTATTI.instagram}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="font-semibold text-mint-700 hover:text-mint-800"
                             >
-                                <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />
-                                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-                            </svg>
-                        </Link>
+                                Instagram
+                            </a>{" "}
+                            per tutte le novità.
+                        </p>
+                    </div>
+
+                    <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-mint-200 to-mint-400 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
+                            🥗
+                        </div>
+                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-accent-200 to-accent-400 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
+                            🧋
+                        </div>
+                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-mint-300 to-accent-300 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
+                            🥑
+                        </div>
+                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-accent-300 to-mint-300 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
+                            🍵
+                        </div>
+                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-mint-400 to-mint-200 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
+                            🍣
+                        </div>
+                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-accent-400 to-accent-200 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
+                            🍡
+                        </div>
                     </div>
                 </div>
             </section>

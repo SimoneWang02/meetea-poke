@@ -30,10 +30,18 @@ function ItemRow({ item, onRemove }) {
             <ul className="mt-4 space-y-1 text-sm text-stone-700">
                 {item.tipo === 'poke' ? (
                     <>
-                        <li>• Base: <span className="font-medium">{cfg.base}</span></li>
-                        <li>• Proteina: <span className="font-medium">{cfg.proteina}</span></li>
-                        <li>• Topping: <span className="font-medium">{cfg.topping?.join(', ')}</span></li>
-                        <li>• Salsa: <span className="font-medium">{cfg.salsa}</span></li>
+                        <li>• Dimensione: <span className="font-medium capitalize">{cfg.dimensione}</span></li>
+                        <li>• Basi: <span className="font-medium">{cfg.basi?.join(', ')}</span></li>
+                        <li>• Proteine: <span className="font-medium">{cfg.proteine?.join(', ')}</span></li>
+                        {cfg.green?.length > 0 && (
+                            <li>• Green: <span className="font-medium">{cfg.green.join(', ')}</span></li>
+                        )}
+                        {cfg.crispy?.length > 0 && (
+                            <li>• Crispy: <span className="font-medium">{cfg.crispy.join(', ')}</span></li>
+                        )}
+                        {cfg.salse?.length > 0 && (
+                            <li>• Salse: <span className="font-medium">{cfg.salse.join(', ')}</span></li>
+                        )}
                     </>
                 ) : (
                     <>

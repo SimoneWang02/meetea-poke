@@ -61,12 +61,14 @@ class NotificationService
         $qta = $item->quantita;
 
         if ($item->tipo === 'poke') {
+            $join = fn (array $xs) => count($xs) ? implode(', ', $xs) : '-';
             $lines = ["🥗 Poke Bowl x{$qta}"];
-            $lines[] = '• Base: ' . ($cfg['base'] ?? '-');
-            $lines[] = '• Proteina: ' . ($cfg['proteina'] ?? '-');
-            $toppings = $cfg['topping'] ?? [];
-            $lines[] = '• Topping: ' . (count($toppings) ? implode(', ', $toppings) : '-');
-            $lines[] = '• Salsa: ' . ($cfg['salsa'] ?? '-');
+            $lines[] = '• Dimensione: ' . ($cfg['dimensione'] ?? '-');
+            $lines[] = '• Basi: ' . $join($cfg['basi'] ?? []);
+            $lines[] = '• Proteine: ' . $join($cfg['proteine'] ?? []);
+            $lines[] = '• Green: ' . $join($cfg['green'] ?? []);
+            $lines[] = '• Crispy: ' . $join($cfg['crispy'] ?? []);
+            $lines[] = '• Salse: ' . $join($cfg['salse'] ?? []);
 
             return implode("\n", $lines);
         }

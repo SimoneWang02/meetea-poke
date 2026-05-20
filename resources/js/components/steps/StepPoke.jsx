@@ -1,139 +1,194 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
+    POKE_DIMENSIONI,
     POKE_BASI,
+    POKE_BASI_MAX,
     POKE_PROTEINE,
-    POKE_TOPPING,
+    POKE_GREEN,
+    POKE_CRISPY,
     POKE_SALSE,
-    POKE_MAX_TOPPING,
-} from '../../lib/options';
+} from "../../lib/options";
 
-function Radio({ name, value, current, onChange, label }) {
-    const active = current === value;
+function MultiSelect({ titolo, items, selected, max, onToggle }) {
     return (
-        <label
-            className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition ${
-                active
-                    ? 'border-mint-500 bg-mint-50 ring-2 ring-mint-300'
-                    : 'border-stone-200 bg-white hover:border-stone-300'
-            }`}
-        >
-            <input
-                type="radio"
-                name={name}
-                value={value}
-                checked={active}
-                onChange={() => onChange(value)}
-                className="accent-mint-600"
-            />
-            <span className="font-medium capitalize">{label}</span>
-        </label>
+        <div>
+            <div className="flex items-baseline justify-between">
+                <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
+                    {titolo}{" "}
+                    <span className="font-normal normal-case text-stone-400">
+                        (max {max})
+                    </span>
+                </div>
+                <div className="text-sm text-stone-500">
+                    {selected.length}/{max}
+                </div>
+            </div>
+            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+                {items.map((it) => {
+                    const active = selected.includes(it);
+                    const disabled = !active && selected.length >= max;
+                    return (
+                        <button
+                            key={it}
+                            type="button"
+                            disabled={disabled}
+                            onClick={() => onToggle(it)}
+                            className={`rounded-xl border px-3 py-2 text-sm font-medium transition ${
+                                active
+                                    ? "border-mint-500 bg-mint-100 text-mint-900"
+                                    : disabled
+                                      ? "border-stone-200 bg-stone-50 text-stone-300"
+                                      : "border-stone-200 bg-white text-stone-700 hover:border-stone-300"
+                            }`}
+                        >
+                            {it}
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
     );
 }
 
 export default function StepPoke({ onCancel, onAdd }) {
-    const [base, setBase] = useState('');
-    const [proteina, setProteina] = useState('');
-    const [topping, setTopping] = useState([]);
-    const [salsa, setSalsa] = useState('');
+    const [dimensioneId, setDimensioneId] = useState("");
+    const [basi, setBasi] = useState([]);
+    const [proteine, setProteine] = useState([]);
+    const [green, setGreen] = useState([]);
+    const [crispy, setCrispy] = useState([]);
+    const [salse, setSalse] = useState([]);
     const [quantita, setQuantita] = useState(1);
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
 
-    const toggleTopping = (t) => {
-        if (topping.includes(t)) {
-            setTopping(topping.filter((x) => x !== t));
+    const dim = POKE_DIMENSIONI.find((d) => d.id === dimensioneId);
+
+    const makeToggle = (state, setState, max) => (item) => {
+        if (state.includes(item)) {
+            setState(state.filter((x) => x !== item));
         } else {
-            if (topping.length >= POKE_MAX_TOPPING) return;
-            setTopping([...topping, t]);
+            if (state.length >= max) return;
+            setState([...state, item]);
         }
     };
 
     const submit = () => {
-        if (!base || !proteina || !salsa) {
-            setError('Compila base, proteina e salsa.');
+        if (!dim) {
+            setError("Scegli una dimensione.");
             return;
         }
-        if (topping.length === 0) {
-            setError('Scegli almeno un topping.');
+        if (basi.length === 0) {
+            setError("Scegli almeno una base.");
+            return;
+        }
+        if (proteine.length === 0) {
+            setError("Scegli almeno una proteina.");
             return;
         }
         onAdd({
-            tipo: 'poke',
+            tipo: "poke",
             quantita,
-            configurazione: { base, proteina, topping, salsa },
+            configurazione: {
+                dimensione: dim.id,
+                basi,
+                proteine,
+                green,
+                crispy,
+                salse,
+            },
         });
     };
 
     return (
         <div>
-            <h2 className="text-2xl font-bold tracking-tight">🥗 Componi la tua poke bowl</h2>
+            <h2 className="text-2xl font-bold tracking-tight">
+                🥗 Componi la tua poke bowl
+            </h2>
 
             <div className="mt-6 space-y-6">
                 <div>
                     <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
-                        Base
+                        Dimensione
                     </div>
                     <div className="mt-2 grid gap-2 sm:grid-cols-3">
-                        {POKE_BASI.map((b) => (
-                            <Radio key={b} name="base" value={b} current={base} onChange={setBase} label={b} />
-                        ))}
-                    </div>
-                </div>
-
-                <div>
-                    <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
-                        Proteina
-                    </div>
-                    <div className="mt-2 grid gap-2 sm:grid-cols-4">
-                        {POKE_PROTEINE.map((p) => (
-                            <Radio key={p} name="proteina" value={p} current={proteina} onChange={setProteina} label={p} />
-                        ))}
-                    </div>
-                </div>
-
-                <div>
-                    <div className="flex items-baseline justify-between">
-                        <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
-                            Topping (max {POKE_MAX_TOPPING})
-                        </div>
-                        <div className="text-sm text-stone-500">
-                            {topping.length}/{POKE_MAX_TOPPING}
-                        </div>
-                    </div>
-                    <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                        {POKE_TOPPING.map((t) => {
-                            const active = topping.includes(t);
-                            const disabled = !active && topping.length >= POKE_MAX_TOPPING;
+                        {POKE_DIMENSIONI.map((d) => {
+                            const active = dimensioneId === d.id;
                             return (
                                 <button
-                                    key={t}
+                                    key={d.id}
                                     type="button"
-                                    disabled={disabled}
-                                    onClick={() => toggleTopping(t)}
-                                    className={`rounded-xl border px-3 py-2 text-sm font-medium capitalize transition ${
+                                    onClick={() => setDimensioneId(d.id)}
+                                    className={`rounded-xl border px-4 py-3 text-left transition ${
                                         active
-                                            ? 'border-mint-500 bg-mint-100 text-mint-900'
-                                            : disabled
-                                            ? 'border-stone-200 bg-stone-50 text-stone-300'
-                                            : 'border-stone-200 bg-white text-stone-700 hover:border-stone-300'
+                                            ? "border-mint-500 bg-mint-50 ring-2 ring-mint-300"
+                                            : "border-stone-200 bg-white hover:border-stone-300"
                                     }`}
                                 >
-                                    {t}
+                                    <div className="flex items-baseline justify-between gap-2">
+                                        <span className="text-lg font-bold">
+                                            {d.nome}
+                                        </span>
+                                        <span className="text-base font-extrabold text-mint-700">
+                                            {d.prezzo.toFixed(2)} €
+                                        </span>
+                                    </div>
+                                    <div className="mt-1 text-xs text-stone-500">
+                                        {d.proteine} prot · {d.green} green ·{" "}
+                                        {d.crispy} crispy · {d.salse} sals
+                                        {d.salse > 1 ? "e" : "a"}
+                                    </div>
                                 </button>
                             );
                         })}
                     </div>
                 </div>
 
-                <div>
-                    <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
-                        Salsa
-                    </div>
-                    <div className="mt-2 grid gap-2 sm:grid-cols-4">
-                        {POKE_SALSE.map((s) => (
-                            <Radio key={s} name="salsa" value={s} current={salsa} onChange={setSalsa} label={s} />
-                        ))}
-                    </div>
-                </div>
+                {dim && (
+                    <>
+                        <MultiSelect
+                            titolo="Basi"
+                            items={POKE_BASI}
+                            selected={basi}
+                            max={POKE_BASI_MAX}
+                            onToggle={makeToggle(basi, setBasi, POKE_BASI_MAX)}
+                        />
+
+                        <MultiSelect
+                            titolo="Proteine"
+                            items={POKE_PROTEINE}
+                            selected={proteine}
+                            max={dim.proteine}
+                            onToggle={makeToggle(
+                                proteine,
+                                setProteine,
+                                dim.proteine,
+                            )}
+                        />
+
+                        <MultiSelect
+                            titolo="Green & co"
+                            items={POKE_GREEN}
+                            selected={green}
+                            max={dim.green}
+                            onToggle={makeToggle(green, setGreen, dim.green)}
+                        />
+
+                        <MultiSelect
+                            titolo="Crispy"
+                            items={POKE_CRISPY}
+                            selected={crispy}
+                            max={dim.crispy}
+                            onToggle={makeToggle(crispy, setCrispy, dim.crispy)}
+                        />
+
+                        <MultiSelect
+                            titolo="Salse"
+                            items={POKE_SALSE}
+                            selected={salse}
+                            max={dim.salse}
+                            onToggle={makeToggle(salse, setSalse, dim.salse)}
+                        />
+                    </>
+                )}
 
                 <div>
                     <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
@@ -142,15 +197,21 @@ export default function StepPoke({ onCancel, onAdd }) {
                     <div className="mt-2 flex items-center gap-3">
                         <button
                             type="button"
-                            onClick={() => setQuantita(Math.max(1, quantita - 1))}
+                            onClick={() =>
+                                setQuantita(Math.max(1, quantita - 1))
+                            }
                             className="h-12 w-12 rounded-xl border border-stone-200 bg-white text-xl font-bold text-stone-700 transition hover:bg-stone-50"
                         >
                             −
                         </button>
-                        <span className="w-12 text-center text-2xl font-bold">{quantita}</span>
+                        <span className="w-12 text-center text-2xl font-bold">
+                            {quantita}
+                        </span>
                         <button
                             type="button"
-                            onClick={() => setQuantita(Math.min(10, quantita + 1))}
+                            onClick={() =>
+                                setQuantita(Math.min(10, quantita + 1))
+                            }
                             className="h-12 w-12 rounded-xl border border-stone-200 bg-white text-xl font-bold text-stone-700 transition hover:bg-stone-50"
                         >
                             +
