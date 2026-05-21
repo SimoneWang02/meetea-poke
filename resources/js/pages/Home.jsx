@@ -14,6 +14,8 @@ import {
 } from "../lib/options";
 import BobaSection from "../components/BobaSection";
 import SnacksSection from "../components/SnacksSection";
+import Navbar from "../components/Navbar";
+import HeroBobaRain from "../components/hero/HeroBobaRain";
 
 function BentoTile({ numero, etichetta, sottotitolo, items, className = "" }) {
     return (
@@ -47,65 +49,21 @@ function BentoTile({ numero, etichetta, sottotitolo, items, className = "" }) {
 }
 
 export default function Home() {
-    const scrollToMenu = (e) => {
-        e.preventDefault();
-        document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
-    };
-
     return (
         <div className="font-sans text-stone-900">
+            <Navbar />
+
             {/* Hero */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-mint-400 via-mint-500 to-mint-700 text-white">
-                <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent-300 opacity-30 blur-3xl" />
-                <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-mint-200 opacity-30 blur-3xl" />
-
-                <div className="relative mx-auto max-w-5xl px-6 pt-20 pb-20 sm:pt-28 sm:pb-28">
-                    <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
-                        MeeTea
-                        <span className="text-accent-300">&amp;</span>
-                        Poke
-                    </h1>
-
-                    <p className="mt-6 max-w-xl text-lg text-white/90 sm:text-xl">
-                        Poke bowl e bubble tea artigianali a Carpi. Componi la
-                        tua bowl, personalizza il tuo drink, ritira quando vuoi.
-                    </p>
-
-                    <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                        <Link
-                            to="/ordina"
-                            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-4 text-base font-semibold text-mint-800 shadow-lg shadow-mint-900/20 transition hover:bg-stone-50 sm:text-lg"
-                        >
-                            Ordina da Asporto
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.6"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="h-5 w-5"
-                            >
-                                <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />
-                                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-                            </svg>
-                        </Link>
-                        <a
-                            href="#menu"
-                            onClick={scrollToMenu}
-                            className="inline-flex items-center justify-center rounded-2xl bg-mint-800/40 px-6 py-4 text-base font-semibold text-white ring-1 ring-white/30 backdrop-blur transition hover:bg-mint-800/60 sm:text-lg"
-                        >
-                            Scopri il menu
-                        </a>
-                    </div>
-                </div>
-            </section>
+            <HeroBobaRain />
 
             {/* Boba */}
             <BobaSection />
 
             {/* Poke */}
-            <section className="relative overflow-hidden bg-white py-16 sm:py-24">
+            <section
+                id="poke"
+                className="relative overflow-hidden bg-white py-16 sm:py-24"
+            >
                 <img
                     src="/images/blob.svg"
                     alt=""

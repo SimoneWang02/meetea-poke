@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 378.45068 601.31079"
+   id="svg16"
+   sodipodi:docname="Glovo_Logo.svg"
+   width="378.45068"
+   height="601.31079"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs20" />
+  <sodipodi:namedview
+     id="namedview18"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.49781312"
+     inkscape:cx="-519.27117"
+     inkscape:cy="611.67532"
+     inkscape:window-width="3440"
+     inkscape:window-height="1351"
+     inkscape:window-x="1431"
+     inkscape:window-y="623"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg16" />
+  <path
+     fill="#fdc500"
+     d="m 58.290843,52.270495 c 107.489997,-101.33 282.489997,-47.6699997 315.399997,95.019995 11.07,47.98 2.52,97.57 -22.41,139.29001 q -3.54,5.91 -11.09,16.64 -43.81,62.19 -87.92,124.17 c -12.66,17.78 -22.27,34.4 -45.12,36.97 -16.17,1.82 -33.42,1.96 -48.44,-3.05 -8.98,-2.99 -14.94,-9.27 -20.94,-17.71 q -48.299997,-67.98 -96.639997,-135.95 c -9.14,-12.86 -17.51,-25.63 -23.89,-39.50001 -33.41,-72.6 -17.48999955,-160.69 41.05,-215.879995 z M 267.19084,243.05049 c 44.66,-63.62 -3.75,-151.08 -80.29,-148.72 -46.79,1.43 -84.06,34.27 -91.569997,80.36 -1.28,7.82 -0.87,15.68 -0.87,23.6 0,1.43 0.69,2.55 0.78,4.05 q 0.17,2.72 0.22,3.03 c 3.59,19.83 11.869997,32.1 23.779997,49.09 q 34.52,49.24001 68.93,97.54001 0.99,1.39 1.98,0 39.64,-55.66 77.04,-108.95001 z"
+     id="path2" />
+  <ellipse
+     fill="#fdc500"
+     cx="137.04652"
+     cy="564.25189"
+     transform="rotate(-5.3)"
+     rx="53.32"
+     ry="52.119999"
+     id="ellipse14" />
+</svg>

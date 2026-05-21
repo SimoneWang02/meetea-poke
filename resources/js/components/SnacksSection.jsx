@@ -72,7 +72,10 @@ function PolaroidCard({ snack, index }) {
 
 export default function SnacksSection() {
     return (
-        <section className="relative overflow-hidden bg-stone-50 py-16 sm:py-24">
+        <section
+            id="sfizi"
+            className="relative overflow-hidden bg-stone-50 py-16 sm:py-24"
+        >
             <div className="relative z-10 mx-auto max-w-6xl px-6">
                 <div className="max-w-2xl">
                     <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">

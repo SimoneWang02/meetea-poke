@@ -407,7 +407,10 @@ export const CONTATTI = {
     telefonoTel: "+393335068836",
     indirizzo: "Piazzale Dante Alighieri 6, 41012 Carpi (MO)",
     mapsUrl:
-        "https://www.google.com/maps/place/QQ+Tea+Taiwan+Bubble+Tea/@44.783076,10.8880567,87m/data=!3m1!1e3!4m15!1m8!3m7!1s0x477f8d35e8cc996f:0xf0263c60bbda4526!2sPiazzale+Dante+Alighieri,+6,+41012+Carpi+MO!3b1!8m2!3d44.782961!4d10.888387!16s%2Fg%2F11vhfgy7mp!3m5!1s0x477f8d2e91c553a1:0xf14e719184039881!8m2!3d44.7829379!4d10.8882007!16s%2Fg%2F11fr3gwqkf!5m1!1e2?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D",
+        "https://www.google.com/maps/dir/?api=1&destination=" +
+        encodeURIComponent(
+            "QQ Tea Taiwan Bubble Tea, Piazzale Dante Alighieri, 6, 41012 Carpi MO"
+        ),
     instagram: "https://instagram.com/meetea_poke",
     instagramHandle: "@meetea_poke",
 };
