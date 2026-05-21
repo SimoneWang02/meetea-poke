@@ -9,34 +9,10 @@ import {
     POKE_CRISPY,
     POKE_SALSE,
     POKE_EXTRA_PREZZI,
-    TEA_BASI,
-    TEA_LATTE,
-    TEA_PEARLS,
-    TEA_DOLCEZZA,
-    TEA_GHIACCIO,
     ORARI_APERTURA,
     CONTATTI,
 } from "../lib/options";
-
-function MenuList({ titolo, items }) {
-    return (
-        <div className="mt-4">
-            <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
-                {titolo}
-            </div>
-            <ul className="mt-2 flex flex-wrap gap-2">
-                {items.map((item) => (
-                    <li
-                        key={item}
-                        className="rounded-full bg-mint-50 px-3 py-1 text-sm text-mint-800 ring-1 ring-mint-200"
-                    >
-                        {item}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-}
+import BobaSection from "../components/BobaSection";
 
 function BentoTile({ etichetta, items, className = "" }) {
     return (
@@ -111,60 +87,7 @@ export default function Home() {
             </section>
 
             {/* Boba */}
-            <section id="menu" className="bg-stone-50 py-16 sm:py-24">
-                <div className="mx-auto max-w-5xl px-6">
-                    <div className="grid items-center gap-12 md:grid-cols-2">
-                        <div>
-                            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
-                                Bubble Tea
-                            </div>
-                            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                                Il tuo bubble tea,
-                                <br />
-                                come piace a te
-                            </h2>
-                            <p className="mt-4 text-stone-600">
-                                Scegli la base, il livello di dolcezza, le perle
-                                e il ghiaccio. Ogni drink è preparato al
-                                momento.
-                            </p>
-                            <MenuList titolo="Tea" items={TEA_BASI} />
-                            <MenuList titolo="Latte" items={TEA_LATTE} />
-                            <MenuList titolo="Pearls" items={TEA_PEARLS} />
-                            <MenuList titolo="Dolcezza" items={TEA_DOLCEZZA} />
-                            <MenuList titolo="Ghiaccio" items={TEA_GHIACCIO} />
-
-                            <Link
-                                to="/ordina"
-                                className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-mint-500 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-mint-500/30 transition hover:bg-mint-600 sm:text-lg"
-                            >
-                                Ordina il tuo bubble tea
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.6"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="h-5 w-5"
-                                >
-                                    <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />
-                                    <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-                                </svg>
-                            </Link>
-                        </div>
-
-                        <div className="relative order-first md:order-last">
-                            <div className="absolute inset-0 -z-10 rounded-[3rem] bg-gradient-to-br from-accent-200 via-accent-100 to-mint-200 blur-2xl opacity-70" />
-                            <div className="aspect-square rounded-[3rem] bg-gradient-to-br from-accent-100 to-mint-100 p-12 ring-1 ring-stone-200/60 flex items-center justify-center">
-                                <span className="text-[12rem] leading-none drop-shadow-lg">
-                                    🧋
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <BobaSection />
 
             {/* Poke */}
             <section className="relative overflow-hidden bg-white py-16 sm:py-24">

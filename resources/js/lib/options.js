@@ -1,7 +1,31 @@
 export const POKE_DIMENSIONI = [
-    { id: "small",   nome: "Small",   prezzo: 9.90,  proteine: 1, green: 3, crispy: 1, salse: 1 },
-    { id: "regular", nome: "Regular", prezzo: 11.90, proteine: 2, green: 4, crispy: 2, salse: 2 },
-    { id: "large",   nome: "Large",   prezzo: 13.90, proteine: 3, green: 5, crispy: 3, salse: 3 },
+    {
+        id: "small",
+        nome: "Small",
+        prezzo: 9.9,
+        proteine: 1,
+        green: 3,
+        crispy: 1,
+        salse: 1,
+    },
+    {
+        id: "regular",
+        nome: "Regular",
+        prezzo: 11.9,
+        proteine: 2,
+        green: 4,
+        crispy: 2,
+        salse: 2,
+    },
+    {
+        id: "large",
+        nome: "Large",
+        prezzo: 13.9,
+        proteine: 3,
+        green: 5,
+        crispy: 3,
+        salse: 3,
+    },
 ];
 
 export const POKE_BASI_MAX = 2;
@@ -87,11 +111,227 @@ export const POKE_SALSE = [
 ];
 
 export const POKE_EXTRA_PREZZI = {
-    proteine: 1.80,
-    green: 1.20,
-    crispy: 0.30,
-    salse: 1.30,
+    proteine: 1.8,
+    green: 1.2,
+    crispy: 0.3,
+    salse: 1.3,
 };
+
+export const BOBA_CATEGORIE = [
+    {
+        id: "te-latte",
+        titolo: "Tè al Latte",
+        sizes: ["M", "G"],
+        items: [
+            { nome: "Bubble Tea Nero", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea Verde", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea con Cappuccino", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea al Taro", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea con Caramel", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea ai Fagioli Rossi", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea al Cioccolato", prezzi: { M: 4, G: 5 } },
+            { nome: "Latte al Cocco", prezzi: { M: 4.5, G: 5.5 } },
+            { nome: "Latte di Cocco con Mango", prezzi: { M: 4.5, G: 5.5 } },
+            { nome: "Latte di Cocco con Taro", prezzi: { M: 4.5, G: 5.5 } },
+            { nome: "Latte di Cocco con Grano", prezzi: { M: 4.5, G: 5.5 } },
+            { nome: "Bubble Tea Matcha", prezzi: { M: 4.5, G: 5.5 } },
+            { nome: "Zucchero Tostato", prezzi: { M: 4.5, G: 5.5 } },
+        ],
+    },
+    {
+        id: "te-latte-frutta",
+        titolo: "Tè al Latte con Aroma Frutta",
+        sizes: ["M", "G"],
+        items: [
+            { nome: "Bubble Tea alla Fragola", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea al Mango", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea alla Vaniglia", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea alla Banana", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea alla Papaya", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea ai Litchi", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea all'Anguria", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea al Mirtillo", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea al Melone", prezzi: { M: 4, G: 5 } },
+            { nome: "Bubble Tea alla Pesca", prezzi: { M: 4, G: 5 } },
+        ],
+    },
+    {
+        id: "te-verde-nero-granita",
+        titolo: "Tè Verde, Nero o Granita",
+        sizes: ["M", "G"],
+        items: [
+            { nome: "Mango", prezzi: { M: 4, G: 5 } },
+            { nome: "Fragola", prezzi: { M: 4, G: 5 } },
+            { nome: "Ananas", prezzi: { M: 4, G: 5 } },
+            { nome: "Anguria", prezzi: { M: 4, G: 5 } },
+            { nome: "Mela Verde", prezzi: { M: 4, G: 5 } },
+            { nome: "Melone", prezzi: { M: 4, G: 5 } },
+            { nome: "Red Guava", prezzi: { M: 4, G: 5 } },
+            { nome: "Menta", prezzi: { M: 4, G: 5 } },
+            { nome: "Mirtillo", prezzi: { M: 4, G: 5 } },
+            { nome: "Kiwi", prezzi: { M: 4, G: 5 } },
+            { nome: "Miele", prezzi: { M: 4, G: 5 } },
+            { nome: "Pesca", prezzi: { M: 4, G: 5 } },
+            { nome: "Zenzero", prezzi: { M: 4, G: 5 } },
+            { nome: "Uva", prezzi: { M: 4, G: 5 } },
+            { nome: "Gelso", prezzi: { M: 4, G: 5 } },
+            { nome: "Ciliegia", prezzi: { M: 4, G: 5 } },
+            { nome: "Litchi", prezzi: { M: 4, G: 5 } },
+            { nome: "Limone", prezzi: { M: 4, G: 5 } },
+            { nome: "Maracuja", prezzi: { M: 4, G: 5 } },
+            { nome: "Cocco", prezzi: { M: 4, G: 5 } },
+            { nome: "Lampone", prezzi: { M: 4, G: 5 } },
+            { nome: "Arancia", prezzi: { M: 4, G: 5 } },
+            { nome: "Pompelmo", prezzi: { M: 4, G: 5 } },
+            { nome: "Banana", prezzi: { M: 4, G: 5 } },
+            { nome: "Papaya", prezzi: { M: 4, G: 5 } },
+        ],
+    },
+    {
+        id: "speciali-senza-latte",
+        titolo: "Bubble Tea Speciali (Senza Latte)",
+        sizes: ["G"],
+        items: [
+            {
+                nome: "Tè Limone alla Fragola",
+                prezzi: { G: 5.5 },
+                ingredienti: "Tè verde, fette di limone, fragola fresca",
+            },
+            {
+                nome: "Tè Limone con Pesca",
+                prezzi: { G: 5.5 },
+                ingredienti: "Tè verde, aroma di pesca, pesca e limone freschi",
+            },
+            {
+                nome: "Passion Fruit all'Ananas",
+                prezzi: { G: 5.5 },
+                ingredienti: "Tè verde, passion fruit e ananas freschi",
+                topSeller: true,
+            },
+            {
+                nome: "Passion Fruit al Mango",
+                prezzi: { G: 5.5 },
+                ingredienti: "Tè verde, passion fruit e mango freschi",
+            },
+            { nome: "Passion Fruit al Mojito", prezzi: { G: 5.5 } },
+            {
+                nome: "I Miss You",
+                prezzi: { G: 5.5 },
+                ingredienti:
+                    "Latte probiotico gusto tropical con panna montata",
+            },
+            {
+                nome: "Yakult alla Fragola",
+                prezzi: { G: 5.5 },
+                ingredienti: "Latte probiotico, fragola fresca",
+            },
+            {
+                nome: "Tè Verde Miele e Pompelmo",
+                prezzi: { G: 5.5 },
+                ingredienti:
+                    "Tè verde, miele, pompelmo e fette di limone fresco",
+            },
+            {
+                nome: "Yakult all'Ananas",
+                prezzi: { G: 5.5 },
+                ingredienti: "Latte probiotico, ananas fresca",
+            },
+            {
+                nome: "Yakult all'Arancia",
+                prezzi: { G: 5.5 },
+                ingredienti: "Latte probiotico, arancia fresca",
+            },
+            { nome: "Anguria Fresca al Cocco", prezzi: { G: 5.5 } },
+            { nome: "Tè all'Arancia Fresca con Maracuja", prezzi: { G: 5.5 } },
+        ],
+    },
+    {
+        id: "speciali-con-latte",
+        titolo: "Bubble Tea Speciali (Con Latte)",
+        sizes: ["G"],
+        items: [
+            {
+                nome: "Latte di Cocco con Matcha",
+                prezzi: { G: 5.5 },
+                ingredienti: "Latte di cocco, matcha",
+            },
+            {
+                nome: "Oreo",
+                prezzi: { G: 5.5 },
+                ingredienti: "Tè nero, latte, biscotti Oreo, panna montata",
+            },
+            {
+                nome: "Tè Sporco Originale",
+                prezzi: { G: 5 },
+                ingredienti: "Tè verde, latte, zucchero di canna",
+            },
+            {
+                nome: "Fragola Tricolore",
+                prezzi: { G: 5.5 },
+                ingredienti: "Marmellata di fragole, latte, fiore blu",
+            },
+            {
+                nome: "Matcha e Fragola con Latte",
+                prezzi: { G: 6 },
+                ingredienti: "Latte, fragole, panna montata al matcha",
+            },
+            {
+                nome: "Tè Sporco alla Patata Dolce",
+                prezzi: { G: 5.5 },
+                ingredienti: "Marmellata di patata dolce, latte",
+            },
+            {
+                nome: "Tè Sporco al Matcha",
+                prezzi: { G: 5.5 },
+                ingredienti: "Marmellata di matcha, latte",
+            },
+            {
+                nome: "Latte di Cocco Denso con Caffè",
+                prezzi: { G: 5.5 },
+                ingredienti: "Latte di cocco, caffè",
+                topSeller: true,
+            },
+            {
+                nome: "Tè Sporco al Mango",
+                prezzi: { G: 5.5 },
+                ingredienti: "Marmellata di mango con pezzetti, latte",
+            },
+            {
+                nome: "Tè Sporco alla Fragola",
+                prezzi: { G: 5.5 },
+                ingredienti: "Marmellata di fragola con pezzetti, latte",
+            },
+            { nome: "Red Bean con Pudino", prezzi: { G: 5.5 } },
+            { nome: "Latte di Cocco Denso al Mango", prezzi: { G: 5.5 } },
+        ],
+    },
+    {
+        id: "speciali-granite",
+        titolo: "Bubble Tea Speciali (Granite)",
+        sizes: ["G"],
+        items: [
+            {
+                nome: "Cheese Fragola",
+                prezzi: { G: 5.5 },
+                ingredienti:
+                    "Granita alla fragola, frutta secca, panna montata",
+            },
+            {
+                nome: "Cheese Uva",
+                prezzi: { G: 5.5 },
+                ingredienti: "Granita all'uva, frutta secca, panna montata",
+            },
+            {
+                nome: "Ananas Fresca in Granita",
+                prezzi: { G: 5.5 },
+                ingredienti: "Granita all'ananas, frutta secca",
+            },
+            { nome: "Red Bean Matcha", prezzi: { G: 5.5 } },
+            { nome: "Cheese Dragon", prezzi: { G: 5.5 } },
+            { nome: "Cheese Mango", prezzi: { G: 5.5 }, topSeller: true },
+        ],
+    },
+];
 
 export const TEA_BASI = ["tè nero", "tè verde", "taro", "matcha"];
 export const TEA_LATTE = ["con latte", "senza latte"];
