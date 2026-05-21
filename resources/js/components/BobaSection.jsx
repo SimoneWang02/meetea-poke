@@ -269,7 +269,7 @@ function ToppingCard() {
                     <IconBadge kind="topping" />
                     <div className="flex flex-col items-start gap-1">
                         <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
-                            Scegli Topping
+                            Toppings
                         </h3>
                         <span className="inline-flex items-center rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
                             1 topping da 0,50€ incluso
@@ -308,26 +308,25 @@ export default function BobaSection() {
         setActiveId(BOBA_CATEGORIE[next].id);
     };
 
-    const ScrollButtonNav = React.forwardRef(function ScrollButtonNav(
-        props,
-        ref,
-    ) {
-        const { onClick: _ignored, direction, ...rest } = props;
-        const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
-        const navDisabled =
-            direction === "right"
-                ? idx >= BOBA_CATEGORIE.length - 1
-                : idx <= 0;
-        return (
-            <TabScrollButton
-                {...rest}
-                ref={ref}
-                direction={direction}
-                disabled={navDisabled}
-                onClick={() => goToAdjacentCategoria(direction)}
-            />
-        );
-    });
+    const ScrollButtonNav = React.forwardRef(
+        function ScrollButtonNav(props, ref) {
+            const { onClick: _ignored, direction, ...rest } = props;
+            const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
+            const navDisabled =
+                direction === "right"
+                    ? idx >= BOBA_CATEGORIE.length - 1
+                    : idx <= 0;
+            return (
+                <TabScrollButton
+                    {...rest}
+                    ref={ref}
+                    direction={direction}
+                    disabled={navDisabled}
+                    onClick={() => goToAdjacentCategoria(direction)}
+                />
+            );
+        },
+    );
 
     useEffect(() => {
         const scroller = tabsRef.current?.querySelector(".MuiTabs-scroller");
