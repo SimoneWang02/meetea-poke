@@ -32,7 +32,7 @@ const BOBA_IMAGES = [
     "IMG_0839.PNG",
 ];
 
-const BOBA_COUNT = 200;
+const BOBA_COUNT = 150;
 
 function FallingBoba() {
     const sprites = React.useMemo(() => {
