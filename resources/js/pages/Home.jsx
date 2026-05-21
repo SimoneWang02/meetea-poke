@@ -13,6 +13,7 @@ import {
     CONTATTI,
 } from "../lib/options";
 import BobaSection from "../components/BobaSection";
+import SnacksSection from "../components/SnacksSection";
 
 function BentoTile({ numero, etichetta, sottotitolo, items, className = "" }) {
     return (
@@ -241,53 +242,8 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Foto */}
-            <section className="bg-stone-50 py-16 sm:py-24">
-                <div className="mx-auto max-w-5xl px-6">
-                    <div className="text-center">
-                        <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
-                            Galleria
-                        </div>
-                        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                            Uno sguardo da MeeTea&amp;Poke
-                        </h2>
-                        <p className="mx-auto mt-4 max-w-2xl text-stone-600">
-                            Le nostre bowl, i nostri drink, il nostro locale.
-                            Seguici su{" "}
-                            <a
-                                href={CONTATTI.instagram}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="font-semibold text-mint-700 hover:text-mint-800"
-                            >
-                                Instagram
-                            </a>{" "}
-                            per tutte le novità.
-                        </p>
-                    </div>
-
-                    <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-mint-200 to-mint-400 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
-                            🥗
-                        </div>
-                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-accent-200 to-accent-400 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
-                            🧋
-                        </div>
-                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-mint-300 to-accent-300 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
-                            🥑
-                        </div>
-                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-accent-300 to-mint-300 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
-                            🍵
-                        </div>
-                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-mint-400 to-mint-200 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
-                            🍣
-                        </div>
-                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-accent-400 to-accent-200 flex items-center justify-center text-5xl shadow-sm ring-1 ring-stone-200/60">
-                            🍡
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/* Snacks */}
+            <SnacksSection />
 
             {/* Orari e dove siamo */}
             <section className="bg-white py-16 sm:py-24">

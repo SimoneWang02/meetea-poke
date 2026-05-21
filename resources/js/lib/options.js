@@ -411,3 +411,91 @@ export const CONTATTI = {
     instagram: "https://instagram.com/meetea_poke",
     instagramHandle: "@meetea_poke",
 };
+
+export const SNACKS_LISTA = [
+    {
+        nome: "Zuppa di Suino",
+        image: "zuppa_suino.JPG",
+        opzioni: [
+            { qty: "Porzione Piccola", prezzo: 3.5 },
+            { qty: "Porzione Grande", prezzo: 5 },
+        ],
+    },
+    {
+        nome: "Ravioli di Carne",
+        image: "ravioli_carne.JPG",
+        opzioni: [{ qty: "6pz", prezzo: 4 }],
+    },
+    {
+        nome: "Ravioli di Gamberi",
+        image: "ravioli_gamberi.JPG",
+        opzioni: [{ qty: "4pz", prezzo: 5 }],
+    },
+    {
+        nome: "Tortellini Cinesi",
+        image: "tortellini_cinesi.JPG",
+        opzioni: [{ qty: "10pz", prezzo: 5 }],
+    },
+    {
+        nome: "Pollo Riempito con Riso",
+        image: "pollo_riempito.JPG",
+        opzioni: [{ qty: "1pz", prezzo: 4.5 }],
+    },
+    {
+        nome: "Panino Maialino",
+        image: "panino_maialino.JPG",
+        opzioni: [{ qty: "4pz", prezzo: 5 }],
+    },
+    {
+        nome: "Popcorn Chicken",
+        image: "popcorn_chicken.JPG",
+        opzioni: [{ qty: "1 Porzione", prezzo: 3.5 }],
+    },
+    {
+        nome: "Strisce di Pollo",
+        image: "strisce_pollo.JPG",
+        opzioni: [{ qty: "1 Porzione", prezzo: 3.5 }],
+    },
+    {
+        nome: "Pollo Fritto",
+        image: null,
+        opzioni: [{ qty: "4pz", prezzo: 5 }],
+    },
+    {
+        nome: "Hot Dog",
+        image: "hot_dog.JPG",
+        opzioni: [{ qty: "1 Porzione", prezzo: 2 }],
+    },
+    {
+        nome: "Takoyaki",
+        image: "takoyaki.JPG",
+        opzioni: [
+            { qty: "4pz", prezzo: 4 },
+            { qty: "6pz", prezzo: 5.5 },
+        ],
+    },
+    {
+        nome: "Cheese Panino",
+        image: null,
+        opzioni: [{ qty: "1pz", prezzo: 4.5 }],
+    },
+    {
+        nome: "Gambero Tempura",
+        image: "tempura_gamberi.JPG",
+        opzioni: [{ qty: "4pz", prezzo: 5 }],
+    },
+    {
+        nome: "Dorayaki",
+        image: "dorayaki.JPG",
+        opzioni: [{ qty: "1pz", prezzo: 2 }],
+    },
+    {
+        nome: "Mochi",
+        image: "mochi.JPG",
+        opzioni: [
+            { qty: "1pz", prezzo: 2 },
+            { qty: "2pz", prezzo: 4.5 },
+            { qty: "3pz", prezzo: 6 },
+        ],
+    },
+];
