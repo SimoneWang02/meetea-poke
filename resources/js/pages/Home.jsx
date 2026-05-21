@@ -14,13 +14,27 @@ import {
 } from "../lib/options";
 import BobaSection from "../components/BobaSection";
 
-function BentoTile({ etichetta, items, className = "" }) {
+function BentoTile({ numero, etichetta, sottotitolo, items, className = "" }) {
     return (
         <div
             className={`flex flex-col rounded-3xl bg-white p-6 ring-1 ring-stone-300 ${className}`}
         >
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
-                {etichetta}
+            <div className="flex items-center gap-3">
+                {numero != null && (
+                    <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-accent-500 text-sm font-bold text-white">
+                        {numero}
+                    </span>
+                )}
+                <div className="flex flex-col">
+                    <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
+                        {etichetta}
+                    </div>
+                    {sottotitolo && (
+                        <div className="text-xs font-medium text-stone-500">
+                            {sottotitolo}
+                        </div>
+                    )}
+                </div>
             </div>
             <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-stone-700 marker:text-mint-500">
                 {items.map((item) => (
@@ -134,9 +148,14 @@ export default function Home() {
                     <div className="mt-10 space-y-4">
                         {/* Dimensione (full width) */}
                         <div className="rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8">
-                            <div className="flex flex-wrap items-baseline justify-between gap-2">
-                                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-600">
-                                    Scegli la dimensione
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                                <div className="flex items-center gap-3">
+                                    <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-accent-500 text-sm font-bold text-white">
+                                        1
+                                    </span>
+                                    <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-600">
+                                        Scegli la dimensione
+                                    </div>
                                 </div>
                             </div>
                             <div className="mt-6 grid divide-y divide-stone-300 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
@@ -189,23 +208,32 @@ export default function Home() {
                         {/* Masonry */}
                         <div className="gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4 [&>*]:break-inside-avoid">
                             <BentoTile
+                                numero={2}
                                 etichetta={`Scegli fino a ${POKE_BASI_MAX} basi`}
                                 items={POKE_BASI}
                             />
                             <BentoTile
-                                etichetta={`Proteine (extra +${POKE_EXTRA_PREZZI.proteine.toFixed(2)} €)`}
+                                numero={3}
+                                etichetta="Proteine"
+                                sottotitolo={`Extra +${POKE_EXTRA_PREZZI.proteine.toFixed(2)} €`}
                                 items={POKE_PROTEINE}
                             />
                             <BentoTile
-                                etichetta={`Green & co (extra +${POKE_EXTRA_PREZZI.green.toFixed(2)} €)`}
+                                numero={4}
+                                etichetta="Green & co"
+                                sottotitolo={`Extra +${POKE_EXTRA_PREZZI.green.toFixed(2)} €`}
                                 items={POKE_GREEN}
                             />
                             <BentoTile
-                                etichetta={`Crispy (extra +${POKE_EXTRA_PREZZI.crispy.toFixed(2)} €)`}
+                                numero={5}
+                                etichetta="Crispy"
+                                sottotitolo={`Extra +${POKE_EXTRA_PREZZI.crispy.toFixed(2)} €`}
                                 items={POKE_CRISPY}
                             />
                             <BentoTile
-                                etichetta={`Salse (extra +${POKE_EXTRA_PREZZI.salse.toFixed(2)} €)`}
+                                numero={6}
+                                etichetta="Salse"
+                                sottotitolo={`Extra +${POKE_EXTRA_PREZZI.salse.toFixed(2)} €`}
                                 items={POKE_SALSE}
                             />
                         </div>
