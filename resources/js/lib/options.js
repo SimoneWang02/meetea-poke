@@ -333,6 +333,42 @@ export const BOBA_CATEGORIE = [
     },
 ];
 
+export const BOBA_TOPPING = {
+    singoli: [
+        { nome: "Perle di Tapioca", prezzo: 0.5 },
+        { nome: "Jelly Erba", prezzo: 0.5 },
+        { nome: "Granella di Oreo", prezzo: 0.5 },
+        { nome: "Tapioca Trasparente", prezzo: 1 },
+        { nome: "Cheese Cream", prezzo: 1 },
+    ],
+    gruppi: [
+        {
+            nome: "Gelatine",
+            prezzo: 0.5,
+            gusti: ["Miste", "Mela", "Litchi", "Cocco", "Fragola"],
+        },
+        {
+            nome: "Palline",
+            prezzo: 0.5,
+            gusti: [
+                "Limone",
+                "Litchi",
+                "Ciliegia",
+                "Lampone",
+                "Maracuja",
+                "Ananas",
+                "Fragola",
+                "Uva",
+                "Pesca",
+                "Mirtillo",
+                "Mela",
+                "Melograno",
+                "Mango",
+            ],
+        },
+    ],
+};
+
 export const TEA_BASI = ["tè nero", "tè verde", "taro", "matcha"];
 export const TEA_LATTE = ["con latte", "senza latte"];
 export const TEA_PEARLS = [

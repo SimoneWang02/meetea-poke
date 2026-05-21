@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { BOBA_CATEGORIE } from "../lib/options";
+import { BOBA_CATEGORIE, BOBA_TOPPING } from "../lib/options";
 
 const MINT_500 = "#14b8a6";
 const MINT_700 = "#0f766e";
@@ -73,7 +73,7 @@ function InfoPopover({ testo }) {
 
 function ItemRow({ item, sizes }) {
     return (
-        <li className="flex items-baseline justify-between gap-4 border-b border-stone-100 py-3">
+        <li className="flex items-baseline justify-between gap-4 border-t border-stone-100 py-3 [&:first-child]:border-t-0 md:[&:nth-child(-n+2)]:border-t-0">
             <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                 <span className="font-medium text-stone-800">{item.nome}</span>
                 {item.ingredienti && <InfoPopover testo={item.ingredienti} />}
@@ -141,6 +141,70 @@ function CategoryCard({ categoria }) {
     );
 }
 
+function ToppingRow({ nome, prezzo }) {
+    return (
+        <li className="flex items-baseline justify-between gap-4 border-t border-stone-100 py-3 [&:first-child]:border-t-0 md:[&:nth-child(-n+2)]:border-t-0">
+            <span className="font-medium text-stone-800">{nome}</span>
+            <span className="shrink-0 font-semibold text-mint-700 tabular-nums">
+                +{formatPrezzo(prezzo)}
+            </span>
+        </li>
+    );
+}
+
+function ToppingSubsection({ titolo, prezzo, gusti }) {
+    return (
+        <div className="mt-6">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-stone-200 pb-2">
+                <h4 className="text-base font-bold tracking-tight text-stone-900">
+                    {titolo}
+                </h4>
+                <span className="font-semibold text-mint-700 tabular-nums">
+                    +{formatPrezzo(prezzo)}
+                </span>
+            </div>
+            <ul className="grid grid-cols-2 gap-x-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                {gusti.map((g) => (
+                    <li
+                        key={g}
+                        className="border-t border-stone-100 py-2 text-stone-700 [&:nth-child(-n+2)]:border-t-0 sm:[&:nth-child(-n+3)]:border-t-0 md:[&:nth-child(-n+4)]:border-t-0 lg:[&:nth-child(-n+5)]:border-t-0"
+                    >
+                        {g}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+function ToppingCard() {
+    return (
+        <div className="rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8">
+            <div className="border-b border-stone-200 pb-3">
+                <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
+                    Scegli Topping
+                </h3>
+                <p className="mt-1 text-sm text-stone-600">
+                    Con ogni bubble tea è incluso un topping da 0,50€
+                </p>
+            </div>
+            <ul className="md:grid md:grid-cols-2 md:gap-x-10">
+                {BOBA_TOPPING.singoli.map((t) => (
+                    <ToppingRow key={t.nome} nome={t.nome} prezzo={t.prezzo} />
+                ))}
+            </ul>
+            {BOBA_TOPPING.gruppi.map((g) => (
+                <ToppingSubsection
+                    key={g.nome}
+                    titolo={g.nome}
+                    prezzo={g.prezzo}
+                    gusti={g.gusti}
+                />
+            ))}
+        </div>
+    );
+}
+
 export default function BobaSection() {
     const [activeId, setActiveId] = useState(BOBA_CATEGORIE[0].id);
     const activeCategoria =
@@ -150,7 +214,7 @@ export default function BobaSection() {
     useEffect(() => {
         const scroller = tabsRef.current?.querySelector(".MuiTabs-scroller");
         const selected = tabsRef.current?.querySelector(
-            'button[role="tab"][aria-selected="true"]'
+            'button[role="tab"][aria-selected="true"]',
         );
         if (!scroller || !selected) return;
 
@@ -291,25 +355,8 @@ export default function BobaSection() {
                     <CategoryCard categoria={activeCategoria} />
                 </div>
 
-                <div className="mt-10 flex justify-center">
-                    <Link
-                        to="/ordina"
-                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-mint-500 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-mint-500/30 transition hover:bg-mint-600 sm:text-lg"
-                    >
-                        Ordina il tuo bubble tea
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.6"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="h-5 w-5"
-                        >
-                            <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />
-                            <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-                        </svg>
-                    </Link>
+                <div className="mt-6">
+                    <ToppingCard />
                 </div>
             </div>
         </section>
