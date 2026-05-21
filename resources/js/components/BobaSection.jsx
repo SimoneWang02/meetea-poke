@@ -267,12 +267,14 @@ function ToppingCard() {
     return (
         <div className="rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8">
             <div className="border-b border-stone-200 pb-3">
-                <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
-                    Scegli Topping
-                </h3>
-                <p className="mt-1 text-sm text-stone-600">
-                    Con ogni bubble tea è incluso un topping da 0,50€
-                </p>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                    <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
+                        Scegli Topping
+                    </h3>
+                    <span className="inline-flex items-center rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
+                        1 topping da 0,50€ incluso
+                    </span>
+                </div>
             </div>
             <ul className="md:grid md:grid-cols-2 md:gap-x-10">
                 {BOBA_TOPPING.singoli.map((t) => (
