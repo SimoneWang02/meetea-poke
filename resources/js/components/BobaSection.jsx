@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import TabScrollButton from "@mui/material/TabScrollButton";
 import { BOBA_CATEGORIE, BOBA_TOPPING } from "../lib/options";
 
 const BOBA_IMAGES = [
@@ -122,10 +123,17 @@ function InfoPopover({ testo }) {
     }, [open]);
 
     return (
-        <span ref={wrapperRef} className="relative inline-flex">
+        <span
+            ref={wrapperRef}
+            className="relative inline-flex"
+            onMouseEnter={() => setOpen(true)}
+            onMouseLeave={() => setOpen(false)}
+        >
             <button
                 type="button"
                 onClick={() => setOpen((v) => !v)}
+                onFocus={() => setOpen(true)}
+                onBlur={() => setOpen(false)}
                 aria-label="Mostra ingredienti"
                 aria-expanded={open}
                 className="inline-flex h-5 w-5 items-center justify-center rounded-full text-stone-400 transition hover:text-mint-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-500"
@@ -157,9 +165,82 @@ function InfoPopover({ testo }) {
     );
 }
 
+function BobaSvg() {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            aria-hidden="true"
+        >
+            <path
+                d="M18 9L16.5218 18.4136C16.2728 19.9992 16.1483 20.7921 15.5864 21.2644C14.3865 22.273 9.54699 22.217 8.41358 21.2644C7.85167 20.7921 7.72718 19.9992 7.47819 18.4136L6 9"
+                strokeLinecap="round"
+            />
+            <path d="M6 9L6.51444 7.71391C7.41167 5.47084 9.58414 4 12 4C14.4159 4 16.5883 5.47084 17.4856 7.71391L18 9" />
+            <path d="M5 9H19" strokeLinecap="round" />
+            <path d="M13 9L16 2" strokeLinecap="round" />
+            <path
+                d="M13.125 13H13M13.25 13C13.25 13.1381 13.1381 13.25 13 13.25C12.8619 13.25 12.75 13.1381 12.75 13C12.75 12.8619 12.8619 12.75 13 12.75C13.1381 12.75 13.25 12.8619 13.25 13Z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M13.625 18H13.5M13.75 18C13.75 18.1381 13.6381 18.25 13.5 18.25C13.3619 18.25 13.25 18.1381 13.25 18C13.25 17.8619 13.3619 17.75 13.5 17.75C13.6381 17.75 13.75 17.8619 13.75 18Z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M10.125 15.5H10M10.25 15.5C10.25 15.6381 10.1381 15.75 10 15.75C9.86193 15.75 9.75 15.6381 9.75 15.5C9.75 15.3619 9.86193 15.25 10 15.25C10.1381 15.25 10.25 15.3619 10.25 15.5Z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    );
+}
+
+function ToppingSvg() {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+        >
+            <circle cx="19" cy="13" r="2" />
+            <circle cx="13" cy="19" r="3" />
+            <circle cx="8.5" cy="7.5" r="5.5" />
+            <path d="M6 7.5C6 6.11929 7.11929 5 8.5 5" />
+        </svg>
+    );
+}
+
+function IconBadge({ kind, size = "md", variant = "mint" }) {
+    const sizing =
+        size === "sm"
+            ? "h-7 w-7 rounded-lg [&_svg]:h-4 [&_svg]:w-4"
+            : "h-14 w-14 rounded-2xl [&_svg]:h-8 [&_svg]:w-8";
+    const palette =
+        variant === "on-accent"
+            ? "bg-white/25 text-white"
+            : "bg-mint-100 text-mint-700 ring-1 ring-mint-200";
+    return (
+        <span
+            aria-hidden="true"
+            className={`inline-flex shrink-0 items-center justify-center ${palette} ${sizing}`}
+        >
+            {kind === "boba" ? <BobaSvg /> : <ToppingSvg />}
+        </span>
+    );
+}
+
 function ItemRow({ item, sizes }) {
     return (
-        <li className="flex items-baseline justify-between gap-4 border-t border-stone-100 py-3 [&:first-child]:border-t-0 md:[&:nth-child(-n+2)]:border-t-0">
+        <li className="flex items-baseline justify-between gap-4 border-t border-stone-100 py-3 [&:first-child]:border-t-0">
             <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                 <span className="font-medium text-stone-800">{item.nome}</span>
                 {item.ingredienti && <InfoPopover testo={item.ingredienti} />}
@@ -193,10 +274,13 @@ function CategoryCard({ categoria }) {
     const showSizeHeader = categoria.sizes.length > 1;
     return (
         <div className="rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 border-b border-stone-200 pb-3">
-                <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
-                    {categoria.titolo}
-                </h3>
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-stone-200 pb-3">
+                <div className="flex items-center gap-3">
+                    <IconBadge kind="boba" />
+                    <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
+                        {categoria.titolo}
+                    </h3>
+                </div>
                 <div className="ml-auto flex shrink-0 items-baseline gap-4 sm:gap-8">
                     {showSizeHeader ? (
                         categoria.sizes.map((s) => (
@@ -214,7 +298,7 @@ function CategoryCard({ categoria }) {
                     )}
                 </div>
             </div>
-            <ul className="md:grid md:grid-cols-2 md:gap-x-10">
+            <ul>
                 {categoria.items.map((item) => (
                     <ItemRow
                         key={item.nome}
@@ -229,10 +313,10 @@ function CategoryCard({ categoria }) {
 
 function ToppingRow({ nome, prezzo }) {
     return (
-        <li className="flex items-baseline justify-between gap-4 border-t border-stone-100 py-3 [&:first-child]:border-t-0 md:[&:nth-child(-n+2)]:border-t-0">
+        <li className="flex items-baseline justify-between gap-4 border-t border-stone-100 py-3 [&:first-child]:border-t-0">
             <span className="font-medium text-stone-800">{nome}</span>
             <span className="shrink-0 font-semibold text-mint-700 tabular-nums">
-                +{formatPrezzo(prezzo)}
+                {formatPrezzo(prezzo)}
             </span>
         </li>
     );
@@ -246,14 +330,14 @@ function ToppingSubsection({ titolo, prezzo, gusti }) {
                     {titolo}
                 </h4>
                 <span className="font-semibold text-mint-700 tabular-nums">
-                    +{formatPrezzo(prezzo)}
+                    {formatPrezzo(prezzo)}
                 </span>
             </div>
-            <ul className="grid grid-cols-2 gap-x-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            <ul className="mt-3 grid grid-cols-3 gap-2">
                 {gusti.map((g) => (
                     <li
                         key={g}
-                        className="border-t border-stone-100 py-2 text-stone-700 [&:nth-child(-n+2)]:border-t-0 sm:[&:nth-child(-n+3)]:border-t-0 md:[&:nth-child(-n+4)]:border-t-0 lg:[&:nth-child(-n+5)]:border-t-0"
+                        className="rounded-xl bg-stone-50 px-3 py-2 text-center text-sm font-medium text-stone-700 ring-1 ring-stone-200"
                     >
                         {g}
                     </li>
@@ -267,16 +351,19 @@ function ToppingCard() {
     return (
         <div className="rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8">
             <div className="border-b border-stone-200 pb-3">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                    <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
-                        Scegli Topping
-                    </h3>
-                    <span className="inline-flex items-center rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
-                        1 topping da 0,50€ incluso
-                    </span>
+                <div className="flex items-center gap-3">
+                    <IconBadge kind="topping" />
+                    <div className="flex flex-col items-start gap-1">
+                        <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
+                            Scegli Topping
+                        </h3>
+                        <span className="inline-flex items-center rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
+                            1 topping da 0,50€ incluso
+                        </span>
+                    </div>
                 </div>
             </div>
-            <ul className="md:grid md:grid-cols-2 md:gap-x-10">
+            <ul>
                 {BOBA_TOPPING.singoli.map((t) => (
                     <ToppingRow key={t.nome} nome={t.nome} prezzo={t.prezzo} />
                 ))}
@@ -298,6 +385,35 @@ export default function BobaSection() {
     const activeCategoria =
         BOBA_CATEGORIE.find((c) => c.id === activeId) ?? BOBA_CATEGORIE[0];
     const tabsRef = useRef(null);
+
+    const goToAdjacentCategoria = (direction) => {
+        const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
+        if (idx === -1) return;
+        const next = direction === "right" ? idx + 1 : idx - 1;
+        if (next < 0 || next >= BOBA_CATEGORIE.length) return;
+        setActiveId(BOBA_CATEGORIE[next].id);
+    };
+
+    const ScrollButtonNav = React.forwardRef(function ScrollButtonNav(
+        props,
+        ref,
+    ) {
+        const { onClick: _ignored, direction, ...rest } = props;
+        const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
+        const navDisabled =
+            direction === "right"
+                ? idx >= BOBA_CATEGORIE.length - 1
+                : idx <= 0;
+        return (
+            <TabScrollButton
+                {...rest}
+                ref={ref}
+                direction={direction}
+                disabled={navDisabled}
+                onClick={() => goToAdjacentCategoria(direction)}
+            />
+        );
+    });
 
     useEffect(() => {
         const scroller = tabsRef.current?.querySelector(".MuiTabs-scroller");
@@ -350,18 +466,8 @@ export default function BobaSection() {
                         Il nostro menù
                     </h2>
                     <p className="mt-4 text-stone-600">
-                        Tutti i nostri bubble tea, dai classici alle creazioni
-                        speciali. Scegli la dimensione che preferisci,
-                        <span className="font-semibold text-stone-800">
-                            {" "}
-                            Medio
-                        </span>{" "}
-                        o
-                        <span className="font-semibold text-stone-800">
-                            {" "}
-                            Grande
-                        </span>
-                        . Tocca l'icona{" "}
+                        Esplora tutti i nostri bubble tea, dai classici alle
+                        creazioni speciali. Passa sopra l'icona{" "}
                         <span className="inline-flex h-4 w-4 -mb-0.5 items-center justify-center rounded-full text-stone-500 align-middle">
                             <svg
                                 viewBox="0 0 24 24"
@@ -383,76 +489,101 @@ export default function BobaSection() {
                                 />
                             </svg>
                         </span>{" "}
-                        per scoprire gli ingredienti dei boba speciali.
+                        per scoprire gli ingredienti dei bubble tea speciali.
                     </p>
                 </div>
 
-                <Tabs
-                    ref={tabsRef}
-                    value={activeId}
-                    onChange={(_, v) => setActiveId(v)}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    allowScrollButtonsMobile
-                    aria-label="Categorie boba"
-                    sx={{
-                        mt: 5,
-                        minHeight: 0,
-                        backdropFilter: "blur(8px)",
-                        WebkitBackdropFilter: "blur(8px)",
-                        backgroundColor: "rgba(250, 250, 249, 0.4)",
-                        borderRadius: "9999px",
-                        "& .MuiTabs-indicator": {
-                            backgroundColor: MINT_500,
-                            height: 3,
-                            borderRadius: "9999px",
-                        },
-                        "& .MuiTab-root": {
-                            textTransform: "none",
-                            fontFamily: "inherit",
-                            fontWeight: 600,
-                            fontSize: "0.875rem",
-                            color: STONE_700,
+                <div className="sticky top-0 z-30 mt-5 py-3">
+                    <Tabs
+                        ref={tabsRef}
+                        value={activeId}
+                        onChange={(_, v) => setActiveId(v)}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        allowScrollButtonsMobile
+                        aria-label="Categorie boba"
+                        slots={{ scrollButtons: ScrollButtonNav }}
+                        sx={{
                             minHeight: 0,
-                            paddingY: "0.75rem",
-                            paddingX: "1rem",
-                        },
-                        "& .MuiTab-root:hover": {
-                            color: MINT_700,
-                        },
-                        "& .MuiTab-root.Mui-selected": {
-                            color: MINT_700,
-                        },
-                        "& .MuiTabs-scrollButtons.Mui-disabled": {
-                            opacity: 0.3,
-                        },
-                        "& .MuiTabs-scrollButtons": {
-                            color: STONE_500,
-                        },
-                    }}
-                >
-                    {BOBA_CATEGORIE.map((cat) => (
-                        <Tab
-                            key={cat.id}
-                            value={cat.id}
-                            label={cat.titolo}
-                            id={`boba-tab-${cat.id}`}
-                            aria-controls={`boba-panel-${cat.id}`}
-                        />
-                    ))}
-                </Tabs>
-
-                <div
-                    role="tabpanel"
-                    id={`boba-panel-${activeCategoria.id}`}
-                    aria-labelledby={`boba-tab-${activeCategoria.id}`}
-                    className="mt-6"
-                >
-                    <CategoryCard categoria={activeCategoria} />
+                            "& .MuiTabs-indicator": {
+                                display: "none",
+                            },
+                            "& .MuiTab-root": {
+                                textTransform: "none",
+                                fontFamily: "inherit",
+                                fontWeight: 600,
+                                fontSize: "0.875rem",
+                                color: STONE_700,
+                                minHeight: 0,
+                                paddingY: "0.5rem",
+                                paddingX: "1rem",
+                                borderRadius: "9999px",
+                                backgroundColor: "#ffffff",
+                                border: "1px solid #d6d3d1",
+                                marginX: "0.25rem",
+                                transition:
+                                    "background-color 0.15s, color 0.15s, border-color 0.15s",
+                            },
+                            "& .MuiTab-root:hover": {
+                                backgroundColor: "#f5f5f4",
+                                color: STONE_700,
+                            },
+                            "& .MuiTab-root.Mui-selected": {
+                                backgroundColor: MINT_500,
+                                color: "#fff",
+                                borderColor: MINT_500,
+                            },
+                            "& .MuiTab-root.Mui-selected:hover": {
+                                backgroundColor: MINT_700,
+                                color: "#fff",
+                                borderColor: MINT_700,
+                            },
+                            "&& .MuiTabs-scrollButtons": {
+                                color: STONE_700,
+                                backgroundColor: "#ffffff !important",
+                                borderRadius: "9999px",
+                                border: "1px solid #d6d3d1",
+                                width: 36,
+                                height: 36,
+                                marginX: "0.25rem",
+                                transition: "background-color 0.15s",
+                                opacity: "1 !important",
+                            },
+                            "&& .MuiTabs-scrollButtons:hover": {
+                                backgroundColor: "#f5f5f4 !important",
+                            },
+                            "&& .MuiTabs-scrollButtons.Mui-disabled": {
+                                opacity: "1 !important",
+                                color: "#a8a29e",
+                                backgroundColor: "#ffffff !important",
+                            },
+                        }}
+                    >
+                        {BOBA_CATEGORIE.map((cat) => (
+                            <Tab
+                                key={cat.id}
+                                value={cat.id}
+                                label={cat.titolo}
+                                id={`boba-tab-${cat.id}`}
+                                aria-controls={`boba-panel-${cat.id}`}
+                            />
+                        ))}
+                    </Tabs>
                 </div>
 
-                <div className="mt-6">
-                    <ToppingCard />
+                <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-5 lg:items-start">
+                    <div
+                        role="tabpanel"
+                        id={`boba-panel-${activeCategoria.id}`}
+                        aria-labelledby={`boba-tab-${activeCategoria.id}`}
+                        className="lg:col-span-3"
+                    >
+                        <CategoryCard categoria={activeCategoria} />
+                    </div>
+
+                    <aside className="lg:col-span-2 lg:sticky lg:top-20">
+                        <ToppingCard />
+                    </aside>
                 </div>
             </div>
         </section>
