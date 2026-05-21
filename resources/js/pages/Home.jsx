@@ -75,7 +75,7 @@ export default function Home() {
                             to="/ordina"
                             className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-4 text-base font-semibold text-mint-800 shadow-lg shadow-mint-900/20 transition hover:bg-stone-50 sm:text-lg"
                         >
-                            Ordina d'asporto
+                            Ordina da Asporto
                             <svg
                                 viewBox="0 0 24 24"
                                 fill="none"
@@ -178,26 +178,26 @@ export default function Home() {
                                                     {d.proteine}
                                                 </span>{" "}
                                                 {d.proteine > 1
-                                                    ? "proteine"
-                                                    : "proteina"}
+                                                    ? "Proteine"
+                                                    : "Proteina"}
                                             </li>
                                             <li>
                                                 <span className="font-semibold text-mint-600">
                                                     {d.green}
                                                 </span>{" "}
-                                                green
+                                                Green
                                             </li>
                                             <li>
                                                 <span className="font-semibold text-mint-600">
                                                     {d.crispy}
                                                 </span>{" "}
-                                                crispy
+                                                Crispy
                                             </li>
                                             <li>
                                                 <span className="font-semibold text-mint-600">
                                                     {d.salse}
                                                 </span>{" "}
-                                                sals{d.salse > 1 ? "e" : "a"}
+                                                Sals{d.salse > 1 ? "e" : "a"}
                                             </li>
                                         </ul>
                                     </div>
@@ -215,25 +215,25 @@ export default function Home() {
                             <BentoTile
                                 numero={3}
                                 etichetta="Proteine"
-                                sottotitolo={`Extra +${POKE_EXTRA_PREZZI.proteine.toFixed(2)} €`}
+                                sottotitolo={`Extra ${POKE_EXTRA_PREZZI.proteine.toFixed(2)} €`}
                                 items={POKE_PROTEINE}
                             />
                             <BentoTile
                                 numero={4}
                                 etichetta="Green & co"
-                                sottotitolo={`Extra +${POKE_EXTRA_PREZZI.green.toFixed(2)} €`}
+                                sottotitolo={`Extra ${POKE_EXTRA_PREZZI.green.toFixed(2)} €`}
                                 items={POKE_GREEN}
                             />
                             <BentoTile
                                 numero={5}
                                 etichetta="Crispy"
-                                sottotitolo={`Extra +${POKE_EXTRA_PREZZI.crispy.toFixed(2)} €`}
+                                sottotitolo={`Extra ${POKE_EXTRA_PREZZI.crispy.toFixed(2)} €`}
                                 items={POKE_CRISPY}
                             />
                             <BentoTile
                                 numero={6}
                                 etichetta="Salse"
-                                sottotitolo={`Extra +${POKE_EXTRA_PREZZI.salse.toFixed(2)} €`}
+                                sottotitolo={`Extra ${POKE_EXTRA_PREZZI.salse.toFixed(2)} €`}
                                 items={POKE_SALSE}
                             />
                         </div>
@@ -452,12 +452,6 @@ export default function Home() {
                         </div>
                     </div>
                     <nav className="flex flex-wrap gap-4 text-sm">
-                        <Link to="/" className="hover:text-white">
-                            Home
-                        </Link>
-                        <Link to="/ordina" className="hover:text-white">
-                            Ordina d'asporto
-                        </Link>
                         <Link
                             to="/admin"
                             className="text-stone-500 hover:text-stone-300"
