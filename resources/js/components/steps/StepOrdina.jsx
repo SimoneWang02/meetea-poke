@@ -97,7 +97,7 @@ export function CategoryNav({ sections, active, tabRefs, onScrollToSection }) {
 
     return (
         <nav aria-label="Categorie" className="border-t border-stone-100">
-            <div className="mx-auto max-w-2xl lg:max-w-5xl flex items-center gap-1 px-4 py-3">
+            <div className="mx-auto max-w-7xl lg:max-w-screen-2xl flex items-center gap-1 px-4 py-3">
                 <button
                     type="button"
                     onClick={() => goAdjacent("left")}
@@ -301,29 +301,20 @@ function BobaCard({ item, onClick }) {
         <button
             type="button"
             onClick={onClick}
-            className="flex w-full items-center justify-between gap-4 rounded-2xl border border-stone-200 bg-white p-4 text-left transition hover:border-accent-300 hover:shadow-sm"
+            className="flex w-full items-center justify-between gap-4 rounded-2xl border border-stone-200 bg-white p-4 text-left transition hover:border-mint-300 hover:shadow-sm"
         >
             <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                    <div className="text-base font-bold">{item.nome}</div>
-                    {item.topSeller && (
-                        <span className="rounded-full bg-accent-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-700">
-                            Top
-                        </span>
-                    )}
-                </div>
+                <div className="text-base font-bold">{item.nome}</div>
                 {item.ingredienti && (
                     <div className="mt-1 line-clamp-2 text-xs text-stone-500">
                         {item.ingredienti}
                     </div>
                 )}
-                <div className="mt-2 text-lg font-extrabold text-accent-600">
-                    {sizes.length > 1
-                        ? `da ${minPrice.toFixed(2)} €`
-                        : `${minPrice.toFixed(2)} €`}
+                <div className="mt-2 text-lg font-extrabold text-mint-700">
+                    {minPrice.toFixed(2)} €
                 </div>
             </div>
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-500 text-white">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mint-600 text-white">
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -361,9 +352,6 @@ function SfizioCard({ sfizio, onClick }) {
                 )}
                 <div className="min-w-0">
                     <div className="text-base font-bold">{sfizio.nome}</div>
-                    <div className="mt-1 text-xs text-stone-500">
-                        {sfizio.opzioni.map((o) => o.qty).join(" · ")}
-                    </div>
                     <div className="mt-1 text-lg font-extrabold text-mint-700">
                         {min === max
                             ? `${min.toFixed(2)} €`

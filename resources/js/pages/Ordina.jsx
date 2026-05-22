@@ -112,7 +112,7 @@ export default function Ordina() {
     return (
         <div className="min-h-screen overflow-x-clip bg-stone-50 font-sans">
             <header ref={headerRef} className="sticky top-0 z-40 bg-white shadow-sm">
-                <div className={`mx-auto grid ${isOrdina ? "max-w-2xl lg:max-w-5xl" : "max-w-2xl"} grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3`}>
+                <div className={`mx-auto grid ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3`}>
                     <Link
                         to="/"
                         aria-label="Torna alla home"
@@ -147,7 +147,7 @@ export default function Ordina() {
                         )}
                     </button>
                 </div>
-                <div className={`mx-auto ${isOrdina ? "max-w-2xl lg:max-w-5xl" : "max-w-2xl"} px-6 pb-3`}>
+                <div className={`mx-auto ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} px-6 pb-3`}>
                     <ProgressBar step={step} />
                 </div>
                 {isOrdina && (
@@ -160,9 +160,9 @@ export default function Ordina() {
                 )}
             </header>
 
-            <main className={`mx-auto ${isOrdina ? "max-w-2xl lg:max-w-5xl" : "max-w-2xl"} px-6`}>
+            <main className={`mx-auto ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} px-6`}>
                 {isOrdina && (
-                    <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8 lg:items-start">
+                    <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-8 lg:items-start">
                         <StepOrdina
                             sections={sections}
                             sectionRefs={sectionRefs}

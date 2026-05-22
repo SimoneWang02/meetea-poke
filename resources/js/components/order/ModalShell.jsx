@@ -39,7 +39,7 @@ export default function ModalShell({ open, onClose, title, children, footer }) {
             />
             <div
                 ref={dialogRef}
-                className="relative flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:max-h-[85vh] sm:rounded-3xl"
+                className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:max-h-[85vh] sm:rounded-3xl"
             >
                 <div className="flex shrink-0 items-center justify-between gap-4 border-b border-stone-100 px-6 py-4">
                     <h2 className="text-lg font-bold tracking-tight">{title}</h2>

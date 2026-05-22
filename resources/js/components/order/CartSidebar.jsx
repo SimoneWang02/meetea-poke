@@ -9,16 +9,9 @@ function itemSubtotale(item) {
     return (base + toppings) * (item.quantita ?? 1);
 }
 
-function ItemIcon({ tipo }) {
-    if (tipo === "poke") return <span className="text-xl leading-none">🥗</span>;
-    if (tipo === "bubbletea") return <span className="text-xl leading-none">🧋</span>;
-    return <span className="text-xl leading-none">🍡</span>;
-}
-
 function CartItem({ item, onRemove }) {
     return (
         <div className="flex items-center gap-3 rounded-xl bg-stone-50 px-3 py-2.5">
-            <ItemIcon tipo={item.tipo} />
             <div className="min-w-0 flex-1">
                 <div className="truncate text-sm font-semibold text-stone-800">
                     {item.nome}
