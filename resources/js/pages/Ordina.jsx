@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { isGiornoChiuso } from "../lib/options";
 import StepOrdina, {
     useMenuNav,
     CategoryNav,
@@ -126,6 +127,24 @@ export default function Ordina() {
     };
 
     const isOrdina = step === "ordina";
+
+    if (isGiornoChiuso()) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 px-6 text-center gap-6">
+                <img src="/images/logo.svg" alt="MeeTea & Poke" className="h-12 w-auto" />
+                <h1 className="text-2xl font-bold text-stone-800">Oggi siamo chiusi</h1>
+                <p className="text-stone-500 max-w-xs">
+                    Il giovedì non è possibile ordinare da asporto. Torna a trovarci un altro giorno!
+                </p>
+                <Link
+                    to="/"
+                    className="rounded-2xl bg-mint-600 px-6 py-3 text-white font-semibold hover:bg-mint-700 transition"
+                >
+                    Torna alla home
+                </Link>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen overflow-x-clip bg-stone-50 font-sans">

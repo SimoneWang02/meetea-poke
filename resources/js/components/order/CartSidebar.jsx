@@ -113,7 +113,12 @@ export default function CartSidebar({ items, onRemove, onProcedi, headerHeight =
                             onClick={onProcedi}
                             className="mt-3 w-full rounded-xl bg-mint-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-mint-700"
                         >
-                            Procedi all'ordine →
+                            <span className="flex items-center justify-center gap-2">
+                                Procedi All'Ordine
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M5 12h14M13 6l6 6-6 6"/>
+                                </svg>
+                            </span>
                         </button>
                     </div>
                 )}

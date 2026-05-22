@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -13,6 +14,13 @@ class OrderController extends Controller
 {
     public function store(Request $request, NotificationService $notifier): JsonResponse
     {
+        if (true) { // TEST: forzato giovedì
+            return response()->json(
+                ['message' => 'Ordinazioni non disponibili il giovedì.'],
+                422
+            );
+        }
+
         $data = $request->validate([
             'nome_cliente' => ['required', 'string', 'max:100'],
             'telefono' => ['required', 'string', 'max:30'],

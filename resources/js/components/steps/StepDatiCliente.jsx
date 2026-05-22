@@ -102,7 +102,12 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
                     onClick={submit}
                     className="flex-[2] rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
                 >
-                    Conferma ordine →
+                    <span className="flex items-center justify-center gap-2">
+                        Conferma Ordine
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 12h14M13 6l6 6-6 6"/>
+                        </svg>
+                    </span>
                 </button>
             </div>
         </div>

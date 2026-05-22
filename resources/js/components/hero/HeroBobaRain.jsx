@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import HeroDeliveryIcons from "./HeroDeliveryIcons";
-import { CONTATTI } from "../../lib/options";
+import { CONTATTI, isGiornoChiuso } from "../../lib/options";
 
 export default function HeroBobaRain() {
     return (
@@ -51,24 +51,30 @@ export default function HeroBobaRain() {
                     {CONTATTI.telefono}
                 </a>
 
-                <Link
-                    to="/ordina"
-                    className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 text-base font-semibold text-mint-800 shadow-lg shadow-mint-900/30 transition hover:-translate-y-0.5 hover:bg-stone-50 sm:text-lg animate-fade-in-up [animation-delay:500ms]"
-                >
-                    Ordina da Asporto
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5"
+                {isGiornoChiuso() ? (
+                    <div className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-white/30 px-7 py-4 text-base font-semibold text-white/60 cursor-not-allowed sm:text-lg animate-fade-in-up [animation-delay:500ms]">
+                        Chiusi Oggi
+                    </div>
+                ) : (
+                    <Link
+                        to="/ordina"
+                        className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 text-base font-semibold text-mint-800 shadow-lg shadow-mint-900/30 transition hover:-translate-y-0.5 hover:bg-stone-50 sm:text-lg animate-fade-in-up [animation-delay:500ms]"
                     >
-                        <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />
-                        <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-                    </svg>
-                </Link>
+                        Ordina da Asporto
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="h-5 w-5"
+                        >
+                            <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />
+                            <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+                        </svg>
+                    </Link>
+                )}
 
                 <div className="mt-5 animate-fade-in [animation-delay:650ms]">
                     <HeroDeliveryIcons tone="light" />

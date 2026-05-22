@@ -406,6 +406,13 @@ export const ORARI_APERTURA = [
     { giorno: "Domenica", orario: "10:00 – 22:30" },
 ];
 
+const GIORNI_JS = ["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+
+export function isGiornoChiuso() {
+    const oggi = GIORNI_JS[4]; // TEST: forzato giovedì
+    return ORARI_APERTURA.find(o => o.giorno === oggi)?.orario === "chiuso";
+}
+
 export function generateSlotsRitiro() {
     const slots = [];
     for (let h = 10; h <= 22; h++) {

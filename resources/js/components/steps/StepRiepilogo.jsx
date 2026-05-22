@@ -31,9 +31,34 @@ function ItemIcon({ tipo }) {
     );
 }
 
+function PokeCategoryRow({ label, items = [], extras = [] }) {
+    const extraNames = new Set(extras.map((e) => e.nome));
+    const included = items.filter((n) => !extraNames.has(n));
+    if (included.length === 0 && extras.length === 0) return null;
+    return (
+        <li>
+            {included.length > 0 && (
+                <span>
+                    • {label}:{" "}
+                    <span className="font-medium">{included.join(", ")}</span>
+                </span>
+            )}
+            {extras.map((e) => (
+                <div key={e.nome} className="ml-4 mt-0.5 text-xs text-stone-500">
+                    - {e.nome}{" "}
+                    <span className="font-semibold text-stone-600">
+                        +{e.prezzo.toFixed(2)} €
+                    </span>
+                </div>
+            ))}
+        </li>
+    );
+}
+
 function ItemDetails({ item }) {
     const cfg = item.configurazione ?? {};
     if (item.tipo === "poke") {
+        const extras = cfg.extras ?? {};
         return (
             <ul className="mt-3 space-y-1 text-sm text-stone-700">
                 <li>
@@ -46,36 +71,10 @@ function ItemDetails({ item }) {
                     • Basi:{" "}
                     <span className="font-medium">{cfg.basi?.join(", ")}</span>
                 </li>
-                <li>
-                    • Proteine:{" "}
-                    <span className="font-medium">
-                        {cfg.proteine?.join(", ")}
-                    </span>
-                </li>
-                {cfg.green?.length > 0 && (
-                    <li>
-                        • Green:{" "}
-                        <span className="font-medium">
-                            {cfg.green.join(", ")}
-                        </span>
-                    </li>
-                )}
-                {cfg.crispy?.length > 0 && (
-                    <li>
-                        • Crispy:{" "}
-                        <span className="font-medium">
-                            {cfg.crispy.join(", ")}
-                        </span>
-                    </li>
-                )}
-                {cfg.salse?.length > 0 && (
-                    <li>
-                        • Salse:{" "}
-                        <span className="font-medium">
-                            {cfg.salse.join(", ")}
-                        </span>
-                    </li>
-                )}
+                <PokeCategoryRow label="Proteine" items={cfg.proteine} extras={extras.proteine} />
+                <PokeCategoryRow label="Green" items={cfg.green} extras={extras.green} />
+                <PokeCategoryRow label="Crispy" items={cfg.crispy} extras={extras.crispy} />
+                <PokeCategoryRow label="Salse" items={cfg.salse} extras={extras.salse} />
             </ul>
         );
     }
