@@ -14,7 +14,7 @@ class OrderController extends Controller
 {
     public function store(Request $request, NotificationService $notifier): JsonResponse
     {
-        if (true) { // TEST: forzato giovedì
+        if (Carbon::today()->dayOfWeek === Carbon::THURSDAY) {
             return response()->json(
                 ['message' => 'Ordinazioni non disponibili il giovedì.'],
                 422

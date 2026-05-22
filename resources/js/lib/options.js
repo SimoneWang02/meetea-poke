@@ -409,7 +409,7 @@ export const ORARI_APERTURA = [
 const GIORNI_JS = ["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
 
 export function isGiornoChiuso() {
-    const oggi = GIORNI_JS[4]; // TEST: forzato giovedì
+    const oggi = GIORNI_JS[new Date().getDay()];
     return ORARI_APERTURA.find(o => o.giorno === oggi)?.orario === "chiuso";
 }
 
