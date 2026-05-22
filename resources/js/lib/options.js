@@ -417,7 +417,7 @@ export function generateSlotsRitiro() {
     const slots = [];
     for (let h = 10; h <= 22; h++) {
         for (let m = 0; m < 60; m += 15) {
-            if (h === 22 && m > 30) break;
+            if (h === 22 && m >= 30) break;
             const hh = String(h).padStart(2, "0");
             const mm = String(m).padStart(2, "0");
             slots.push(`${hh}:${mm}`);

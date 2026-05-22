@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { generateSlotsRitiro } from '../../lib/options';
 
-const slots = generateSlotsRitiro();
-
 export default function StepDatiCliente({ cliente, onChange, onIndietro, onProcedi }) {
     const [error, setError] = useState('');
+
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+    const slots = generateSlotsRitiro().filter((s) => {
+        const [h, m] = s.split(':').map(Number);
+        return h * 60 + m >= nowMinutes;
+    });
 
     const submit = () => {
         if (!cliente.nome.trim() || !cliente.telefono.trim() || !cliente.orario_ritiro) {
