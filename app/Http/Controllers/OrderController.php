@@ -32,6 +32,14 @@ class OrderController extends Controller
             'items.*.configurazione' => ['required', 'array'],
         ]);
 
+        $orario = Carbon::today()->setTimeFromTimeString($data['orario_ritiro']);
+        if ($orario->isPast()) {
+            return response()->json(
+                ['message' => 'Orario di ritiro non più disponibile.'],
+                422
+            );
+        }
+
         $order = DB::transaction(function () use ($data) {
             $progressivo = Order::whereDate('created_at', today())->count() + 1;
             $numero = 'ORD-' . str_pad((string) $progressivo, 3, '0', STR_PAD_LEFT);

@@ -47,8 +47,7 @@ const tabsSx = {
         backgroundColor: "#ffffff",
         border: "1px solid #d6d3d1",
         marginX: "0.25rem",
-        transition:
-            "background-color 0.15s, color 0.15s, border-color 0.15s",
+        transition: "background-color 0.15s, color 0.15s, border-color 0.15s",
     },
     "& .MuiTab-root:hover": {
         backgroundColor: "#f5f5f4",
@@ -256,7 +255,7 @@ function ItemRow({ item, sizes }) {
                     >
                         {item.prezzi[s] != null
                             ? formatPrezzo(item.prezzi[s])
-                            : "—"}
+                            : "-"}
                     </span>
                 ))}
             </div>
@@ -438,7 +437,10 @@ export default function BobaSection() {
             className="relative overflow-hidden bg-stone-50 py-16 sm:py-24"
         >
             <div className="relative z-10 mx-auto max-w-6xl px-6">
-                <div ref={headerRef} className={`max-w-2xl ${headerInView ? "animate-fade-in-up" : "opacity-0"}`}>
+                <div
+                    ref={headerRef}
+                    className={`max-w-2xl ${headerInView ? "animate-fade-in-up" : "opacity-0"}`}
+                >
                     <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
                         Bubble Tea
                     </div>

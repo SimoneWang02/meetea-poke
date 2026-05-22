@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import HeroDeliveryIcons from "./HeroDeliveryIcons";
 import { CONTATTI, isGiornoChiuso } from "../../lib/options";
 
-export default function HeroBobaRain() {
+export default function HeroSection() {
     return (
         <section className="relative flex h-screen min-h-[640px] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-mint-400 via-mint-600 to-mint-800 text-white">
             <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-mint-200 opacity-30 blur-3xl" />

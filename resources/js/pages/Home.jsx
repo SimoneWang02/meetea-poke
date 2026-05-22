@@ -15,10 +15,17 @@ import {
 import BobaSection from "../components/BobaSection";
 import SnacksSection from "../components/SnacksSection";
 import Navbar from "../components/Navbar";
-import HeroBobaRain from "../components/hero/HeroBobaRain";
+import HeroSection from "../components/hero/HeroSection";
 import { useInView } from "../lib/useInView";
 
-function BentoTile({ numero, etichetta, sottotitolo, items, className = "", style }) {
+function BentoTile({
+    numero,
+    etichetta,
+    sottotitolo,
+    items,
+    className = "",
+    style,
+}) {
     return (
         <div
             className={`flex flex-col rounded-3xl bg-white p-6 ring-1 ring-stone-300 ${className}`}
@@ -61,7 +68,7 @@ export default function Home() {
             <Navbar />
 
             {/* Hero */}
-            <HeroBobaRain />
+            <HeroSection />
 
             {/* Boba */}
             <BobaSection />
@@ -96,7 +103,10 @@ export default function Home() {
                     className="pointer-events-none absolute z-0 hidden select-none object-contain sm:block sm:-bottom-32 sm:-right-32 sm:h-80 sm:w-80 md:-bottom-40 md:-right-40 md:h-[28rem] md:w-[28rem] lg:right-auto lg:-left-40"
                 />
                 <div className="relative z-10 mx-auto max-w-6xl px-6">
-                    <div ref={pokeHeaderRef} className={`max-w-lg ${pokeHeaderInView ? "animate-fade-in-up" : "opacity-0"}`}>
+                    <div
+                        ref={pokeHeaderRef}
+                        className={`max-w-lg ${pokeHeaderInView ? "animate-fade-in-up" : "opacity-0"}`}
+                    >
                         <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
                             Poke Bowl
                         </div>
@@ -113,7 +123,9 @@ export default function Home() {
 
                     <div ref={pokeGridRef} className="mt-10 space-y-4">
                         {/* Dimensione (full width) */}
-                        <div className={`rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8 ${pokeGridInView ? "animate-fade-in-up" : "opacity-0"}`}>
+                        <div
+                            className={`rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8 ${pokeGridInView ? "animate-fade-in-up" : "opacity-0"}`}
+                        >
                             <div className="flex flex-wrap items-center justify-between gap-2">
                                 <div className="flex items-center gap-3">
                                     <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-accent-500 text-sm font-bold text-white">
@@ -174,11 +186,35 @@ export default function Home() {
                         {/* Masonry */}
                         <div className="gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4 [&>*]:break-inside-avoid">
                             {[
-                                { numero: 2, etichetta: `Scegli fino a ${POKE_BASI_MAX} basi`, items: POKE_BASI },
-                                { numero: 3, etichetta: "Proteine", sottotitolo: `Extra ${POKE_EXTRA_PREZZI.proteine.toFixed(2)} €`, items: POKE_PROTEINE },
-                                { numero: 4, etichetta: "Green & co", sottotitolo: `Extra ${POKE_EXTRA_PREZZI.green.toFixed(2)} €`, items: POKE_GREEN },
-                                { numero: 5, etichetta: "Crispy", sottotitolo: `Extra ${POKE_EXTRA_PREZZI.crispy.toFixed(2)} €`, items: POKE_CRISPY },
-                                { numero: 6, etichetta: "Salse", sottotitolo: `Extra ${POKE_EXTRA_PREZZI.salse.toFixed(2)} €`, items: POKE_SALSE },
+                                {
+                                    numero: 2,
+                                    etichetta: `Scegli fino a ${POKE_BASI_MAX} basi`,
+                                    items: POKE_BASI,
+                                },
+                                {
+                                    numero: 3,
+                                    etichetta: "Proteine",
+                                    sottotitolo: `Extra ${POKE_EXTRA_PREZZI.proteine.toFixed(2)} €`,
+                                    items: POKE_PROTEINE,
+                                },
+                                {
+                                    numero: 4,
+                                    etichetta: "Green & co",
+                                    sottotitolo: `Extra ${POKE_EXTRA_PREZZI.green.toFixed(2)} €`,
+                                    items: POKE_GREEN,
+                                },
+                                {
+                                    numero: 5,
+                                    etichetta: "Crispy",
+                                    sottotitolo: `Extra ${POKE_EXTRA_PREZZI.crispy.toFixed(2)} €`,
+                                    items: POKE_CRISPY,
+                                },
+                                {
+                                    numero: 6,
+                                    etichetta: "Salse",
+                                    sottotitolo: `Extra ${POKE_EXTRA_PREZZI.salse.toFixed(2)} €`,
+                                    items: POKE_SALSE,
+                                },
                             ].map((tile, i) => (
                                 <BentoTile
                                     key={tile.numero}
@@ -186,8 +222,18 @@ export default function Home() {
                                     etichetta={tile.etichetta}
                                     sottotitolo={tile.sottotitolo}
                                     items={tile.items}
-                                    className={pokeGridInView ? "animate-fade-in-up" : "opacity-0"}
-                                    style={pokeGridInView ? { animationDelay: `${80 + i * 80}ms` } : undefined}
+                                    className={
+                                        pokeGridInView
+                                            ? "animate-fade-in-up"
+                                            : "opacity-0"
+                                    }
+                                    style={
+                                        pokeGridInView
+                                            ? {
+                                                  animationDelay: `${80 + i * 80}ms`,
+                                              }
+                                            : undefined
+                                    }
                                 />
                             ))}
                         </div>
@@ -201,7 +247,12 @@ export default function Home() {
             {/* Orari e dove siamo */}
             <section className="bg-white py-16 sm:py-24">
                 <div className="mx-auto grid max-w-5xl gap-12 px-6 md:grid-cols-2">
-                    <div ref={orariRef} className={orariInView ? "animate-fade-in-up" : "opacity-0"}>
+                    <div
+                        ref={orariRef}
+                        className={
+                            orariInView ? "animate-fade-in-up" : "opacity-0"
+                        }
+                    >
                         <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
                             Orari
                         </div>
@@ -231,7 +282,10 @@ export default function Home() {
                         </ul>
                     </div>
 
-                    <div ref={doveRef} className={`${doveInView ? "animate-fade-in-up [animation-delay:150ms]" : "opacity-0"}`}>
+                    <div
+                        ref={doveRef}
+                        className={`${doveInView ? "animate-fade-in-up [animation-delay:150ms]" : "opacity-0"}`}
+                    >
                         <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
                             Dove siamo
                         </div>

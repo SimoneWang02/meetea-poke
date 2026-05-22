@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { isGiornoChiuso, POKE_DIMENSIONI, BOBA_CATEGORIE, SNACKS_LISTA } from "../lib/options";
+import {
+    isGiornoChiuso,
+    POKE_DIMENSIONI,
+    BOBA_CATEGORIE,
+    SNACKS_LISTA,
+} from "../lib/options";
 import StepOrdina, {
     useMenuNav,
     CategoryNav,
@@ -175,10 +180,17 @@ export default function Ordina() {
     if (isGiornoChiuso()) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 px-6 text-center gap-6">
-                <img src="/images/logo.svg" alt="MeeTea & Poke" className="h-12 w-auto" />
-                <h1 className="text-2xl font-bold text-stone-800">Oggi siamo chiusi</h1>
+                <img
+                    src="/images/logo.svg"
+                    alt="MeeTea & Poke"
+                    className="h-12 w-auto"
+                />
+                <h1 className="text-2xl font-bold text-stone-800">
+                    Oggi siamo chiusi
+                </h1>
                 <p className="text-stone-500 max-w-xs">
-                    Il giovedì non è possibile ordinare da asporto. Torna a trovarci un altro giorno!
+                    Il giovedì non è possibile ordinare da asporto. Torna a
+                    trovarci un altro giorno!
                 </p>
                 <Link
                     to="/"

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Ordina from './pages/Ordina';
 import Admin from './pages/Admin';
+import Privacy from './pages/Privacy';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/ordina" element={<Ordina />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/privacy" element={<Privacy />} />
                 <Route path="*" element={<Home />} />
             </Routes>
         </BrowserRouter>

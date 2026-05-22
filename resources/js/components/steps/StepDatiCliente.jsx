@@ -16,6 +16,13 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
             setError('Compila nome, telefono e orario di ritiro.');
             return;
         }
+        const [h, m] = cliente.orario_ritiro.split(':').map(Number);
+        const now = new Date();
+        if (h * 60 + m < now.getHours() * 60 + now.getMinutes()) {
+            onChange({ ...cliente, orario_ritiro: '' });
+            setError("L'orario selezionato è già passato. Scegli un nuovo orario.");
+            return;
+        }
         onProcedi();
     };
 
@@ -31,7 +38,7 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
             <div className="mt-6 space-y-5">
                 <div>
                     <label className="block text-sm font-semibold text-stone-700">
-                        Nome
+                        Nome <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -44,7 +51,7 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
 
                 <div>
                     <label className="block text-sm font-semibold text-stone-700">
-                        Telefono
+                        Telefono <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="tel"
@@ -58,7 +65,7 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
 
                 <div>
                     <label className="block text-sm font-semibold text-stone-700">
-                        Orario di ritiro
+                        Orario di ritiro <span className="text-red-500">*</span>
                     </label>
                     <select
                         value={cliente.orario_ritiro}
@@ -76,7 +83,7 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
 
                 <div>
                     <label className="block text-sm font-semibold text-stone-700">
-                        Note (opzionale)
+                        Note
                     </label>
                     <textarea
                         value={cliente.note}
@@ -94,7 +101,14 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
                 </div>
             )}
 
-            <div className="mt-8 flex gap-3">
+            <p className="mt-8 text-xs text-stone-400">
+                Continuando accetti il trattamento dei tuoi dati per la gestione dell'ordine.{" "}
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-600">
+                    Privacy policy
+                </a>
+            </p>
+
+            <div className="mt-3 flex gap-3">
                 <button
                     type="button"
                     onClick={onIndietro}
