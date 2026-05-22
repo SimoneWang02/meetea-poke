@@ -50,11 +50,13 @@ export default function Navbar() {
             <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
                 <Link
                     to="/"
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                    onClick={() =>
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
                     className="flex items-center"
                 >
                     <img
-                        src="/images/logo.PNG"
+                        src="/images/logo.svg"
                         alt="MeeTea & Poke"
                         className="h-10 w-auto sm:h-12"
                     />

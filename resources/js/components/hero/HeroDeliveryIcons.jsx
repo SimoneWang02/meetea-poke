@@ -26,7 +26,7 @@ export default function HeroDeliveryIcons({ tone = "light" }) {
                     style={{ backgroundColor: "#00CCBC" }}
                 >
                     <img
-                        src="/images/deliveroo.svg"
+                        src="/images/homepage/deliveroo.svg"
                         alt=""
                         aria-hidden="true"
                         className="h-7 w-7 transition group-hover:scale-110"
@@ -42,7 +42,7 @@ export default function HeroDeliveryIcons({ tone = "light" }) {
                     style={{ backgroundColor: "#FDC500" }}
                 >
                     <img
-                        src="/images/glovo.svg"
+                        src="/images/homepage/glovo.svg"
                         alt=""
                         aria-hidden="true"
                         className="h-7 w-7 transition group-hover:scale-110"

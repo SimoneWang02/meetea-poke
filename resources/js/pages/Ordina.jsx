@@ -58,7 +58,9 @@ function ProgressBar({ step }) {
                         {idx < STEPS_LABELS.length - 1 && (
                             <div
                                 className={`mx-2 mt-3.5 h-0.5 min-w-4 flex-1 rounded-full transition ${
-                                    idx < current ? "bg-mint-600" : "bg-stone-200"
+                                    idx < current
+                                        ? "bg-mint-600"
+                                        : "bg-stone-200"
                                 }`}
                             />
                         )}
@@ -154,7 +156,7 @@ export default function Ordina() {
                     </Link>
                     <Link to="/" className="flex justify-center">
                         <img
-                            src="/images/logo.PNG"
+                            src="/images/logo.svg"
                             alt="MeeTea & Poke"
                             className="h-10 w-auto"
                         />
