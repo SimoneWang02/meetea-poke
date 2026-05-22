@@ -7,6 +7,24 @@ import {
 
 const TAB_BAR_HEIGHT = 60;
 
+function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function animateScroll(targetY, duration, onDone) {
+    const startY = window.scrollY;
+    const diff = targetY - startY;
+    let startTime = null;
+    function step(ts) {
+        if (!startTime) startTime = ts;
+        const progress = Math.min((ts - startTime) / duration, 1);
+        window.scrollTo(0, startY + diff * easeInOutCubic(progress));
+        if (progress < 1) requestAnimationFrame(step);
+        else onDone?.();
+    }
+    requestAnimationFrame(step);
+}
+
 export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeight = 120 }) {
     const sections = useMemo(
         () => [
@@ -57,11 +75,8 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeigh
         if (!el) return;
         programmaticScroll.current = true;
         setActive(id);
-        const top = el.getBoundingClientRect().top + window.scrollY - (headerHeight + TAB_BAR_HEIGHT);
-        window.scrollTo({ top, behavior: "smooth" });
-        setTimeout(() => {
-            programmaticScroll.current = false;
-        }, 600);
+        const targetY = el.getBoundingClientRect().top + window.scrollY - (headerHeight + TAB_BAR_HEIGHT);
+        animateScroll(targetY, 520, () => { programmaticScroll.current = false; });
     };
 
     const activeIdx = sections.findIndex((s) => s.id === active);
@@ -84,7 +99,7 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeigh
                 }}
                 className="sticky z-30 w-screen border-b border-stone-200 bg-white/95 backdrop-blur-md"
             >
-                <div className="flex items-center gap-1 px-2 py-3">
+                <div className="flex items-center gap-1 px-4 py-3">
                     <button
                         type="button"
                         onClick={() => goAdjacent("left")}
@@ -153,6 +168,7 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeigh
                     id="poke"
                     ref={(el) => (sectionRefs.current["poke"] = el)}
                     style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
+                    className="pt-6"
                 >
                     <SectionHeader titolo="Poke" />
                     <div className="grid gap-3 sm:grid-cols-2">
@@ -178,6 +194,7 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeigh
                         id={cat.id}
                         ref={(el) => (sectionRefs.current[cat.id] = el)}
                         style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
+                        className="pt-6"
                     >
                         <SectionHeader titolo={cat.titolo} />
                         <div className="grid gap-3 sm:grid-cols-2">
@@ -205,6 +222,7 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeigh
                     id="sfizi"
                     ref={(el) => (sectionRefs.current["sfizi"] = el)}
                     style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
+                    className="pt-6"
                 >
                     <SectionHeader titolo="Sfizi" />
                     <div className="grid gap-3 sm:grid-cols-2">

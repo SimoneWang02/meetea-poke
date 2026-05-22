@@ -109,13 +109,13 @@ export default function Ordina() {
     };
 
     return (
-        <div className="min-h-screen bg-stone-50 font-sans">
+        <div className="min-h-screen overflow-x-clip bg-stone-50 font-sans">
             <header ref={headerRef} className="sticky top-0 z-40 bg-white shadow-sm">
                 <div className="mx-auto grid max-w-2xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3">
                     <Link
                         to="/"
                         aria-label="Torna alla home"
-                        className="inline-flex h-10 items-center gap-1 rounded-full px-3 text-stone-500 transition hover:bg-stone-100 hover:text-stone-700"
+                        className="inline-flex h-10 w-fit items-center gap-1 justify-self-start rounded-full px-3 text-stone-500 transition hover:bg-stone-100 hover:text-stone-700"
                     >
                         <svg
                             viewBox="0 0 24 24"
