@@ -127,7 +127,7 @@ function ItemRow({ item, onRemove }) {
                     <button
                         type="button"
                         onClick={onRemove}
-                        className="text-xs font-medium text-red-600 hover:text-red-700"
+                        className="text-xs font-medium text-red-600 hover:text-red-700 cursor-pointer"
                     >
                         Rimuovi
                     </button>
