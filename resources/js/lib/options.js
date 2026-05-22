@@ -196,22 +196,26 @@ export const BOBA_CATEGORIE = [
                 nome: "Tè Limone alla Fragola",
                 prezzi: { G: 5.5 },
                 ingredienti: "Tè verde, fette di limone, fragola fresca",
+                image: "te_limone_fragola.PNG",
             },
             {
                 nome: "Tè Limone con Pesca",
                 prezzi: { G: 5.5 },
                 ingredienti: "Tè verde, aroma di pesca, pesca e limone freschi",
+                image: "te_limone_pesca.PNG",
             },
             {
                 nome: "Passion Fruit all'Ananas",
                 prezzi: { G: 5.5 },
                 ingredienti: "Tè verde, passion fruit e ananas freschi",
                 topSeller: true,
+                image: "passion_fruit_ananas.PNG",
             },
             {
                 nome: "Passion Fruit al Mango",
                 prezzi: { G: 5.5 },
                 ingredienti: "Tè verde, passion fruit e mango freschi",
+                image: "passion_fruit_mango.PNG",
             },
             { nome: "Passion Fruit al Mojito", prezzi: { G: 5.5 } },
             {
@@ -219,11 +223,13 @@ export const BOBA_CATEGORIE = [
                 prezzi: { G: 5.5 },
                 ingredienti:
                     "Latte probiotico gusto tropical con panna montata",
+                image: "i_miss_you.PNG",
             },
             {
                 nome: "Yakult alla Fragola",
                 prezzi: { G: 5.5 },
                 ingredienti: "Latte probiotico, fragola fresca",
+                image: "yakult_fragola.PNG",
             },
             {
                 nome: "Tè Verde Miele e Pompelmo",
@@ -235,13 +241,15 @@ export const BOBA_CATEGORIE = [
                 nome: "Yakult all'Ananas",
                 prezzi: { G: 5.5 },
                 ingredienti: "Latte probiotico, ananas fresca",
+                image: "yakult_ananas.PNG",
             },
             {
                 nome: "Yakult all'Arancia",
                 prezzi: { G: 5.5 },
                 ingredienti: "Latte probiotico, arancia fresca",
+                image: "yakult_arancia.PNG",
             },
-            { nome: "Anguria Fresca al Cocco", prezzi: { G: 5.5 } },
+            { nome: "Anguria Fresca al Cocco", prezzi: { G: 5.5 }, image: "anguria_fresca_cocco.PNG" },
             { nome: "Tè all'Arancia Fresca con Maracuja", prezzi: { G: 5.5 } },
         ],
     },
@@ -254,26 +262,31 @@ export const BOBA_CATEGORIE = [
                 nome: "Latte di Cocco con Matcha",
                 prezzi: { G: 5.5 },
                 ingredienti: "Latte di cocco, matcha",
+                image: "latte_cocco_matcha.PNG",
             },
             {
                 nome: "Oreo",
                 prezzi: { G: 5.5 },
                 ingredienti: "Tè nero, latte, biscotti Oreo, panna montata",
+                image: "oreo.PNG",
             },
             {
                 nome: "Tè Sporco Originale",
                 prezzi: { G: 5 },
                 ingredienti: "Tè verde, latte, zucchero di canna",
+                image: "te_sporco_originale.PNG",
             },
             {
                 nome: "Fragola Tricolore",
                 prezzi: { G: 5.5 },
                 ingredienti: "Marmellata di fragole, latte, fiore blu",
+                image: "fragola_tricolore.PNG",
             },
             {
                 nome: "Matcha e Fragola con Latte",
                 prezzi: { G: 6 },
                 ingredienti: "Latte, fragole, panna montata al matcha",
+                image: "matcha_fragola_latte.PNG",
             },
             {
                 nome: "Tè Sporco alla Patata Dolce",
@@ -290,6 +303,7 @@ export const BOBA_CATEGORIE = [
                 prezzi: { G: 5.5 },
                 ingredienti: "Latte di cocco, caffè",
                 topSeller: true,
+                image: "latte_cocco_denso_caffe.PNG",
             },
             {
                 nome: "Tè Sporco al Mango",
@@ -301,8 +315,8 @@ export const BOBA_CATEGORIE = [
                 prezzi: { G: 5.5 },
                 ingredienti: "Marmellata di fragola con pezzetti, latte",
             },
-            { nome: "Red Bean con Pudino", prezzi: { G: 5.5 } },
-            { nome: "Latte di Cocco Denso al Mango", prezzi: { G: 5.5 } },
+            { nome: "Red Bean con Budino", prezzi: { G: 5.5 }, image: "red_bean_budino.PNG" },
+            { nome: "Latte di Cocco Denso al Mango", prezzi: { G: 5.5 }, image: "latte_cocco_denso_mango.PNG" },
         ],
     },
     {
@@ -315,20 +329,23 @@ export const BOBA_CATEGORIE = [
                 prezzi: { G: 5.5 },
                 ingredienti:
                     "Granita alla fragola, frutta secca, panna montata",
+                image: "cheese_fragola.PNG",
             },
             {
                 nome: "Cheese Uva",
                 prezzi: { G: 5.5 },
                 ingredienti: "Granita all'uva, frutta secca, panna montata",
+                image: "cheese_uva.PNG",
             },
             {
                 nome: "Ananas Fresca in Granita",
                 prezzi: { G: 5.5 },
                 ingredienti: "Granita all'ananas, frutta secca",
+                image: "ananas_fresca_granita.PNG",
             },
-            { nome: "Red Bean Matcha", prezzi: { G: 5.5 } },
-            { nome: "Cheese Dragon", prezzi: { G: 5.5 } },
-            { nome: "Cheese Mango", prezzi: { G: 5.5 }, topSeller: true },
+            { nome: "Red Bean Matcha", prezzi: { G: 5.5 }, image: "red_bean_matcha.PNG" },
+            { nome: "Cheese Dragon", prezzi: { G: 5.5 }, image: "cheese_dragon.PNG" },
+            { nome: "Cheese Mango", prezzi: { G: 5.5 }, topSeller: true, image: "cheese_mango.PNG" },
         ],
     },
 ];
@@ -409,7 +426,7 @@ export const CONTATTI = {
     mapsUrl:
         "https://www.google.com/maps/dir/?api=1&destination=" +
         encodeURIComponent(
-            "QQ Tea Taiwan Bubble Tea, Piazzale Dante Alighieri, 6, 41012 Carpi MO"
+            "QQ Tea Taiwan Bubble Tea, Piazzale Dante Alighieri, 6, 41012 Carpi MO",
         ),
     instagram: "https://instagram.com/meetea_poke",
     instagramHandle: "@meetea_poke",

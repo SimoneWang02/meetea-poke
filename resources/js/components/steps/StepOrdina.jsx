@@ -303,15 +303,24 @@ function BobaCard({ item, onClick }) {
             onClick={onClick}
             className="flex w-full items-center justify-between gap-4 rounded-2xl border border-stone-200 bg-white p-4 text-left transition hover:border-mint-300 hover:shadow-sm"
         >
-            <div className="min-w-0">
-                <div className="text-base font-bold">{item.nome}</div>
-                {item.ingredienti && (
-                    <div className="mt-1 line-clamp-2 text-xs text-stone-500">
-                        {item.ingredienti}
-                    </div>
+            <div className="flex min-w-0 flex-1 items-center gap-3">
+                {item.image && (
+                    <img
+                        src={`/images/boba/${item.image}`}
+                        alt=""
+                        className="h-14 w-14 shrink-0 rounded-xl object-contain"
+                    />
                 )}
-                <div className="mt-2 text-lg font-extrabold text-mint-700">
-                    {minPrice.toFixed(2)} €
+                <div className="min-w-0">
+                    <div className="text-base font-bold">{item.nome}</div>
+                    {item.ingredienti && (
+                        <div className="mt-1 line-clamp-2 text-xs text-stone-500">
+                            {item.ingredienti}
+                        </div>
+                    )}
+                    <div className="mt-2 text-lg font-extrabold text-mint-700">
+                        {minPrice.toFixed(2)} €
+                    </div>
                 </div>
             </div>
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mint-600 text-white">

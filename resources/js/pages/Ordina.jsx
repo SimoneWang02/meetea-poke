@@ -16,37 +16,53 @@ const STEPS_LABELS = ["Ordina", "Riepilogo", "Dati", "Conferma"];
 
 function stepIndex(step) {
     switch (step) {
-        case "ordina":   return 0;
-        case "riepilogo": return 1;
-        case "dati":     return 2;
-        case "conferma": return 3;
-        default:         return 0;
+        case "ordina":
+            return 0;
+        case "riepilogo":
+            return 1;
+        case "dati":
+            return 2;
+        case "conferma":
+            return 3;
+        default:
+            return 0;
     }
 }
 
 function ProgressBar({ step }) {
     const current = stepIndex(step);
     return (
-        <ol className="grid grid-cols-4 gap-2">
+        <ol className="mx-auto flex w-full max-w-xl items-start justify-center">
             {STEPS_LABELS.map((label, idx) => {
                 const active = idx <= current;
                 return (
-                    <li key={label} className="flex flex-col items-center">
-                        <div
-                            className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition ${
-                                active ? "bg-mint-600 text-white" : "bg-stone-200 text-stone-500"
-                            }`}
-                        >
-                            {idx + 1}
-                        </div>
-                        <span
-                            className={`mt-1 text-center text-[10px] font-medium uppercase tracking-wider ${
-                                active ? "text-mint-700" : "text-stone-400"
-                            }`}
-                        >
-                            {label}
-                        </span>
-                    </li>
+                    <React.Fragment key={label}>
+                        <li className="flex w-16 flex-col items-center">
+                            <div
+                                className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition ${
+                                    active
+                                        ? "bg-mint-600 text-white"
+                                        : "bg-stone-200 text-stone-500"
+                                }`}
+                            >
+                                {idx + 1}
+                            </div>
+                            <span
+                                className={`mt-1 text-center text-[10px] font-medium uppercase tracking-wider ${
+                                    active ? "text-mint-700" : "text-stone-400"
+                                }`}
+                            >
+                                {label}
+                            </span>
+                        </li>
+                        {idx < STEPS_LABELS.length - 1 && (
+                            <div
+                                className={`mx-2 mt-3.5 h-0.5 min-w-4 flex-1 rounded-full transition ${
+                                    idx < current ? "bg-mint-600" : "bg-stone-200"
+                                }`}
+                            />
+                        )}
+                    </React.Fragment>
                 );
             })}
         </ol>
@@ -111,20 +127,37 @@ export default function Ordina() {
 
     return (
         <div className="min-h-screen overflow-x-clip bg-stone-50 font-sans">
-            <header ref={headerRef} className="sticky top-0 z-40 bg-white shadow-sm">
-                <div className={`mx-auto grid ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3`}>
+            <header
+                ref={headerRef}
+                className="sticky top-0 z-40 bg-white shadow-sm"
+            >
+                <div
+                    className={`mx-auto grid ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3`}
+                >
                     <Link
                         to="/"
                         aria-label="Torna alla home"
                         className="inline-flex h-10 w-fit items-center gap-1 justify-self-start rounded-full px-3 text-stone-500 transition hover:bg-stone-100 hover:text-stone-700"
                     >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="h-5 w-5 shrink-0"
+                        >
                             <path d="M15 18l-6-6 6-6" />
                         </svg>
                         <span className="text-sm font-medium">Annulla</span>
                     </Link>
                     <Link to="/" className="flex justify-center">
-                        <img src="/images/logo.PNG" alt="MeeTea & Poke" className="h-10 w-auto" />
+                        <img
+                            src="/images/logo.PNG"
+                            alt="MeeTea & Poke"
+                            className="h-10 w-auto"
+                        />
                     </Link>
                     <button
                         type="button"
@@ -132,7 +165,15 @@ export default function Ordina() {
                         aria-label={`Carrello${totaleItems ? `, ${totaleItems} articoli` : ""}`}
                         className="relative inline-flex h-10 w-10 items-center justify-center justify-self-end rounded-full text-stone-700 transition hover:bg-stone-100"
                     >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="h-5 w-5"
+                        >
                             <circle cx="9" cy="20" r="1.5" />
                             <circle cx="17" cy="20" r="1.5" />
                             <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.5L21 8H6" />
@@ -147,7 +188,9 @@ export default function Ordina() {
                         )}
                     </button>
                 </div>
-                <div className={`mx-auto ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} px-6 pb-3`}>
+                <div
+                    className={`mx-auto ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} px-6 pb-3`}
+                >
                     <ProgressBar step={step} />
                 </div>
                 {isOrdina && (
@@ -160,7 +203,9 @@ export default function Ordina() {
                 )}
             </header>
 
-            <main className={`mx-auto ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} px-6`}>
+            <main
+                className={`mx-auto ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} px-6`}
+            >
                 {isOrdina && (
                     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-8 lg:items-start">
                         <StepOrdina
