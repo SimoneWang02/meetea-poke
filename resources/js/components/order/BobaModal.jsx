@@ -9,17 +9,30 @@ const TEMPERATURE = [
 
 const TOPPING_INCLUSO = 0.5;
 
-export default function BobaModal({ open, item, categoria, onClose, onAdd }) {
+export default function BobaModal({ open, item, categoria, onClose, onAdd, initialConfig, initialQuantita = 1 }) {
     const availableSizes = useMemo(
         () => (item ? Object.keys(item.prezzi) : []),
         [item],
     );
 
-    const [size, setSize] = useState(availableSizes[0] ?? "G");
-    const [temperatura, setTemperatura] = useState("fredda");
-    const [singoli, setSingoli] = useState([]);
-    const [gruppi, setGruppi] = useState({}); // { Gelatine: ["Mela", "Litchi"], ... }
-    const [quantita, setQuantita] = useState(1);
+    const [size, setSize] = useState(initialConfig?.size ?? availableSizes[0] ?? "G");
+    const [temperatura, setTemperatura] = useState(initialConfig?.temperatura ?? "fredda");
+    const [singoli, setSingoli] = useState(() => {
+        if (!initialConfig?.toppings) return [];
+        const singolNomi = new Set(BOBA_TOPPING.singoli.map((t) => t.nome));
+        return initialConfig.toppings.filter((t) => singolNomi.has(t.nome) && !t.gusto).map((t) => t.nome);
+    });
+    const [gruppi, setGruppi] = useState(() => {
+        if (!initialConfig?.toppings) return {};
+        const result = {};
+        for (const t of initialConfig.toppings) {
+            if (t.gusto) {
+                result[t.nome] = [...(result[t.nome] ?? []), t.gusto];
+            }
+        }
+        return result;
+    });
+    const [quantita, setQuantita] = useState(initialQuantita);
 
     if (!item) return null;
 
@@ -106,7 +119,7 @@ export default function BobaModal({ open, item, categoria, onClose, onAdd }) {
                 onClick={submit}
                 className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
             >
-                Aggiungi · {totale.toFixed(2)} €
+                {initialConfig ? "Salva" : "Aggiungi"} · {totale.toFixed(2)} €
             </button>
         </div>
     );

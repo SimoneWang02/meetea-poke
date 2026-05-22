@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import ModalShell from "./ModalShell";
 
-export default function SfizioModal({ open, sfizio, onClose, onAdd }) {
-    const [opzioneIdx, setOpzioneIdx] = useState(0);
-    const [quantita, setQuantita] = useState(1);
+export default function SfizioModal({ open, sfizio, onClose, onAdd, initialConfig, initialQuantita = 1 }) {
+    const [opzioneIdx, setOpzioneIdx] = useState(() => {
+        if (!initialConfig?.porzione || !sfizio) return 0;
+        const idx = sfizio.opzioni.findIndex((op) => op.qty === initialConfig.porzione);
+        return idx >= 0 ? idx : 0;
+    });
+    const [quantita, setQuantita] = useState(initialQuantita);
 
     if (!sfizio) return null;
 
@@ -49,7 +53,7 @@ export default function SfizioModal({ open, sfizio, onClose, onAdd }) {
                 onClick={submit}
                 className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
             >
-                Aggiungi · {totale.toFixed(2)} €
+                {initialConfig ? "Salva" : "Aggiungi"} · {totale.toFixed(2)} €
             </button>
         </div>
     );

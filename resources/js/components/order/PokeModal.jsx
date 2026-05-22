@@ -11,13 +11,13 @@ import {
 import ModalShell from "./ModalShell";
 import MultiSelect from "./MultiSelect";
 
-export default function PokeModal({ open, dimensione, onClose, onAdd }) {
-    const [basi, setBasi] = useState([]);
-    const [proteine, setProteine] = useState([]);
-    const [green, setGreen] = useState([]);
-    const [crispy, setCrispy] = useState([]);
-    const [salse, setSalse] = useState([]);
-    const [quantita, setQuantita] = useState(1);
+export default function PokeModal({ open, dimensione, onClose, onAdd, initialConfig, initialQuantita = 1 }) {
+    const [basi, setBasi] = useState(initialConfig?.basi ?? []);
+    const [proteine, setProteine] = useState(initialConfig?.proteine ?? []);
+    const [green, setGreen] = useState(initialConfig?.green ?? []);
+    const [crispy, setCrispy] = useState(initialConfig?.crispy ?? []);
+    const [salse, setSalse] = useState(initialConfig?.salse ?? []);
+    const [quantita, setQuantita] = useState(initialQuantita);
     const [error, setError] = useState("");
 
     if (!dimensione) return null;
@@ -105,7 +105,7 @@ export default function PokeModal({ open, dimensione, onClose, onAdd }) {
                 onClick={submit}
                 className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
             >
-                Aggiungi · {(prezzoTotale * quantita).toFixed(2)} €
+                {initialConfig ? "Salva" : "Aggiungi"} · {(prezzoTotale * quantita).toFixed(2)} €
             </button>
         </div>
     );

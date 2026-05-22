@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { isGiornoChiuso } from "../lib/options";
+import { isGiornoChiuso, POKE_DIMENSIONI, BOBA_CATEGORIE, SNACKS_LISTA } from "../lib/options";
 import StepOrdina, {
     useMenuNav,
     CategoryNav,
@@ -106,12 +106,56 @@ export default function Ordina() {
     };
 
     const addItem = (item) => {
-        setItems((prev) => [...prev, item]);
-        setModal(null);
+        if (modal?.editingIdx != null) {
+            replaceItem(modal.editingIdx, item);
+        } else {
+            setItems((prev) => [...prev, item]);
+            setModal(null);
+        }
     };
 
     const removeItem = (idx) => {
         setItems(items.filter((_, i) => i !== idx));
+    };
+
+    const replaceItem = (idx, item) => {
+        setItems((prev) => prev.map((it, i) => (i === idx ? item : it)));
+        setModal(null);
+    };
+
+    const editItem = (idx) => {
+        const item = items[idx];
+        if (item.tipo === "poke") {
+            const dimensione = POKE_DIMENSIONI.find(
+                (d) => d.id === item.configurazione.dimensione,
+            );
+            setModal({
+                type: "poke",
+                payload: { dimensione },
+                editingIdx: idx,
+                initialConfig: item.configurazione,
+                initialQuantita: item.quantita,
+            });
+        } else if (item.tipo === "bubbletea") {
+            const cat = BOBA_CATEGORIE.find((c) => c.id === item.categoria);
+            const bobaItem = cat?.items.find((i) => i.nome === item.nome);
+            setModal({
+                type: "boba",
+                payload: { item: bobaItem, categoria: item.categoria },
+                editingIdx: idx,
+                initialConfig: item.configurazione,
+                initialQuantita: item.quantita,
+            });
+        } else if (item.tipo === "sfizio") {
+            const sfizio = SNACKS_LISTA.find((s) => s.nome === item.nome);
+            setModal({
+                type: "sfizio",
+                payload: { sfizio },
+                editingIdx: idx,
+                initialConfig: item.configurazione,
+                initialQuantita: item.quantita,
+            });
+        }
     };
 
     const addSfizioDirect = (sfizio) => {
@@ -250,6 +294,7 @@ export default function Ordina() {
                         <StepRiepilogo
                             items={items}
                             onRemove={removeItem}
+                            onEdit={editItem}
                             onAddAnother={() => setStep("ordina")}
                             onProcedi={() => setStep("dati")}
                         />
@@ -280,30 +325,36 @@ export default function Ordina() {
 
             {modal?.type === "poke" && (
                 <PokeModal
-                    key={`poke-${modal.payload.dimensione.id}`}
+                    key={`poke-${modal.editingIdx ?? "new"}-${modal.payload.dimensione.id}`}
                     open
                     dimensione={modal.payload.dimensione}
                     onClose={() => setModal(null)}
                     onAdd={addItem}
+                    initialConfig={modal.initialConfig}
+                    initialQuantita={modal.initialQuantita}
                 />
             )}
             {modal?.type === "boba" && (
                 <BobaModal
-                    key={`boba-${modal.payload.categoria}-${modal.payload.item.nome}`}
+                    key={`boba-${modal.editingIdx ?? "new"}-${modal.payload.categoria}-${modal.payload.item.nome}`}
                     open
                     item={modal.payload.item}
                     categoria={modal.payload.categoria}
                     onClose={() => setModal(null)}
                     onAdd={addItem}
+                    initialConfig={modal.initialConfig}
+                    initialQuantita={modal.initialQuantita}
                 />
             )}
             {modal?.type === "sfizio" && (
                 <SfizioModal
-                    key={`sfizio-${modal.payload.sfizio.nome}`}
+                    key={`sfizio-${modal.editingIdx ?? "new"}-${modal.payload.sfizio.nome}`}
                     open
                     sfizio={modal.payload.sfizio}
                     onClose={() => setModal(null)}
                     onAdd={addItem}
+                    initialConfig={modal.initialConfig}
+                    initialQuantita={modal.initialQuantita}
                 />
             )}
         </div>

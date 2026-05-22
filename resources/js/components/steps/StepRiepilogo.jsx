@@ -122,7 +122,7 @@ function ItemDetails({ item }) {
     return null;
 }
 
-function ItemRow({ item, onRemove }) {
+function ItemRow({ item, onRemove, onEdit }) {
     return (
         <div className="rounded-2xl bg-white p-5 ring-1 ring-stone-200">
             <div className="flex items-start justify-between gap-3">
@@ -139,13 +139,22 @@ function ItemRow({ item, onRemove }) {
                     <div className="font-extrabold text-stone-900">
                         {itemSubtotale(item).toFixed(2)} €
                     </div>
-                    <button
-                        type="button"
-                        onClick={onRemove}
-                        className="text-xs font-medium text-red-600 hover:text-red-700 cursor-pointer"
-                    >
-                        Rimuovi
-                    </button>
+                    <div className="flex gap-3">
+                        <button
+                            type="button"
+                            onClick={onEdit}
+                            className="text-xs font-medium text-mint-600 hover:text-mint-700 cursor-pointer"
+                        >
+                            Modifica
+                        </button>
+                        <button
+                            type="button"
+                            onClick={onRemove}
+                            className="text-xs font-medium text-red-600 hover:text-red-700 cursor-pointer"
+                        >
+                            Rimuovi
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -157,6 +166,7 @@ function ItemRow({ item, onRemove }) {
 export default function StepRiepilogo({
     items,
     onRemove,
+    onEdit,
     onAddAnother,
     onProcedi,
 }) {
@@ -176,6 +186,7 @@ export default function StepRiepilogo({
                         key={idx}
                         item={it}
                         onRemove={() => onRemove(idx)}
+                        onEdit={() => onEdit(idx)}
                     />
                 ))}
             </div>
