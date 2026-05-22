@@ -5,10 +5,9 @@ import {
     SNACKS_LISTA,
 } from "../../lib/options";
 
-const STICKY_HEADER = 120; // navbar + stepper (matches header in Ordina.jsx)
-const HEADER_OFFSET = 180; // navbar + stepper + tab bar (for scroll-margin)
+const TAB_BAR_HEIGHT = 60;
 
-export default function StepOrdina({ onOpenModal, onAddSfizioDirect }) {
+export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeight = 120 }) {
     const sections = useMemo(
         () => [
             { id: "poke", titolo: "Poke" },
@@ -58,7 +57,7 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect }) {
         if (!el) return;
         programmaticScroll.current = true;
         setActive(id);
-        const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+        const top = el.getBoundingClientRect().top + window.scrollY - (headerHeight + TAB_BAR_HEIGHT);
         window.scrollTo({ top, behavior: "smooth" });
         setTimeout(() => {
             programmaticScroll.current = false;
@@ -79,13 +78,13 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect }) {
             <nav
                 aria-label="Categorie"
                 style={{
-                    top: STICKY_HEADER,
+                    top: headerHeight,
                     marginLeft: "calc(50% - 50vw)",
                     marginRight: "calc(50% - 50vw)",
                 }}
                 className="sticky z-30 w-screen border-b border-stone-200 bg-white/95 backdrop-blur-md"
             >
-                <div className="mx-auto flex max-w-2xl items-center gap-1 px-2 py-3">
+                <div className="flex items-center gap-1 px-2 py-3">
                     <button
                         type="button"
                         onClick={() => goAdjacent("left")}
@@ -153,7 +152,7 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect }) {
                 <section
                     id="poke"
                     ref={(el) => (sectionRefs.current["poke"] = el)}
-                    style={{ scrollMarginTop: HEADER_OFFSET }}
+                    style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
                 >
                     <SectionHeader titolo="Poke" />
                     <div className="grid gap-3 sm:grid-cols-2">
@@ -178,7 +177,7 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect }) {
                         key={cat.id}
                         id={cat.id}
                         ref={(el) => (sectionRefs.current[cat.id] = el)}
-                        style={{ scrollMarginTop: HEADER_OFFSET }}
+                        style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
                     >
                         <SectionHeader titolo={cat.titolo} />
                         <div className="grid gap-3 sm:grid-cols-2">
@@ -205,7 +204,7 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect }) {
                 <section
                     id="sfizi"
                     ref={(el) => (sectionRefs.current["sfizi"] = el)}
-                    style={{ scrollMarginTop: HEADER_OFFSET }}
+                    style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
                 >
                     <SectionHeader titolo="Sfizi" />
                     <div className="grid gap-3 sm:grid-cols-2">

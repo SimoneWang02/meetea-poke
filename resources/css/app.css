@@ -41,28 +41,3 @@ body {
     font-feature-settings: 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
 }
-
-@keyframes boba-fall {
-    0% {
-        transform: translateY(-100%) rotate(0deg);
-    }
-    100% {
-        transform: translateY(100vh) rotate(360deg);
-    }
-}
-
-@keyframes boba-fall-ccw {
-    0% {
-        transform: translateY(-100%) rotate(0deg);
-    }
-    100% {
-        transform: translateY(100vh) rotate(-360deg);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .boba-falling {
-        animation: none !important;
-        display: none;
-    }
-}

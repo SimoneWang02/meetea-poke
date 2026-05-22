@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import StepOrdina from "../components/steps/StepOrdina";
 import StepRiepilogo from "../components/steps/StepRiepilogo";
@@ -67,6 +67,18 @@ export default function Ordina() {
         note: "",
     });
 
+    const headerRef = useRef(null);
+    const [headerHeight, setHeaderHeight] = useState(120);
+
+    useEffect(() => {
+        if (!headerRef.current) return;
+        const ro = new ResizeObserver(() => {
+            setHeaderHeight(headerRef.current.offsetHeight);
+        });
+        ro.observe(headerRef.current);
+        return () => ro.disconnect();
+    }, []);
+
     const totaleItems = items.reduce((s, it) => s + (it.quantita ?? 1), 0);
 
     const reset = () => {
@@ -98,12 +110,12 @@ export default function Ordina() {
 
     return (
         <div className="min-h-screen bg-stone-50 font-sans">
-            <header className="sticky top-0 z-40 bg-white shadow-sm">
-                <div className="mx-auto grid max-w-2xl grid-cols-[auto_1fr_auto] items-center gap-4 px-6 py-3">
+            <header ref={headerRef} className="sticky top-0 z-40 bg-white shadow-sm">
+                <div className="mx-auto grid max-w-2xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3">
                     <Link
                         to="/"
                         aria-label="Torna alla home"
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-full text-stone-500 transition hover:bg-stone-100 hover:text-stone-700"
+                        className="inline-flex h-10 items-center gap-1 rounded-full px-3 text-stone-500 transition hover:bg-stone-100 hover:text-stone-700"
                     >
                         <svg
                             viewBox="0 0 24 24"
@@ -112,10 +124,11 @@ export default function Ordina() {
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="h-5 w-5"
+                            className="h-5 w-5 shrink-0"
                         >
                             <path d="M15 18l-6-6 6-6" />
                         </svg>
+                        <span className="text-sm font-medium">Annulla</span>
                     </Link>
                     <Link to="/" className="flex justify-center">
                         <img
@@ -128,7 +141,7 @@ export default function Ordina() {
                         type="button"
                         onClick={() => setStep("riepilogo")}
                         aria-label={`Carrello${totaleItems ? `, ${totaleItems} articoli` : ""}`}
-                        className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-stone-700 transition hover:bg-stone-100"
+                        className="relative inline-flex h-10 w-10 items-center justify-center justify-self-end rounded-full text-stone-700 transition hover:bg-stone-100"
                     >
                         <svg
                             viewBox="0 0 24 24"
@@ -163,6 +176,7 @@ export default function Ordina() {
                     <StepOrdina
                         onOpenModal={setModal}
                         onAddSfizioDirect={addSfizioDirect}
+                        headerHeight={headerHeight}
                     />
                 )}
 
