@@ -1,6 +1,7 @@
 import React from "react";
 import { SNACKS_LISTA } from "../lib/options";
 import { formatPrezzo } from "../lib/format";
+import { useInView } from "../lib/useInView";
 
 function PlaceholderImage() {
     return (
@@ -27,11 +28,12 @@ function PlaceholderImage() {
     );
 }
 
-function PolaroidCard({ snack, index }) {
+function PolaroidCard({ snack, index, inView, delay }) {
     const tilt = index % 2 === 0 ? "-rotate-1" : "rotate-1";
     return (
         <div
-            className={`group ${tilt} transform-gpu transition-transform duration-300 hover:rotate-0 hover:-translate-y-1`}
+            className={`group ${tilt} transform-gpu transition-transform duration-300 hover:rotate-0 hover:-translate-y-1 ${inView ? "animate-fade-in-up" : "opacity-0"}`}
+            style={inView ? { animationDelay: `${delay}ms` } : undefined}
         >
             <div className="flex h-full flex-col rounded-md bg-white p-3 pb-5 shadow-lg shadow-stone-900/10 ring-1 ring-stone-300">
                 <div className="aspect-square w-full overflow-hidden rounded-sm bg-stone-100">
@@ -68,13 +70,16 @@ function PolaroidCard({ snack, index }) {
 }
 
 export default function SnacksSection() {
+    const [headerRef, headerInView] = useInView();
+    const [gridRef, gridInView] = useInView();
+
     return (
         <section
             id="sfizi"
             className="relative overflow-hidden bg-stone-50 py-16 sm:py-24"
         >
             <div className="relative z-10 mx-auto max-w-6xl px-6">
-                <div className="max-w-2xl">
+                <div ref={headerRef} className={`max-w-2xl ${headerInView ? "animate-fade-in-up" : "opacity-0"}`}>
                     <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
                         Snacks
                     </div>
@@ -88,12 +93,14 @@ export default function SnacksSection() {
                     </p>
                 </div>
 
-                <div className="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
+                <div ref={gridRef} className="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
                     {SNACKS_LISTA.map((snack, i) => (
                         <PolaroidCard
                             key={snack.nome}
                             snack={snack}
                             index={i}
+                            inView={gridInView}
+                            delay={i * 80}
                         />
                     ))}
                 </div>

@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import TabScrollButton from "@mui/material/TabScrollButton";
 import { BOBA_CATEGORIE, BOBA_TOPPING } from "../lib/options";
 import { formatPrezzo } from "../lib/format";
+import { useInView } from "../lib/useInView";
 
 const MINT_500 = "#14b8a6";
 const MINT_700 = "#0f766e";
@@ -374,6 +375,7 @@ function ToppingCard() {
 }
 
 export default function BobaSection() {
+    const [headerRef, headerInView] = useInView();
     const [activeId, setActiveId] = useState(BOBA_CATEGORIE[0].id);
     const activeIndex = useMemo(() => {
         const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
@@ -436,7 +438,7 @@ export default function BobaSection() {
             className="relative overflow-hidden bg-stone-50 py-16 sm:py-24"
         >
             <div className="relative z-10 mx-auto max-w-6xl px-6">
-                <div className="max-w-2xl">
+                <div ref={headerRef} className={`max-w-2xl ${headerInView ? "animate-fade-in-up" : "opacity-0"}`}>
                     <div className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-500">
                         Bubble Tea
                     </div>

@@ -51,6 +51,15 @@ export default function PokeModal({ open, dimensione, onClose, onAdd }) {
             setError("Scegli almeno una proteina.");
             return;
         }
+        const extras = {};
+        const addExtras = (key, items, max, prezzo) => {
+            const e = items.slice(max);
+            if (e.length > 0) extras[key] = e.map((nome) => ({ nome, prezzo }));
+        };
+        addExtras("proteine", proteine, dimensione.proteine, POKE_EXTRA_PREZZI.proteine);
+        addExtras("green", green, dimensione.green, POKE_EXTRA_PREZZI.green);
+        addExtras("crispy", crispy, dimensione.crispy, POKE_EXTRA_PREZZI.crispy);
+        addExtras("salse", salse, dimensione.salse, POKE_EXTRA_PREZZI.salse);
         onAdd({
             tipo: "poke",
             nome: `Poke Bowl ${dimensione.nome}`,
@@ -63,6 +72,7 @@ export default function PokeModal({ open, dimensione, onClose, onAdd }) {
                 green,
                 crispy,
                 salse,
+                extras,
             },
         });
     };

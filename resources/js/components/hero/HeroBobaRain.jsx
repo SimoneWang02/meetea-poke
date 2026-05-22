@@ -11,13 +11,13 @@ export default function HeroBobaRain() {
                 <img
                     src="/images/name.svg"
                     alt="MeeTea & Poke"
-                    className="w-[min(90%,540px)] drop-shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
+                    className="w-[min(90%,540px)] drop-shadow-[0_10px_30px_rgba(0,0,0,0.25)] animate-fade-in-scale"
                 />
                 <a
                     href={CONTATTI.mapsUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 text-base text-white/90 underline-offset-4 transition hover:text-white hover:underline sm:text-lg"
+                    className="mt-6 inline-flex items-center gap-2 text-base text-white/90 underline-offset-4 transition hover:text-white hover:underline sm:text-lg animate-fade-in-up [animation-delay:200ms]"
                 >
                     <svg
                         viewBox="0 0 24 24"
@@ -35,7 +35,7 @@ export default function HeroBobaRain() {
                 </a>
                 <a
                     href={`tel:${CONTATTI.telefonoTel}`}
-                    className="mt-2 inline-flex items-center gap-2 text-base text-white/90 underline-offset-4 transition hover:text-white hover:underline sm:text-lg"
+                    className="mt-2 inline-flex items-center gap-2 text-base text-white/90 underline-offset-4 transition hover:text-white hover:underline sm:text-lg animate-fade-in-up [animation-delay:350ms]"
                 >
                     <svg
                         viewBox="0 0 24 24"
@@ -53,7 +53,7 @@ export default function HeroBobaRain() {
 
                 <Link
                     to="/ordina"
-                    className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 text-base font-semibold text-mint-800 shadow-lg shadow-mint-900/30 transition hover:-translate-y-0.5 hover:bg-stone-50 sm:text-lg"
+                    className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 text-base font-semibold text-mint-800 shadow-lg shadow-mint-900/30 transition hover:-translate-y-0.5 hover:bg-stone-50 sm:text-lg animate-fade-in-up [animation-delay:500ms]"
                 >
                     Ordina da Asporto
                     <svg
@@ -70,7 +70,7 @@ export default function HeroBobaRain() {
                     </svg>
                 </Link>
 
-                <div className="mt-5">
+                <div className="mt-5 animate-fade-in [animation-delay:650ms]">
                     <HeroDeliveryIcons tone="light" />
                 </div>
             </div>
