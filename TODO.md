@@ -4,3 +4,5 @@
    (questo si conferma un ordine)
 
 2. personalizzare un boba con un solo topping da 0,50€ viene calcolato bene nella modale MA NON nel carello.
+
+3. se aggiungo stesso elemento nel carrello, devono sommarsi, eppure adesso non funziona così
