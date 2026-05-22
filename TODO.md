@@ -6,3 +6,5 @@
 2. personalizzare un boba con un solo topping da 0,50€ viene calcolato bene nella modale MA NON nel carello.
 
 3. se aggiungo stesso elemento nel carrello, devono sommarsi, eppure adesso non funziona così
+
+4. homepage, navbar, CTA "bubble tea" non funziona e inoltre non hanno animazione scrolling
