@@ -6,6 +6,7 @@ import {
     POKE_GREEN,
     POKE_CRISPY,
     POKE_SALSE,
+    POKE_EXTRA_PREZZI,
 } from "../../lib/options";
 import ModalShell from "./ModalShell";
 import MultiSelect from "./MultiSelect";
@@ -21,14 +22,25 @@ export default function PokeModal({ open, dimensione, onClose, onAdd }) {
 
     if (!dimensione) return null;
 
-    const makeToggle = (state, setState, max) => (item) => {
-        if (state.includes(item)) {
-            setState(state.filter((x) => x !== item));
-        } else {
-            if (state.length >= max) return;
-            setState([...state, item]);
-        }
-    };
+    const extraCost =
+        Math.max(0, proteine.length - dimensione.proteine) *
+            POKE_EXTRA_PREZZI.proteine +
+        Math.max(0, green.length - dimensione.green) * POKE_EXTRA_PREZZI.green +
+        Math.max(0, crispy.length - dimensione.crispy) *
+            POKE_EXTRA_PREZZI.crispy +
+        Math.max(0, salse.length - dimensione.salse) * POKE_EXTRA_PREZZI.salse;
+    const prezzoTotale = dimensione.prezzo + extraCost;
+
+    const makeToggle =
+        (state, setState, max = Infinity) =>
+        (item) => {
+            if (state.includes(item)) {
+                setState(state.filter((x) => x !== item));
+            } else {
+                if (state.length >= max) return;
+                setState([...state, item]);
+            }
+        };
 
     const submit = () => {
         if (basi.length === 0) {
@@ -42,7 +54,7 @@ export default function PokeModal({ open, dimensione, onClose, onAdd }) {
         onAdd({
             tipo: "poke",
             nome: `Poke Bowl ${dimensione.nome}`,
-            prezzo_base: dimensione.prezzo,
+            prezzo_base: prezzoTotale,
             quantita,
             configurazione: {
                 dimensione: dimensione.id,
@@ -83,7 +95,7 @@ export default function PokeModal({ open, dimensione, onClose, onAdd }) {
                 onClick={submit}
                 className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
             >
-                Aggiungi · {(dimensione.prezzo * quantita).toFixed(2)} €
+                Aggiungi · {(prezzoTotale * quantita).toFixed(2)} €
             </button>
         </div>
     );
@@ -95,12 +107,6 @@ export default function PokeModal({ open, dimensione, onClose, onAdd }) {
             title={`Poke Bowl ${dimensione.nome}`}
             footer={footer}
         >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-mint-50 px-3 py-1 text-xs font-semibold text-mint-800">
-                {dimensione.proteine} prot · {dimensione.green} green ·{" "}
-                {dimensione.crispy} crispy · {dimensione.salse} sals
-                {dimensione.salse > 1 ? "e" : "a"}
-            </div>
-
             <div className="space-y-6">
                 <MultiSelect
                     titolo="Basi"
@@ -114,28 +120,32 @@ export default function PokeModal({ open, dimensione, onClose, onAdd }) {
                     items={POKE_PROTEINE}
                     selected={proteine}
                     max={dimensione.proteine}
-                    onToggle={makeToggle(proteine, setProteine, dimensione.proteine)}
+                    extraPrezzo={POKE_EXTRA_PREZZI.proteine}
+                    onToggle={makeToggle(proteine, setProteine)}
                 />
                 <MultiSelect
-                    titolo="Green & co"
+                    titolo="Green & Co"
                     items={POKE_GREEN}
                     selected={green}
                     max={dimensione.green}
-                    onToggle={makeToggle(green, setGreen, dimensione.green)}
+                    extraPrezzo={POKE_EXTRA_PREZZI.green}
+                    onToggle={makeToggle(green, setGreen)}
                 />
                 <MultiSelect
                     titolo="Crispy"
                     items={POKE_CRISPY}
                     selected={crispy}
                     max={dimensione.crispy}
-                    onToggle={makeToggle(crispy, setCrispy, dimensione.crispy)}
+                    extraPrezzo={POKE_EXTRA_PREZZI.crispy}
+                    onToggle={makeToggle(crispy, setCrispy)}
                 />
                 <MultiSelect
                     titolo="Salse"
                     items={POKE_SALSE}
                     selected={salse}
                     max={dimensione.salse}
-                    onToggle={makeToggle(salse, setSalse, dimensione.salse)}
+                    extraPrezzo={POKE_EXTRA_PREZZI.salse}
+                    onToggle={makeToggle(salse, setSalse)}
                 />
             </div>
 

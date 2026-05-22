@@ -1,42 +1,57 @@
 import React from "react";
 
-export default function MultiSelect({ titolo, items, selected, max, onToggle }) {
+export default function MultiSelect({
+    titolo,
+    items,
+    selected,
+    max,
+    onToggle,
+    extraPrezzo,
+}) {
     return (
         <div>
-            <div className="flex items-baseline justify-between">
-                <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
+            <div className="mb-1 flex items-baseline justify-between">
+                <h3 className="text-sm font-semibold text-stone-800">
                     {titolo}{" "}
-                    <span className="font-normal normal-case text-stone-400">
-                        (max {max})
+                    <span className="font-normal text-stone-400">
+                        {extraPrezzo
+                            ? `(Extra +${extraPrezzo.toFixed(2).replace(".", ",")} €)`
+                            : `(max ${max})`}
                     </span>
-                </div>
-                <div className="text-sm text-stone-500">
+                </h3>
+                <span className="text-sm text-stone-500">
                     {selected.length}/{max}
-                </div>
+                </span>
             </div>
-            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {items.map((it) => {
-                    const active = selected.includes(it);
-                    const disabled = !active && selected.length >= max;
+            <ul className="divide-y divide-stone-100">
+                {items.map((item) => {
+                    const isChecked = selected.includes(item);
+                    const isDisabled =
+                        !extraPrezzo && !isChecked && selected.length >= max;
                     return (
-                        <button
-                            key={it}
-                            type="button"
-                            disabled={disabled}
-                            onClick={() => onToggle(it)}
-                            className={`rounded-xl border px-3 py-2 text-sm font-medium transition ${
-                                active
-                                    ? "border-mint-500 bg-mint-100 text-mint-900"
-                                    : disabled
-                                      ? "border-stone-200 bg-stone-50 text-stone-300"
-                                      : "border-stone-200 bg-white text-stone-700 hover:border-stone-300"
-                            }`}
-                        >
-                            {it}
-                        </button>
+                        <li key={item}>
+                            <label
+                                className={`flex items-center gap-3 py-2.5 ${
+                                    isDisabled
+                                        ? "cursor-not-allowed opacity-40"
+                                        : "cursor-pointer"
+                                }`}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    onChange={() => onToggle(item)}
+                                    disabled={isDisabled}
+                                    className="h-4 w-4 accent-mint-600"
+                                />
+                                <span className="text-sm text-stone-700">
+                                    {item}
+                                </span>
+                            </label>
+                        </li>
                     );
                 })}
-            </div>
+            </ul>
         </div>
     );
 }

@@ -1,27 +1,26 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import StepOrdina from "../components/steps/StepOrdina";
+import StepOrdina, {
+    useMenuNav,
+    CategoryNav,
+} from "../components/steps/StepOrdina";
 import StepRiepilogo from "../components/steps/StepRiepilogo";
 import StepDatiCliente from "../components/steps/StepDatiCliente";
 import StepConferma from "../components/steps/StepConferma";
 import PokeModal from "../components/order/PokeModal";
 import BobaModal from "../components/order/BobaModal";
 import SfizioModal from "../components/order/SfizioModal";
+import CartSidebar from "../components/order/CartSidebar";
 
 const STEPS_LABELS = ["Ordina", "Riepilogo", "Dati", "Conferma"];
 
 function stepIndex(step) {
     switch (step) {
-        case "ordina":
-            return 0;
-        case "riepilogo":
-            return 1;
-        case "dati":
-            return 2;
-        case "conferma":
-            return 3;
-        default:
-            return 0;
+        case "ordina":   return 0;
+        case "riepilogo": return 1;
+        case "dati":     return 2;
+        case "conferma": return 3;
+        default:         return 0;
     }
 }
 
@@ -35,9 +34,7 @@ function ProgressBar({ step }) {
                     <li key={label} className="flex flex-col items-center">
                         <div
                             className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition ${
-                                active
-                                    ? "bg-mint-600 text-white"
-                                    : "bg-stone-200 text-stone-500"
+                                active ? "bg-mint-600 text-white" : "bg-stone-200 text-stone-500"
                             }`}
                         >
                             {idx + 1}
@@ -69,7 +66,6 @@ export default function Ordina() {
 
     const headerRef = useRef(null);
     const [headerHeight, setHeaderHeight] = useState(120);
-
     useEffect(() => {
         if (!headerRef.current) return;
         const ro = new ResizeObserver(() => {
@@ -78,6 +74,9 @@ export default function Ordina() {
         ro.observe(headerRef.current);
         return () => ro.disconnect();
     }, []);
+
+    const { sections, active, sectionRefs, tabRefs, scrollToSection } =
+        useMenuNav(headerHeight);
 
     const totaleItems = items.reduce((s, it) => s + (it.quantita ?? 1), 0);
 
@@ -108,34 +107,24 @@ export default function Ordina() {
         });
     };
 
+    const isOrdina = step === "ordina";
+
     return (
         <div className="min-h-screen overflow-x-clip bg-stone-50 font-sans">
             <header ref={headerRef} className="sticky top-0 z-40 bg-white shadow-sm">
-                <div className="mx-auto grid max-w-2xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3">
+                <div className={`mx-auto grid ${isOrdina ? "max-w-2xl lg:max-w-5xl" : "max-w-2xl"} grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3`}>
                     <Link
                         to="/"
                         aria-label="Torna alla home"
                         className="inline-flex h-10 w-fit items-center gap-1 justify-self-start rounded-full px-3 text-stone-500 transition hover:bg-stone-100 hover:text-stone-700"
                     >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="h-5 w-5 shrink-0"
-                        >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0">
                             <path d="M15 18l-6-6 6-6" />
                         </svg>
                         <span className="text-sm font-medium">Annulla</span>
                     </Link>
                     <Link to="/" className="flex justify-center">
-                        <img
-                            src="/images/logo.PNG"
-                            alt="MeeTea & Poke"
-                            className="h-10 w-auto"
-                        />
+                        <img src="/images/logo.PNG" alt="MeeTea & Poke" className="h-10 w-auto" />
                     </Link>
                     <button
                         type="button"
@@ -143,15 +132,7 @@ export default function Ordina() {
                         aria-label={`Carrello${totaleItems ? `, ${totaleItems} articoli` : ""}`}
                         className="relative inline-flex h-10 w-10 items-center justify-center justify-self-end rounded-full text-stone-700 transition hover:bg-stone-100"
                     >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="h-5 w-5"
-                        >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                             <circle cx="9" cy="20" r="1.5" />
                             <circle cx="17" cy="20" r="1.5" />
                             <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.5L21 8H6" />
@@ -166,18 +147,36 @@ export default function Ordina() {
                         )}
                     </button>
                 </div>
-                <div className="mx-auto max-w-2xl px-6 pb-3">
+                <div className={`mx-auto ${isOrdina ? "max-w-2xl lg:max-w-5xl" : "max-w-2xl"} px-6 pb-3`}>
                     <ProgressBar step={step} />
                 </div>
+                {isOrdina && (
+                    <CategoryNav
+                        sections={sections}
+                        active={active}
+                        tabRefs={tabRefs}
+                        onScrollToSection={scrollToSection}
+                    />
+                )}
             </header>
 
-            <main className="mx-auto max-w-2xl px-6">
-                {step === "ordina" && (
-                    <StepOrdina
-                        onOpenModal={setModal}
-                        onAddSfizioDirect={addSfizioDirect}
-                        headerHeight={headerHeight}
-                    />
+            <main className={`mx-auto ${isOrdina ? "max-w-2xl lg:max-w-5xl" : "max-w-2xl"} px-6`}>
+                {isOrdina && (
+                    <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8 lg:items-start">
+                        <StepOrdina
+                            sections={sections}
+                            sectionRefs={sectionRefs}
+                            headerHeight={headerHeight}
+                            onOpenModal={setModal}
+                            onAddSfizioDirect={addSfizioDirect}
+                        />
+                        <CartSidebar
+                            items={items}
+                            onRemove={removeItem}
+                            onProcedi={() => setStep("riepilogo")}
+                            headerHeight={headerHeight}
+                        />
+                    </div>
                 )}
 
                 {step === "riepilogo" && (

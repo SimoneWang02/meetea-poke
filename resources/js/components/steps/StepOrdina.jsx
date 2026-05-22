@@ -5,7 +5,7 @@ import {
     SNACKS_LISTA,
 } from "../../lib/options";
 
-const TAB_BAR_HEIGHT = 60;
+export const TAB_BAR_HEIGHT = 60;
 
 function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -25,7 +25,7 @@ function animateScroll(targetY, duration, onDone) {
     requestAnimationFrame(step);
 }
 
-export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeight = 120 }) {
+export function useMenuNav(headerHeight) {
     const sections = useMemo(
         () => [
             { id: "poke", titolo: "Poke" },
@@ -75,176 +75,180 @@ export default function StepOrdina({ onOpenModal, onAddSfizioDirect, headerHeigh
         if (!el) return;
         programmaticScroll.current = true;
         setActive(id);
-        const targetY = el.getBoundingClientRect().top + window.scrollY - (headerHeight + TAB_BAR_HEIGHT);
-        animateScroll(targetY, 520, () => { programmaticScroll.current = false; });
+        const targetY =
+            el.getBoundingClientRect().top + window.scrollY - headerHeight;
+        animateScroll(targetY, 520, () => {
+            programmaticScroll.current = false;
+        });
     };
 
+    return { sections, active, sectionRefs, tabRefs, scrollToSection };
+}
+
+export function CategoryNav({ sections, active, tabRefs, onScrollToSection }) {
     const activeIdx = sections.findIndex((s) => s.id === active);
     const goAdjacent = (dir) => {
         const next = dir === "right" ? activeIdx + 1 : activeIdx - 1;
         if (next < 0 || next >= sections.length) return;
-        scrollToSection(sections[next].id);
+        onScrollToSection(sections[next].id);
     };
     const atStart = activeIdx <= 0;
     const atEnd = activeIdx >= sections.length - 1;
 
     return (
-        <div>
-            <nav
-                aria-label="Categorie"
-                style={{
-                    top: headerHeight,
-                    marginLeft: "calc(50% - 50vw)",
-                    marginRight: "calc(50% - 50vw)",
-                }}
-                className="sticky z-30 w-screen border-b border-stone-200 bg-white/95 backdrop-blur-md"
-            >
-                <div className="flex items-center gap-1 px-4 py-3">
-                    <button
-                        type="button"
-                        onClick={() => goAdjacent("left")}
-                        disabled={atStart}
-                        aria-label="Categoria precedente"
-                        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-stone-700 transition hover:bg-stone-100 disabled:cursor-not-allowed disabled:text-stone-300 disabled:hover:bg-transparent"
+        <nav aria-label="Categorie" className="border-t border-stone-100">
+            <div className="mx-auto max-w-2xl lg:max-w-5xl flex items-center gap-1 px-4 py-3">
+                <button
+                    type="button"
+                    onClick={() => goAdjacent("left")}
+                    disabled={atStart}
+                    aria-label="Categoria precedente"
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-stone-700 transition hover:bg-stone-100 disabled:cursor-not-allowed disabled:text-stone-300 disabled:hover:bg-transparent"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-5 w-5"
                     >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="h-5 w-5"
-                        >
-                            <path d="M15 18l-6-6 6-6" />
-                        </svg>
-                    </button>
-                    <div className="scrollbar-none flex flex-1 gap-1 overflow-x-auto">
-                        {sections.map((s) => {
-                            const isActive = active === s.id;
-                            return (
-                                <button
-                                    key={s.id}
-                                    ref={(el) => (tabRefs.current[s.id] = el)}
-                                    type="button"
-                                    onClick={() => scrollToSection(s.id)}
-                                    aria-current={isActive ? "true" : undefined}
-                                    className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold whitespace-nowrap transition ${
-                                        isActive
-                                            ? "bg-mint-700 text-white"
-                                            : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                                    }`}
-                                >
-                                    {s.titolo}
-                                </button>
-                            );
-                        })}
-                    </div>
-                    <button
-                        type="button"
-                        onClick={() => goAdjacent("right")}
-                        disabled={atEnd}
-                        aria-label="Categoria successiva"
-                        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-stone-700 transition hover:bg-stone-100 disabled:cursor-not-allowed disabled:text-stone-300 disabled:hover:bg-transparent"
-                    >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="h-5 w-5"
-                        >
-                            <path d="M9 6l6 6-6 6" />
-                        </svg>
-                    </button>
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
+                <div className="scrollbar-none flex flex-1 gap-1 overflow-x-auto">
+                    {sections.map((s) => {
+                        const isActive = active === s.id;
+                        return (
+                            <button
+                                key={s.id}
+                                ref={(el) => (tabRefs.current[s.id] = el)}
+                                type="button"
+                                onClick={() => onScrollToSection(s.id)}
+                                aria-current={isActive ? "true" : undefined}
+                                className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold whitespace-nowrap transition ${
+                                    isActive
+                                        ? "bg-mint-700 text-white"
+                                        : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                                }`}
+                            >
+                                {s.titolo}
+                            </button>
+                        );
+                    })}
                 </div>
-            </nav>
+                <button
+                    type="button"
+                    onClick={() => goAdjacent("right")}
+                    disabled={atEnd}
+                    aria-label="Categoria successiva"
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-stone-700 transition hover:bg-stone-100 disabled:cursor-not-allowed disabled:text-stone-300 disabled:hover:bg-transparent"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-5 w-5"
+                    >
+                        <path d="M9 6l6 6-6 6" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    );
+}
 
-            <div className="space-y-10 py-8">
-                {/* Poke */}
+export default function StepOrdina({
+    sections,
+    sectionRefs,
+    headerHeight = 120,
+    onOpenModal,
+    onAddSfizioDirect,
+}) {
+    return (
+        <div className="space-y-10 pb-8">
+            {/* Poke */}
+            <section
+                id="poke"
+                ref={(el) => (sectionRefs.current["poke"] = el)}
+                style={{ scrollMarginTop: headerHeight }}
+                className="pt-6"
+            >
+                <SectionHeader titolo="Poke" />
+                <div className="grid gap-3 sm:grid-cols-2">
+                    {POKE_DIMENSIONI.map((d) => (
+                        <PokeCard
+                            key={d.id}
+                            dimensione={d}
+                            onClick={() =>
+                                onOpenModal({
+                                    type: "poke",
+                                    payload: { dimensione: d },
+                                })
+                            }
+                        />
+                    ))}
+                </div>
+            </section>
+
+            {/* Boba sotto-categorie */}
+            {BOBA_CATEGORIE.map((cat) => (
                 <section
-                    id="poke"
-                    ref={(el) => (sectionRefs.current["poke"] = el)}
-                    style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
+                    key={cat.id}
+                    id={cat.id}
+                    ref={(el) => (sectionRefs.current[cat.id] = el)}
+                    style={{ scrollMarginTop: headerHeight }}
                     className="pt-6"
                 >
-                    <SectionHeader titolo="Poke" />
+                    <SectionHeader titolo={cat.titolo} />
                     <div className="grid gap-3 sm:grid-cols-2">
-                        {POKE_DIMENSIONI.map((d) => (
-                            <PokeCard
-                                key={d.id}
-                                dimensione={d}
+                        {cat.items.map((item) => (
+                            <BobaCard
+                                key={item.nome}
+                                item={item}
                                 onClick={() =>
                                     onOpenModal({
-                                        type: "poke",
-                                        payload: { dimensione: d },
+                                        type: "boba",
+                                        payload: { item, categoria: cat.id },
                                     })
                                 }
                             />
                         ))}
                     </div>
                 </section>
+            ))}
 
-                {/* Boba sotto-categorie */}
-                {BOBA_CATEGORIE.map((cat) => (
-                    <section
-                        key={cat.id}
-                        id={cat.id}
-                        ref={(el) => (sectionRefs.current[cat.id] = el)}
-                        style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
-                        className="pt-6"
-                    >
-                        <SectionHeader titolo={cat.titolo} />
-                        <div className="grid gap-3 sm:grid-cols-2">
-                            {cat.items.map((item) => (
-                                <BobaCard
-                                    key={item.nome}
-                                    item={item}
-                                    onClick={() =>
-                                        onOpenModal({
-                                            type: "boba",
-                                            payload: {
-                                                item,
-                                                categoria: cat.id,
-                                            },
-                                        })
-                                    }
-                                />
-                            ))}
-                        </div>
-                    </section>
-                ))}
-
-                {/* Sfizi */}
-                <section
-                    id="sfizi"
-                    ref={(el) => (sectionRefs.current["sfizi"] = el)}
-                    style={{ scrollMarginTop: headerHeight + TAB_BAR_HEIGHT }}
-                    className="pt-6"
-                >
-                    <SectionHeader titolo="Sfizi" />
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        {SNACKS_LISTA.map((sfizio) => (
-                            <SfizioCard
-                                key={sfizio.nome}
-                                sfizio={sfizio}
-                                onClick={() => {
-                                    if (sfizio.opzioni.length === 1) {
-                                        onAddSfizioDirect(sfizio);
-                                    } else {
-                                        onOpenModal({
-                                            type: "sfizio",
-                                            payload: { sfizio },
-                                        });
-                                    }
-                                }}
-                            />
-                        ))}
-                    </div>
-                </section>
-            </div>
+            {/* Sfizi */}
+            <section
+                id="sfizi"
+                ref={(el) => (sectionRefs.current["sfizi"] = el)}
+                style={{ scrollMarginTop: headerHeight }}
+                className="pt-6"
+            >
+                <SectionHeader titolo="Sfizi" />
+                <div className="grid gap-3 sm:grid-cols-2">
+                    {SNACKS_LISTA.map((sfizio) => (
+                        <SfizioCard
+                            key={sfizio.nome}
+                            sfizio={sfizio}
+                            onClick={() => {
+                                if (sfizio.opzioni.length === 1) {
+                                    onAddSfizioDirect(sfizio);
+                                } else {
+                                    onOpenModal({
+                                        type: "sfizio",
+                                        payload: { sfizio },
+                                    });
+                                }
+                            }}
+                        />
+                    ))}
+                </div>
+            </section>
         </div>
     );
 }
@@ -267,11 +271,6 @@ function PokeCard({ dimensione, onClick }) {
             <div className="min-w-0">
                 <div className="text-base font-bold">
                     Poke Bowl {dimensione.nome}
-                </div>
-                <div className="mt-1 text-xs text-stone-500">
-                    {dimensione.proteine} prot · {dimensione.green} green ·{" "}
-                    {dimensione.crispy} crispy · {dimensione.salse} sals
-                    {dimensione.salse > 1 ? "e" : "a"}
                 </div>
                 <div className="mt-2 text-lg font-extrabold text-mint-700">
                     {dimensione.prezzo.toFixed(2)} €
