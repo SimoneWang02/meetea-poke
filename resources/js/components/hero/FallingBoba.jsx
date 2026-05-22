@@ -63,6 +63,10 @@ export default function FallingBoba({ count = 80 }) {
                     key={s.id}
                     src={`/images/boba/${s.img}`}
                     alt=""
+                    width={Math.round(s.size)}
+                    height={Math.round(s.size)}
+                    loading="lazy"
+                    decoding="async"
                     className="boba-falling absolute top-0 select-none object-contain"
                     style={{
                         left: `${s.left}%`,

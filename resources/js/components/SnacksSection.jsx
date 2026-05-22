@@ -1,9 +1,6 @@
 import React from "react";
 import { SNACKS_LISTA } from "../lib/options";
-
-function formatPrezzo(n) {
-    return n.toFixed(2).replace(".", ",") + " €";
-}
+import { formatPrezzo } from "../lib/format";
 
 function PlaceholderImage() {
     return (

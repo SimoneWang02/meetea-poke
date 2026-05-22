@@ -44,23 +44,19 @@ body {
 
 @keyframes boba-fall {
     0% {
-        top: 0;
         transform: translateY(-100%) rotate(0deg);
     }
     100% {
-        top: 100%;
-        transform: translateY(0) rotate(360deg);
+        transform: translateY(100vh) rotate(360deg);
     }
 }
 
 @keyframes boba-fall-ccw {
     0% {
-        top: 0;
         transform: translateY(-100%) rotate(0deg);
     }
     100% {
-        top: 100%;
-        transform: translateY(0) rotate(-360deg);
+        transform: translateY(100vh) rotate(-360deg);
     }
 }
 

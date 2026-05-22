@@ -4,10 +4,27 @@ import HeroDeliveryIcons from "./HeroDeliveryIcons";
 import FallingBoba from "./FallingBoba";
 import { CONTATTI } from "../../lib/options";
 
+function useIsMobile(breakpoint = 640) {
+    const [isMobile, setIsMobile] = React.useState(() => {
+        if (typeof window === "undefined") return false;
+        return window.matchMedia(`(max-width: ${breakpoint - 1}px)`).matches;
+    });
+
+    React.useEffect(() => {
+        const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+        const handler = (e) => setIsMobile(e.matches);
+        mql.addEventListener("change", handler);
+        return () => mql.removeEventListener("change", handler);
+    }, [breakpoint]);
+
+    return isMobile;
+}
+
 export default function HeroBobaRain() {
+    const isMobile = useIsMobile();
     return (
         <section className="relative flex h-screen min-h-[640px] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-mint-400 via-mint-600 to-mint-800 text-white">
-            <FallingBoba count={100} />
+            <FallingBoba count={isMobile ? 30 : 100} />
             <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent-300 opacity-30 blur-3xl" />
             <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-mint-200 opacity-30 blur-3xl" />
 

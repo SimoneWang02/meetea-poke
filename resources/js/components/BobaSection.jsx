@@ -1,18 +1,110 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabScrollButton from "@mui/material/TabScrollButton";
 import { BOBA_CATEGORIE, BOBA_TOPPING } from "../lib/options";
+import { formatPrezzo } from "../lib/format";
 
 const MINT_500 = "#14b8a6";
 const MINT_700 = "#0f766e";
-const STONE_500 = "#78716c";
 const STONE_700 = "#44403c";
 
-function formatPrezzo(n) {
-    return n.toFixed(2).replace(".", ",") + " €";
+function InfoIcon({ className = "h-4 w-4" }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+            aria-hidden="true"
+        >
+            <circle cx="12" cy="12" r="9.5" />
+            <path d="M12 11v5" />
+            <circle cx="12" cy="7.8" r="0.6" fill="currentColor" />
+        </svg>
+    );
 }
+
+const tabsSx = {
+    minHeight: 0,
+    "& .MuiTabs-indicator": {
+        display: "none",
+    },
+    "& .MuiTab-root": {
+        textTransform: "none",
+        fontFamily: "inherit",
+        fontWeight: 600,
+        fontSize: "0.875rem",
+        color: STONE_700,
+        minHeight: 0,
+        paddingY: "0.5rem",
+        paddingX: "1rem",
+        borderRadius: "9999px",
+        backgroundColor: "#ffffff",
+        border: "1px solid #d6d3d1",
+        marginX: "0.25rem",
+        transition:
+            "background-color 0.15s, color 0.15s, border-color 0.15s",
+    },
+    "& .MuiTab-root:hover": {
+        backgroundColor: "#f5f5f4",
+        color: STONE_700,
+    },
+    "& .MuiTab-root.Mui-selected": {
+        backgroundColor: MINT_500,
+        color: "#fff",
+        borderColor: MINT_500,
+    },
+    "& .MuiTab-root.Mui-selected:hover": {
+        backgroundColor: MINT_700,
+        color: "#fff",
+        borderColor: MINT_700,
+    },
+    "&& .MuiTabs-scrollButtons": {
+        color: STONE_700,
+        backgroundColor: "#ffffff !important",
+        borderRadius: "9999px",
+        border: "1px solid #d6d3d1",
+        width: 36,
+        height: 36,
+        marginX: "0.25rem",
+        transition: "background-color 0.15s",
+        opacity: "1 !important",
+    },
+    "&& .MuiTabs-scrollButtons:hover": {
+        backgroundColor: "#f5f5f4 !important",
+    },
+    "&& .MuiTabs-scrollButtons.Mui-disabled": {
+        opacity: "1 !important",
+        color: "#a8a29e",
+        backgroundColor: "#ffffff !important",
+    },
+};
+
+const NavContext = React.createContext({ activeIndex: 0, onNav: () => {} });
+
+const ScrollButtonNav = React.forwardRef(function ScrollButtonNav(props, ref) {
+    const { onClick: _ignored, direction, ...rest } = props;
+    const { activeIndex, onNav } = React.useContext(NavContext);
+    const navDisabled =
+        direction === "right"
+            ? activeIndex >= BOBA_CATEGORIE.length - 1
+            : activeIndex <= 0;
+    return (
+        <TabScrollButton
+            {...rest}
+            ref={ref}
+            direction={direction}
+            disabled={navDisabled}
+            onClick={() => onNav(direction)}
+        />
+    );
+});
+
+const tabsSlots = { scrollButtons: ScrollButtonNav };
 
 function InfoPopover({ testo }) {
     const [open, setOpen] = useState(false);
@@ -52,20 +144,7 @@ function InfoPopover({ testo }) {
                 aria-expanded={open}
                 className="inline-flex h-5 w-5 items-center justify-center rounded-full text-stone-400 transition hover:text-mint-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-500"
             >
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-4 w-4"
-                    aria-hidden="true"
-                >
-                    <circle cx="12" cy="12" r="9.5" />
-                    <path d="M12 11v5" />
-                    <circle cx="12" cy="7.8" r="0.6" fill="currentColor" />
-                </svg>
+                <InfoIcon />
             </button>
             {open && (
                 <span
@@ -296,36 +375,23 @@ function ToppingCard() {
 
 export default function BobaSection() {
     const [activeId, setActiveId] = useState(BOBA_CATEGORIE[0].id);
-    const activeCategoria =
-        BOBA_CATEGORIE.find((c) => c.id === activeId) ?? BOBA_CATEGORIE[0];
+    const activeIndex = useMemo(() => {
+        const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
+        return idx === -1 ? 0 : idx;
+    }, [activeId]);
+    const activeCategoria = BOBA_CATEGORIE[activeIndex];
     const tabsRef = useRef(null);
 
-    const goToAdjacentCategoria = (direction) => {
-        const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
-        if (idx === -1) return;
-        const next = direction === "right" ? idx + 1 : idx - 1;
+    const onNav = (direction) => {
+        const next = direction === "right" ? activeIndex + 1 : activeIndex - 1;
         if (next < 0 || next >= BOBA_CATEGORIE.length) return;
         setActiveId(BOBA_CATEGORIE[next].id);
     };
 
-    const ScrollButtonNav = React.forwardRef(
-        function ScrollButtonNav(props, ref) {
-            const { onClick: _ignored, direction, ...rest } = props;
-            const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
-            const navDisabled =
-                direction === "right"
-                    ? idx >= BOBA_CATEGORIE.length - 1
-                    : idx <= 0;
-            return (
-                <TabScrollButton
-                    {...rest}
-                    ref={ref}
-                    direction={direction}
-                    disabled={navDisabled}
-                    onClick={() => goToAdjacentCategoria(direction)}
-                />
-            );
-        },
+    const navCtx = useMemo(
+        () => ({ activeIndex, onNav: (dir) => onNav(dir) }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [activeIndex],
     );
 
     useEffect(() => {
@@ -381,106 +447,36 @@ export default function BobaSection() {
                         Esplora tutti i nostri bubble tea, dai classici alle
                         creazioni speciali. Passa sopra l'icona{" "}
                         <span className="inline-flex h-4 w-4 -mb-0.5 items-center justify-center rounded-full text-stone-500 align-middle">
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.8"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="h-4 w-4"
-                                aria-hidden="true"
-                            >
-                                <circle cx="12" cy="12" r="9.5" />
-                                <path d="M12 11v5" />
-                                <circle
-                                    cx="12"
-                                    cy="7.8"
-                                    r="0.6"
-                                    fill="currentColor"
-                                />
-                            </svg>
+                            <InfoIcon />
                         </span>{" "}
                         per scoprire gli ingredienti dei bubble tea speciali.
                     </p>
                 </div>
 
                 <div className="sticky top-0 z-30 mt-5 py-3">
-                    <Tabs
-                        ref={tabsRef}
-                        value={activeId}
-                        onChange={(_, v) => setActiveId(v)}
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        allowScrollButtonsMobile
-                        aria-label="Categorie boba"
-                        slots={{ scrollButtons: ScrollButtonNav }}
-                        sx={{
-                            minHeight: 0,
-                            "& .MuiTabs-indicator": {
-                                display: "none",
-                            },
-                            "& .MuiTab-root": {
-                                textTransform: "none",
-                                fontFamily: "inherit",
-                                fontWeight: 600,
-                                fontSize: "0.875rem",
-                                color: STONE_700,
-                                minHeight: 0,
-                                paddingY: "0.5rem",
-                                paddingX: "1rem",
-                                borderRadius: "9999px",
-                                backgroundColor: "#ffffff",
-                                border: "1px solid #d6d3d1",
-                                marginX: "0.25rem",
-                                transition:
-                                    "background-color 0.15s, color 0.15s, border-color 0.15s",
-                            },
-                            "& .MuiTab-root:hover": {
-                                backgroundColor: "#f5f5f4",
-                                color: STONE_700,
-                            },
-                            "& .MuiTab-root.Mui-selected": {
-                                backgroundColor: MINT_500,
-                                color: "#fff",
-                                borderColor: MINT_500,
-                            },
-                            "& .MuiTab-root.Mui-selected:hover": {
-                                backgroundColor: MINT_700,
-                                color: "#fff",
-                                borderColor: MINT_700,
-                            },
-                            "&& .MuiTabs-scrollButtons": {
-                                color: STONE_700,
-                                backgroundColor: "#ffffff !important",
-                                borderRadius: "9999px",
-                                border: "1px solid #d6d3d1",
-                                width: 36,
-                                height: 36,
-                                marginX: "0.25rem",
-                                transition: "background-color 0.15s",
-                                opacity: "1 !important",
-                            },
-                            "&& .MuiTabs-scrollButtons:hover": {
-                                backgroundColor: "#f5f5f4 !important",
-                            },
-                            "&& .MuiTabs-scrollButtons.Mui-disabled": {
-                                opacity: "1 !important",
-                                color: "#a8a29e",
-                                backgroundColor: "#ffffff !important",
-                            },
-                        }}
-                    >
-                        {BOBA_CATEGORIE.map((cat) => (
-                            <Tab
-                                key={cat.id}
-                                value={cat.id}
-                                label={cat.titolo}
-                                id={`boba-tab-${cat.id}`}
-                                aria-controls={`boba-panel-${cat.id}`}
-                            />
-                        ))}
-                    </Tabs>
+                    <NavContext.Provider value={navCtx}>
+                        <Tabs
+                            ref={tabsRef}
+                            value={activeId}
+                            onChange={(_, v) => setActiveId(v)}
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            allowScrollButtonsMobile
+                            aria-label="Categorie boba"
+                            slots={tabsSlots}
+                            sx={tabsSx}
+                        >
+                            {BOBA_CATEGORIE.map((cat) => (
+                                <Tab
+                                    key={cat.id}
+                                    value={cat.id}
+                                    label={cat.titolo}
+                                    id={`boba-tab-${cat.id}`}
+                                    aria-controls={`boba-panel-${cat.id}`}
+                                />
+                            ))}
+                        </Tabs>
+                    </NavContext.Provider>
                 </div>
 
                 <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-5 lg:items-start">
