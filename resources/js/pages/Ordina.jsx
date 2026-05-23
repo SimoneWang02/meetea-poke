@@ -209,7 +209,7 @@ export default function Ordina() {
                 className="sticky top-0 z-40 bg-white shadow-sm"
             >
                 <div
-                    className={`mx-auto grid ${isOrdina ? "max-w-7xl lg:max-w-screen-2xl" : "max-w-2xl"} grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3`}
+                    className={`mx-auto grid max-w-2xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3`}
                 >
                     <Link
                         to="/"
