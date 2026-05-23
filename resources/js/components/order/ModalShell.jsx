@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { CONTATTI } from "../../lib/options";
 
 export default function ModalShell({ open, onClose, title, children, footer }) {
     const dialogRef = useRef(null);
@@ -64,6 +65,18 @@ export default function ModalShell({ open, onClose, title, children, footer }) {
                     </button>
                 </div>
                 <div className="flex-1 overflow-y-auto px-6 py-5">
+                    <div className="mb-5 rounded-xl border border-stone-100 bg-stone-50 px-4 py-3 text-sm text-stone-600">
+                        <p>Hai delle domande su allergeni, ingredienti o metodi di preparazione?</p>
+                        <p className="mt-0.5">
+                            Chiamaci!{" "}
+                            <a
+                                href={`tel:${CONTATTI.telefonoTel}`}
+                                className="font-semibold text-mint-600 hover:underline"
+                            >
+                                {CONTATTI.telefono}
+                            </a>
+                        </p>
+                    </div>
                     {children}
                 </div>
                 {footer && (
