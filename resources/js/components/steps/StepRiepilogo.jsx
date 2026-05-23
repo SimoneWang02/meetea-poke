@@ -1,12 +1,7 @@
 import React from "react";
 
 function itemSubtotale(item) {
-    const base = item.prezzo_base ?? 0;
-    const toppings = (item.configurazione?.toppings ?? []).reduce(
-        (s, t) => s + (t.prezzo ?? 0),
-        0,
-    );
-    return (base + toppings) * (item.quantita ?? 1);
+    return (item.prezzo_base ?? 0) * (item.quantita ?? 1);
 }
 
 function ItemIcon({ tipo }) {
