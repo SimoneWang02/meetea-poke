@@ -407,11 +407,12 @@ export default function Home() {
             <footer className="bg-stone-900 py-10 text-stone-300">
                 <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-6 px-6 sm:flex-row sm:items-center">
                     <div>
-                        <div className="text-lg font-bold text-white">
-                            MeeTea<span className="text-accent-400">&amp;</span>
-                            Poke
-                        </div>
-                        <div className="text-sm text-stone-400">
+                        <img
+                            src="/images/name.svg"
+                            alt="MeeTea & Poke"
+                            className="h-10 w-auto"
+                        />
+                        <div className="mt-2 text-sm text-stone-400">
                             © {new Date().getFullYear()} - Carpi (MO)
                         </div>
                     </div>
