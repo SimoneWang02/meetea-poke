@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ModalShell from "./ModalShell";
+import { formatPrezzo } from "../../lib/format";
 
 export default function SfizioModal({ open, sfizio, onClose, onAdd, initialConfig, initialQuantita = 1 }) {
     const [opzioneIdx, setOpzioneIdx] = useState(() => {
@@ -53,7 +54,7 @@ export default function SfizioModal({ open, sfizio, onClose, onAdd, initialConfi
                 onClick={submit}
                 className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
             >
-                {initialConfig ? "Salva" : "Aggiungi"} · {totale.toFixed(2)} €
+                {initialConfig ? "Salva" : "Aggiungi"} · {formatPrezzo(totale)}
             </button>
         </div>
     );
@@ -84,7 +85,7 @@ export default function SfizioModal({ open, sfizio, onClose, onAdd, initialConfi
                         >
                             <span className="font-medium">{op.qty}</span>
                             <span className="font-extrabold text-mint-700">
-                                {op.prezzo.toFixed(2)} €
+                                {formatPrezzo(op.prezzo)}
                             </span>
                         </button>
                     );

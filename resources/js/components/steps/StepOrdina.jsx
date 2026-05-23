@@ -4,6 +4,7 @@ import {
     BOBA_CATEGORIE,
     SNACKS_LISTA,
 } from "../../lib/options";
+import { formatPrezzo, formatNumero } from "../../lib/format";
 
 export const TAB_BAR_HEIGHT = 60;
 
@@ -273,7 +274,7 @@ function PokeCard({ dimensione, onClick }) {
                     Poke Bowl {dimensione.nome}
                 </div>
                 <div className="mt-2 text-lg font-extrabold text-mint-700">
-                    {dimensione.prezzo.toFixed(2)} €
+                    {formatPrezzo(dimensione.prezzo)}
                 </div>
             </div>
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mint-600 text-white">
@@ -319,7 +320,7 @@ function BobaCard({ item, onClick }) {
                         </div>
                     )}
                     <div className="mt-2 text-lg font-extrabold text-mint-700">
-                        {minPrice.toFixed(2)} €
+                        {formatPrezzo(minPrice)}
                     </div>
                 </div>
             </div>
@@ -363,8 +364,8 @@ function SfizioCard({ sfizio, onClick }) {
                     <div className="text-base font-bold">{sfizio.nome}</div>
                     <div className="mt-1 text-lg font-extrabold text-mint-700">
                         {min === max
-                            ? `${min.toFixed(2)} €`
-                            : `${min.toFixed(2)} – ${max.toFixed(2)} €`}
+                            ? formatPrezzo(min)
+                            : `${formatNumero(min)} – ${formatNumero(max)} €`}
                     </div>
                 </div>
             </div>

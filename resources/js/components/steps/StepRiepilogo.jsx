@@ -1,4 +1,5 @@
 import React from "react";
+import { formatPrezzo } from "../../lib/format";
 
 function itemSubtotale(item) {
     return (item.prezzo_base ?? 0) * (item.quantita ?? 1);
@@ -97,7 +98,7 @@ function PokeCategoryRow({ label, items = [], extras = [] }) {
                 >
                     {e.nome}{" "}
                     <span className="font-semibold text-stone-600">
-                        +{e.prezzo.toFixed(2)} €
+                        +{formatPrezzo(e.prezzo)}
                     </span>
                 </div>
             ))}
@@ -203,7 +204,7 @@ function ItemRow({ item, onRemove, onEdit }) {
                 </div>
                 <div className="flex flex-col items-end gap-1">
                     <div className="font-extrabold text-stone-900">
-                        {itemSubtotale(item).toFixed(2)} €
+                        {formatPrezzo(itemSubtotale(item))}
                     </div>
                     <div className="flex gap-3">
                         <button
@@ -263,7 +264,7 @@ export default function StepRiepilogo({
                         Totale
                     </span>
                     <span className="text-2xl font-extrabold text-mint-700">
-                        {totale.toFixed(2)} €
+                        {formatPrezzo(totale)}
                     </span>
                 </div>
             )}

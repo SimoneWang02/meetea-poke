@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { formatPrezzo, formatNumero } from "../lib/format";
 import {
     POKE_DIMENSIONI,
     POKE_BASI,
@@ -147,7 +148,7 @@ export default function Home() {
                                                 {d.nome}
                                             </div>
                                             <div className="text-2xl font-extrabold text-mint-700">
-                                                {d.prezzo.toFixed(2)} €
+                                                {formatPrezzo(d.prezzo)}
                                             </div>
                                         </div>
                                         <ul className="mt-3 space-y-1 text-sm text-stone-600">
@@ -194,25 +195,25 @@ export default function Home() {
                                 {
                                     numero: 3,
                                     etichetta: "Proteine",
-                                    sottotitolo: `Extra ${POKE_EXTRA_PREZZI.proteine.toFixed(2)} €`,
+                                    sottotitolo: `Extra ${formatNumero(POKE_EXTRA_PREZZI.proteine)} €`,
                                     items: POKE_PROTEINE,
                                 },
                                 {
                                     numero: 4,
                                     etichetta: "Green & co",
-                                    sottotitolo: `Extra ${POKE_EXTRA_PREZZI.green.toFixed(2)} €`,
+                                    sottotitolo: `Extra ${formatNumero(POKE_EXTRA_PREZZI.green)} €`,
                                     items: POKE_GREEN,
                                 },
                                 {
                                     numero: 5,
                                     etichetta: "Crispy",
-                                    sottotitolo: `Extra ${POKE_EXTRA_PREZZI.crispy.toFixed(2)} €`,
+                                    sottotitolo: `Extra ${formatNumero(POKE_EXTRA_PREZZI.crispy)} €`,
                                     items: POKE_CRISPY,
                                 },
                                 {
                                     numero: 6,
                                     etichetta: "Salse",
-                                    sottotitolo: `Extra ${POKE_EXTRA_PREZZI.salse.toFixed(2)} €`,
+                                    sottotitolo: `Extra ${formatNumero(POKE_EXTRA_PREZZI.salse)} €`,
                                     items: POKE_SALSE,
                                 },
                             ].map((tile, i) => (

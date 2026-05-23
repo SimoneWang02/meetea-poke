@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BOBA_TOPPING } from "../../lib/options";
 import ModalShell from "./ModalShell";
+import { formatPrezzo, formatNumero } from "../../lib/format";
 
 const TEMPERATURE = [
     { id: "fredda", label: "Fredda" },
@@ -149,7 +150,7 @@ export default function BobaModal({
                 onClick={submit}
                 className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
             >
-                {initialConfig ? "Salva" : "Aggiungi"} · {totale.toFixed(2)} €
+                {initialConfig ? "Salva" : "Aggiungi"} · {formatPrezzo(totale)}
             </button>
         </div>
     );
@@ -165,7 +166,8 @@ export default function BobaModal({
                 <Section titolo="Dimensione">
                     <ul className="divide-y divide-stone-100">
                         {(() => {
-                            const basePrezzo = item.prezzi[availableSizes[0]] ?? 0;
+                            const basePrezzo =
+                                item.prezzi[availableSizes[0]] ?? 0;
                             return availableSizes.map((s) => {
                                 const diff = (item.prezzi[s] ?? 0) - basePrezzo;
                                 return (
@@ -184,7 +186,7 @@ export default function BobaModal({
                                             </span>
                                             {diff > 0 && (
                                                 <span className="text-sm font-bold text-mint-700">
-                                                    +{diff.toFixed(2).replace(".", ",")} €
+                                                    +{formatNumero(diff)} €
                                                 </span>
                                             )}
                                         </label>
@@ -246,7 +248,7 @@ export default function BobaModal({
                                     {t.nome}
                                 </span>
                                 <span className="text-sm font-bold text-mint-700">
-                                    {t.prezzo.toFixed(2).replace(".", ",")} €
+                                    {formatPrezzo(t.prezzo)}
                                 </span>
                             </label>
                         </li>
@@ -278,7 +280,7 @@ export default function BobaModal({
                                             {gusto}
                                         </span>
                                         <span className="text-sm font-bold text-mint-700">
-                                            {g.prezzo.toFixed(2).replace(".", ",")} €
+                                            {formatPrezzo(g.prezzo)}
                                         </span>
                                     </label>
                                 </li>

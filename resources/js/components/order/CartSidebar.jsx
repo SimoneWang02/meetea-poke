@@ -1,4 +1,5 @@
 import React from "react";
+import { formatPrezzo } from "../../lib/format";
 
 function itemSubtotale(item) {
     return (item.prezzo_base ?? 0) * (item.quantita ?? 1);
@@ -29,7 +30,7 @@ function CartItem({ item, onRemove }) {
                 )}
             </div>
             <div className="shrink-0 text-sm font-bold text-stone-800">
-                {itemSubtotale(item).toFixed(2)} €
+                {formatPrezzo(itemSubtotale(item))}
             </div>
             <button
                 type="button"
@@ -111,7 +112,7 @@ export default function CartSidebar({ items, onRemove, onProcedi, headerHeight =
                                 Totale
                             </span>
                             <span className="text-xl font-extrabold text-mint-700">
-                                {totale.toFixed(2)} €
+                                {formatPrezzo(totale)}
                             </span>
                         </div>
                         <button

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { formatPrezzo } from "../../lib/format";
 import {
     POKE_BASI,
     POKE_BASI_MAX,
@@ -111,7 +112,7 @@ function ExtraList({ items, extraQty, setExtraQty }) {
                         )}
                         <span className="flex-1 text-sm text-stone-700">{nome}</span>
                         <span className="text-sm font-bold text-mint-700">
-                            +{prezzo.toFixed(2).replace(".", ",")} €
+                            +{formatPrezzo(prezzo)}
                         </span>
                     </li>
                 );
@@ -245,7 +246,7 @@ export default function PokeModal({
                     className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
                 >
                     {initialConfig ? "Salva" : "Aggiungi"} ·{" "}
-                    {(prezzoTotale * quantita).toFixed(2)} €
+                    {formatPrezzo(prezzoTotale * quantita)}
                 </button>
             </div>
     );
