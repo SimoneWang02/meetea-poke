@@ -3,6 +3,7 @@ import { generateSlotsRitiro } from '../../lib/options';
 
 export default function StepDatiCliente({ cliente, onChange, onIndietro, onProcedi }) {
     const [error, setError] = useState('');
+    const [submitted, setSubmitted] = useState(false);
 
     const now = new Date();
     const nowMinutes = now.getHours() * 60 + now.getMinutes();
@@ -23,6 +24,7 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
             setError("L'orario selezionato è già passato. Scegli un nuovo orario.");
             return;
         }
+        setSubmitted(true);
         onProcedi();
     };
 
@@ -119,13 +121,16 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
                 <button
                     type="button"
                     onClick={submit}
-                    className="flex-[2] rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
+                    disabled={submitted}
+                    className="flex-[2] rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     <span className="flex items-center justify-center gap-2">
-                        Conferma Ordine
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M5 12h14M13 6l6 6-6 6"/>
-                        </svg>
+                        {submitted ? 'Invio in corso...' : 'Conferma Ordine'}
+                        {!submitted && (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M5 12h14M13 6l6 6-6 6"/>
+                            </svg>
+                        )}
                     </span>
                 </button>
             </div>
