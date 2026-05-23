@@ -5,26 +5,9 @@ import {
     SNACKS_LISTA,
 } from "../../lib/options";
 import { formatPrezzo, formatNumero } from "../../lib/format";
+import { animateScroll } from "../../lib/scroll";
 
 export const TAB_BAR_HEIGHT = 60;
-
-function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-}
-
-function animateScroll(targetY, duration, onDone) {
-    const startY = window.scrollY;
-    const diff = targetY - startY;
-    let startTime = null;
-    function step(ts) {
-        if (!startTime) startTime = ts;
-        const progress = Math.min((ts - startTime) / duration, 1);
-        window.scrollTo(0, startY + diff * easeInOutCubic(progress));
-        if (progress < 1) requestAnimationFrame(step);
-        else onDone?.();
-    }
-    requestAnimationFrame(step);
-}
 
 export function useMenuNav(headerHeight) {
     const sections = useMemo(

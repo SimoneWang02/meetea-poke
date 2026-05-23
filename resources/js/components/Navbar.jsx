@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { animateScroll } from "../lib/scroll";
 
 const LINKS = [
     { id: "boba", label: "Bubble Tea" },
@@ -11,8 +12,8 @@ function scrollToId(id) {
     const el = document.getElementById(id);
     if (!el) return;
     const navH = 72;
-    const top = el.getBoundingClientRect().top + window.scrollY - navH;
-    window.scrollTo({ top, behavior: "smooth" });
+    const targetY = el.getBoundingClientRect().top + window.scrollY - navH;
+    animateScroll(targetY, 520);
 }
 
 export default function Navbar() {
