@@ -110,11 +110,34 @@ export default function Ordina() {
         setCliente({ nome: "", telefono: "", orario_ritiro: "", note: "" });
     };
 
+    const canonicalKey = (item) => {
+        const normalize = (val) => {
+            if (Array.isArray(val)) return [...val].sort().map(normalize);
+            if (val && typeof val === "object")
+                return Object.fromEntries(
+                    Object.keys(val).sort().map((k) => [k, normalize(val[k])])
+                );
+            return val;
+        };
+        return JSON.stringify({ tipo: item.tipo, nome: item.nome, configurazione: normalize(item.configurazione) });
+    };
+
     const addItem = (item) => {
         if (modal?.editingIdx != null) {
             replaceItem(modal.editingIdx, item);
         } else {
-            setItems((prev) => [...prev, item]);
+            setItems((prev) => {
+                const key = canonicalKey(item);
+                const existingIdx = prev.findIndex((it) => canonicalKey(it) === key);
+                if (existingIdx >= 0) {
+                    return prev.map((it, i) =>
+                        i === existingIdx
+                            ? { ...it, quantita: (it.quantita ?? 1) + (item.quantita ?? 1) }
+                            : it
+                    );
+                }
+                return [...prev, item];
+            });
             setModal(null);
         }
     };

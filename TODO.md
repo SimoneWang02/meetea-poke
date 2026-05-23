@@ -8,3 +8,7 @@
 3. se aggiungo stesso elemento nel carrello, devono sommarsi, eppure adesso non funziona così
 
 4. homepage, navbar, CTA "bubble tea" non funziona e inoltre non hanno animazione scrolling
+
+5. ordinamento modale per poke e boba dev'essere piu intuitivo come DELIVEROO, cioè gli extra devono essere in fondo pagina
+
+6. cambiare mail privacy
