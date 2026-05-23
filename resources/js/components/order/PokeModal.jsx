@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     POKE_BASI,
     POKE_BASI_MAX,
@@ -11,55 +11,192 @@ import {
 import ModalShell from "./ModalShell";
 import MultiSelect from "./MultiSelect";
 
-export default function PokeModal({ open, dimensione, onClose, onAdd, initialConfig, initialQuantita = 1 }) {
-    const [basi, setBasi] = useState(initialConfig?.basi ?? []);
-    const [proteine, setProteine] = useState(initialConfig?.proteine ?? []);
-    const [green, setGreen] = useState(initialConfig?.green ?? []);
-    const [crispy, setCrispy] = useState(initialConfig?.crispy ?? []);
-    const [salse, setSalse] = useState(initialConfig?.salse ?? []);
+const arrayToQtyMap = (arr = []) =>
+    arr.reduce((m, x) => ({ ...m, [x]: (m[x] ?? 0) + 1 }), {});
+
+const totalQty = (map) => Object.values(map).reduce((s, q) => s + q, 0);
+
+const flattenMap = (map) =>
+    Object.entries(map).flatMap(([nome, qty]) => Array(qty).fill(nome));
+
+const ITEM_LOOKUP = Object.fromEntries([
+    ...POKE_PROTEINE.map((n) => [
+        n,
+        { cat: "proteine", prezzo: POKE_EXTRA_PREZZI.proteine },
+    ]),
+    ...POKE_GREEN.map((n) => [
+        n,
+        { cat: "green", prezzo: POKE_EXTRA_PREZZI.green },
+    ]),
+    ...POKE_CRISPY.map((n) => [
+        n,
+        { cat: "crispy", prezzo: POKE_EXTRA_PREZZI.crispy },
+    ]),
+    ...POKE_SALSE.map((n) => [
+        n,
+        { cat: "salse", prezzo: POKE_EXTRA_PREZZI.salse },
+    ]),
+]);
+
+const EXTRA_PROTEINE_ITEMS = POKE_PROTEINE.map((n) => ({
+    nome: n,
+    prezzo: POKE_EXTRA_PREZZI.proteine,
+}));
+
+const EXTRA_GREEN_ITEMS = POKE_GREEN.map((n) => ({
+    nome: n,
+    prezzo: POKE_EXTRA_PREZZI.green,
+}));
+const EXTRA_CRISPY_ITEMS = POKE_CRISPY.map((n) => ({
+    nome: n,
+    prezzo: POKE_EXTRA_PREZZI.crispy,
+}));
+const EXTRA_SALSE_ITEMS = POKE_SALSE.map((n) => ({
+    nome: n,
+    prezzo: POKE_EXTRA_PREZZI.salse,
+}));
+
+const POSATE = ["Cucchiaio", "Bacchette", "Forchetta", "Senza Posate"];
+
+function ExtraList({ items, extraQty, setExtraQty }) {
+    return (
+        <ul className="divide-y divide-stone-100">
+            {items.map(({ nome, prezzo }) => {
+                const qty = extraQty[nome] ?? 0;
+                return (
+                    <li key={nome} className="flex items-center gap-3 py-2.5">
+                        {qty === 0 ? (
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setExtraQty({ ...extraQty, [nome]: 1 })
+                                }
+                                aria-label={`Aggiungi extra ${nome}`}
+                                className="flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-full border border-mint-500 text-base font-bold text-mint-600 transition hover:bg-mint-50"
+                            >
+                                +
+                            </button>
+                        ) : (
+                            <div className="flex shrink-0 items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const next = { ...extraQty };
+                                        if (next[nome] <= 1) delete next[nome];
+                                        else next[nome]--;
+                                        setExtraQty(next);
+                                    }}
+                                    aria-label={`Rimuovi extra ${nome}`}
+                                    className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-red-300 text-base font-bold text-red-500 transition hover:bg-red-50"
+                                >
+                                    −
+                                </button>
+                                <span className="w-5 text-center text-sm font-semibold text-stone-800">
+                                    {qty}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setExtraQty({
+                                            ...extraQty,
+                                            [nome]: (extraQty[nome] ?? 0) + 1,
+                                        })
+                                    }
+                                    aria-label={`Aggiungi extra ${nome}`}
+                                    className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-mint-500 text-base font-bold text-mint-600 transition hover:bg-mint-50"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        )}
+                        <span className="flex-1 text-sm text-stone-700">{nome}</span>
+                        <span className="text-sm font-bold text-mint-700">
+                            +{prezzo.toFixed(2).replace(".", ",")} €
+                        </span>
+                    </li>
+                );
+            })}
+        </ul>
+    );
+}
+
+export default function PokeModal({
+    open,
+    dimensione,
+    onClose,
+    onAdd,
+    initialConfig,
+    initialQuantita = 1,
+}) {
+    const [basi, setBasi] = useState(arrayToQtyMap(initialConfig?.basi));
+    const [proteine, setProteine] = useState(
+        arrayToQtyMap(initialConfig?.proteine),
+    );
+    const [green, setGreen] = useState(arrayToQtyMap(initialConfig?.green));
+    const [crispy, setCrispy] = useState(arrayToQtyMap(initialConfig?.crispy));
+    const [salse, setSalse] = useState(arrayToQtyMap(initialConfig?.salse));
+    const [extraQty, setExtraQty] = useState({});
+    const [salsaAParte, setSalsaAParte] = useState(
+        initialConfig?.salsa_a_parte ?? false,
+    );
+    const [posate, setPosate] = useState(initialConfig?.posate ?? "");
     const [quantita, setQuantita] = useState(initialQuantita);
     const [error, setError] = useState("");
+    const [errorVisible, setErrorVisible] = useState(false);
+
+    useEffect(() => {
+        if (!error) { setErrorVisible(false); return; }
+        const raf = requestAnimationFrame(() => setErrorVisible(true));
+        const hide = setTimeout(() => setErrorVisible(false), 5000);
+        const clear = setTimeout(() => setError(""), 5300);
+        return () => { cancelAnimationFrame(raf); clearTimeout(hide); clearTimeout(clear); };
+    }, [error]);
 
     if (!dimensione) return null;
 
-    const extraCost =
-        Math.max(0, proteine.length - dimensione.proteine) *
-            POKE_EXTRA_PREZZI.proteine +
-        Math.max(0, green.length - dimensione.green) * POKE_EXTRA_PREZZI.green +
-        Math.max(0, crispy.length - dimensione.crispy) *
-            POKE_EXTRA_PREZZI.crispy +
-        Math.max(0, salse.length - dimensione.salse) * POKE_EXTRA_PREZZI.salse;
+    const makeIncrement = (state, setState, maxHard) => (item) => {
+        if (maxHard !== undefined && totalQty(state) >= maxHard) return;
+        setState({ ...state, [item]: (state[item] ?? 0) + 1 });
+    };
+
+    const makeDecrement = (state, setState) => (item) => {
+        if (!state[item]) return;
+        const next = { ...state };
+        if (next[item] <= 1) delete next[item];
+        else next[item]--;
+        setState(next);
+    };
+
+    const extraCost = Object.entries(extraQty).reduce(
+        (s, [nome, qty]) => s + (ITEM_LOOKUP[nome]?.prezzo ?? 0) * qty,
+        0,
+    );
+
     const prezzoTotale = dimensione.prezzo + extraCost;
 
-    const makeToggle =
-        (state, setState, max = Infinity) =>
-        (item) => {
-            if (state.includes(item)) {
-                setState(state.filter((x) => x !== item));
-            } else {
-                if (state.length >= max) return;
-                setState([...state, item]);
-            }
-        };
-
     const submit = () => {
-        if (basi.length === 0) {
+        if (totalQty(basi) === 0) {
             setError("Scegli almeno una base.");
             return;
         }
-        if (proteine.length === 0) {
+        if (totalQty(proteine) === 0) {
             setError("Scegli almeno una proteina.");
             return;
         }
+        if (!posate) {
+            setError("Scegli le posate.");
+            return;
+        }
+
         const extras = {};
-        const addExtras = (key, items, max, prezzo) => {
-            const e = items.slice(max);
-            if (e.length > 0) extras[key] = e.map((nome) => ({ nome, prezzo }));
-        };
-        addExtras("proteine", proteine, dimensione.proteine, POKE_EXTRA_PREZZI.proteine);
-        addExtras("green", green, dimensione.green, POKE_EXTRA_PREZZI.green);
-        addExtras("crispy", crispy, dimensione.crispy, POKE_EXTRA_PREZZI.crispy);
-        addExtras("salse", salse, dimensione.salse, POKE_EXTRA_PREZZI.salse);
+        Object.entries(extraQty).forEach(([nome, qty]) => {
+            const info = ITEM_LOOKUP[nome];
+            if (!info) return;
+            if (!extras[info.cat]) extras[info.cat] = [];
+            for (let i = 0; i < qty; i++)
+                extras[info.cat].push({ nome, prezzo: info.prezzo });
+        });
+
         onAdd({
             tipo: "poke",
             nome: `Poke Bowl ${dimensione.nome}`,
@@ -67,47 +204,50 @@ export default function PokeModal({ open, dimensione, onClose, onAdd, initialCon
             quantita,
             configurazione: {
                 dimensione: dimensione.id,
-                basi,
-                proteine,
-                green,
-                crispy,
-                salse,
+                basi: flattenMap(basi),
+                proteine: flattenMap(proteine),
+                green: flattenMap(green),
+                crispy: flattenMap(crispy),
+                salse: flattenMap(salse),
                 extras,
+                salsa_a_parte: salsaAParte,
+                posate,
             },
         });
     };
 
     const footer = (
         <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => setQuantita(Math.max(1, quantita - 1))}
+                        className="h-10 w-10 rounded-full border border-stone-200 text-lg font-bold text-stone-700 transition hover:bg-stone-50"
+                        aria-label="Diminuisci quantità"
+                    >
+                        −
+                    </button>
+                    <span className="w-8 text-center text-lg font-bold">
+                        {quantita}
+                    </span>
+                    <button
+                        type="button"
+                        onClick={() => setQuantita(Math.min(10, quantita + 1))}
+                        className="h-10 w-10 rounded-full border border-stone-200 text-lg font-bold text-stone-700 transition hover:bg-stone-50"
+                        aria-label="Aumenta quantità"
+                    >
+                        +
+                    </button>
+                </div>
                 <button
                     type="button"
-                    onClick={() => setQuantita(Math.max(1, quantita - 1))}
-                    className="h-10 w-10 rounded-full border border-stone-200 text-lg font-bold text-stone-700 transition hover:bg-stone-50"
-                    aria-label="Diminuisci quantità"
+                    onClick={submit}
+                    className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
                 >
-                    −
-                </button>
-                <span className="w-8 text-center text-lg font-bold">
-                    {quantita}
-                </span>
-                <button
-                    type="button"
-                    onClick={() => setQuantita(Math.min(10, quantita + 1))}
-                    className="h-10 w-10 rounded-full border border-stone-200 text-lg font-bold text-stone-700 transition hover:bg-stone-50"
-                    aria-label="Aumenta quantità"
-                >
-                    +
+                    {initialConfig ? "Salva" : "Aggiungi"} ·{" "}
+                    {(prezzoTotale * quantita).toFixed(2)} €
                 </button>
             </div>
-            <button
-                type="button"
-                onClick={submit}
-                className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
-            >
-                {initialConfig ? "Salva" : "Aggiungi"} · {(prezzoTotale * quantita).toFixed(2)} €
-            </button>
-        </div>
     );
 
     return (
@@ -121,49 +261,149 @@ export default function PokeModal({ open, dimensione, onClose, onAdd, initialCon
                 <MultiSelect
                     titolo="Basi"
                     items={POKE_BASI}
-                    selected={basi}
-                    max={POKE_BASI_MAX}
-                    onToggle={makeToggle(basi, setBasi, POKE_BASI_MAX)}
+                    qtyMap={basi}
+                    onIncrement={makeIncrement(basi, setBasi, POKE_BASI_MAX)}
+                    onDecrement={makeDecrement(basi, setBasi)}
+                    maxIncluso={POKE_BASI_MAX}
+                    maxHard={POKE_BASI_MAX}
                 />
                 <MultiSelect
                     titolo="Proteine"
                     items={POKE_PROTEINE}
-                    selected={proteine}
-                    max={dimensione.proteine}
-                    extraPrezzo={POKE_EXTRA_PREZZI.proteine}
-                    onToggle={makeToggle(proteine, setProteine)}
+                    qtyMap={proteine}
+                    onIncrement={makeIncrement(proteine, setProteine)}
+                    onDecrement={makeDecrement(proteine, setProteine)}
+                    maxIncluso={dimensione.proteine}
                 />
                 <MultiSelect
                     titolo="Green & Co"
                     items={POKE_GREEN}
-                    selected={green}
-                    max={dimensione.green}
-                    extraPrezzo={POKE_EXTRA_PREZZI.green}
-                    onToggle={makeToggle(green, setGreen)}
+                    qtyMap={green}
+                    onIncrement={makeIncrement(green, setGreen)}
+                    onDecrement={makeDecrement(green, setGreen)}
+                    maxIncluso={dimensione.green}
                 />
                 <MultiSelect
                     titolo="Crispy"
                     items={POKE_CRISPY}
-                    selected={crispy}
-                    max={dimensione.crispy}
-                    extraPrezzo={POKE_EXTRA_PREZZI.crispy}
-                    onToggle={makeToggle(crispy, setCrispy)}
+                    qtyMap={crispy}
+                    onIncrement={makeIncrement(crispy, setCrispy)}
+                    onDecrement={makeDecrement(crispy, setCrispy)}
+                    maxIncluso={dimensione.crispy}
                 />
                 <MultiSelect
                     titolo="Salse"
                     items={POKE_SALSE}
-                    selected={salse}
-                    max={dimensione.salse}
-                    extraPrezzo={POKE_EXTRA_PREZZI.salse}
-                    onToggle={makeToggle(salse, setSalse)}
+                    qtyMap={salse}
+                    onIncrement={makeIncrement(salse, setSalse)}
+                    onDecrement={makeDecrement(salse, setSalse)}
+                    maxIncluso={dimensione.salse}
                 />
-            </div>
 
-            {error && (
-                <div className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
-                    {error}
+                {/* Extra Proteine */}
+                <div>
+                    <div className="mb-1">
+                        <h3 className="text-sm font-semibold text-stone-800">
+                            Extra Proteine (Facoltativo)
+                        </h3>
+                    </div>
+                    <ExtraList
+                        items={EXTRA_PROTEINE_ITEMS}
+                        extraQty={extraQty}
+                        setExtraQty={setExtraQty}
+                    />
                 </div>
-            )}
+
+                {/* Extra Green */}
+                <div>
+                    <div className="mb-1">
+                        <h3 className="text-sm font-semibold text-stone-800">
+                            Extra Green (Facoltativo)
+                        </h3>
+                    </div>
+                    <ExtraList
+                        items={EXTRA_GREEN_ITEMS}
+                        extraQty={extraQty}
+                        setExtraQty={setExtraQty}
+                    />
+                </div>
+
+                {/* Extra Crispy */}
+                <div>
+                    <div className="mb-1">
+                        <h3 className="text-sm font-semibold text-stone-800">
+                            Extra Crispy (Facoltativo)
+                        </h3>
+                    </div>
+                    <ExtraList
+                        items={EXTRA_CRISPY_ITEMS}
+                        extraQty={extraQty}
+                        setExtraQty={setExtraQty}
+                    />
+                </div>
+
+                {/* Extra Salse */}
+                <div>
+                    <div className="mb-1">
+                        <h3 className="text-sm font-semibold text-stone-800">
+                            Extra Salse (Facoltativo)
+                        </h3>
+                    </div>
+                    <ExtraList
+                        items={EXTRA_SALSE_ITEMS}
+                        extraQty={extraQty}
+                        setExtraQty={setExtraQty}
+                    />
+                </div>
+
+                {/* Salsa a parte */}
+                <div>
+                    <h3 className="mb-2 text-sm font-semibold text-stone-800">
+                        Vuoi la salsa scelta a parte?
+                    </h3>
+                    <label className="flex cursor-pointer items-center gap-3">
+                        <input
+                            type="checkbox"
+                            checked={salsaAParte}
+                            onChange={(e) => setSalsaAParte(e.target.checked)}
+                            className="h-4 w-4 accent-mint-600"
+                        />
+                        <span className="text-sm text-stone-700">Sì</span>
+                    </label>
+                </div>
+
+                {/* Posate */}
+                <div>
+                    <h3 className="mb-2 text-sm font-semibold text-stone-800">
+                        Posate <span className="text-red-500">*</span>
+                    </h3>
+                    <ul className="divide-y divide-stone-100">
+                        {POSATE.map((opzione) => (
+                            <li key={opzione}>
+                                <label className="flex cursor-pointer items-center gap-3 py-2.5">
+                                    <input
+                                        type="radio"
+                                        name="posate"
+                                        value={opzione}
+                                        checked={posate === opzione}
+                                        onChange={() => setPosate(opzione)}
+                                        className="h-4 w-4 accent-mint-600"
+                                    />
+                                    <span className="text-sm text-stone-700">
+                                        {opzione}
+                                    </span>
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                {error && (
+                    <div className={`sticky bottom-0 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200 transition-all duration-300 ease-in-out ${errorVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
+                        {error}
+                    </div>
+                )}
+            </div>
         </ModalShell>
     );
 }
