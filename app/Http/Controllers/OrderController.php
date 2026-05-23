@@ -40,23 +40,34 @@ class OrderController extends Controller
             );
         }
 
-        $order = DB::transaction(function () use ($data) {
-            $progressivo = Order::whereDate('created_at', today())->count() + 1;
-            $numero = 'ORD-' . str_pad((string) $progressivo, 3, '0', STR_PAD_LEFT);
+        try {
+            $order = retry(3, function () use ($data) {
+                return DB::transaction(function () use ($data) {
+                    $progressivo = Order::whereDate('created_at', today())->count() + 1;
+                    $numero = 'ORD-' . str_pad((string) $progressivo, 3, '0', STR_PAD_LEFT);
 
-            $order = Order::create([
-                'numero_ordine' => $numero,
-                'nome_cliente' => $data['nome_cliente'],
-                'telefono' => $data['telefono'],
-                'orario_ritiro' => $data['orario_ritiro'],
-                'note' => $data['note'] ?? null,
-                'stato' => 'nuovo',
-            ]);
+                    $order = Order::create([
+                        'numero_ordine' => $numero,
+                        'nome_cliente' => $data['nome_cliente'],
+                        'telefono' => $data['telefono'],
+                        'orario_ritiro' => $data['orario_ritiro'],
+                        'note' => $data['note'] ?? null,
+                        'stato' => 'nuovo',
+                    ]);
 
-            $order->items()->createMany($data['items']);
+                    $order->items()->createMany($data['items']);
 
-            return $order->load('items');
-        });
+                    return $order->load('items');
+                });
+            }, 50, fn ($e) => $e instanceof \Illuminate\Database\UniqueConstraintViolationException);
+        } catch (\Throwable $e) {
+            Log::error('Creazione ordine fallita', ['message' => $e->getMessage()]);
+
+            return response()->json(
+                ['message' => 'Impossibile creare l\'ordine. Riprova fra poco.'],
+                500
+            );
+        }
 
         try {
             $notifier->send($order);
