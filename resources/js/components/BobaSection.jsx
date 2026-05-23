@@ -433,7 +433,7 @@ export default function BobaSection() {
 
     return (
         <section
-            id="menu"
+            id="boba"
             className="relative overflow-hidden bg-stone-50 py-16 sm:py-24"
         >
             <div className="relative z-10 mx-auto max-w-6xl px-6">
