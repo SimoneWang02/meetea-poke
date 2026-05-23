@@ -62,10 +62,10 @@ export default function Privacy() {
                         <br />
                         Email:{" "}
                         <a
-                            href="mailto:privacy@example.com"
+                            href="mailto:qqtea2020@gmail.com"
                             className="text-mint-700 underline hover:text-mint-800"
                         >
-                            privacy@example.com
+                            qqtea2020@gmail.com
                         </a>
                     </p>
                 </Section>
@@ -114,10 +114,10 @@ export default function Privacy() {
                         dove applicabile, richiedere la portabilità. Puoi
                         esercitare questi diritti scrivendo a{" "}
                         <a
-                            href="mailto:privacy@example.com"
+                            href="mailto:qqtea2020@gmail.com"
                             className="text-mint-700 underline hover:text-mint-800"
                         >
-                            privacy@example.com
+                            qqtea2020@gmail.com
                         </a>
                         . Hai inoltre il diritto di proporre reclamo al Garante
                         per la Protezione dei Dati Personali (
