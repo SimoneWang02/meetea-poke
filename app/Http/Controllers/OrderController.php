@@ -111,6 +111,7 @@ class OrderController extends Controller
     {
         $orders = Order::with('items')
             ->where('stampato', false)
+            ->whereDate('created_at', today())
             ->orderBy('created_at')
             ->get()
             ->map(fn (Order $o) => [
