@@ -14,6 +14,11 @@ class Order extends Model
         'orario_ritiro',
         'note',
         'stato',
+        'stampato',
+    ];
+
+    protected $casts = [
+        'stampato' => 'boolean',
     ];
 
     public function items(): HasMany

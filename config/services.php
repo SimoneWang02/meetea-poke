@@ -45,4 +45,8 @@ return [
         'token' => env('ADMIN_TOKEN'),
     ],
 
+    'print' => [
+        'token' => env('PRINT_API_TOKEN'),
+    ],
+
 ];

@@ -106,4 +106,33 @@ class OrderController extends Controller
 
         return response()->json($order->load('items'));
     }
+
+    public function printQueue(): JsonResponse
+    {
+        $orders = Order::with('items')
+            ->where('stampato', false)
+            ->orderBy('created_at')
+            ->get()
+            ->map(fn (Order $o) => [
+                'id'            => $o->id,
+                'numero_ordine' => $o->numero_ordine,
+                'nome_cliente'  => $o->nome_cliente,
+                'orario_ritiro' => $o->orario_ritiro,
+                'note'          => $o->note,
+                'items'         => $o->items->map(fn ($item) => [
+                    'tipo'           => $item->tipo,
+                    'quantita'       => $item->quantita,
+                    'configurazione' => $item->configurazione,
+                ]),
+            ]);
+
+        return response()->json($orders);
+    }
+
+    public function markStampato(Order $order): JsonResponse
+    {
+        $order->update(['stampato' => true]);
+
+        return response()->json(['ok' => true]);
+    }
 }

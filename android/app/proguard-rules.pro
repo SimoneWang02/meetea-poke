@@ -1,0 +1,2 @@
+-keep class woyou.aidl.service.** { *; }
+-keep class com.meetea.poke.api.models.** { *; }
