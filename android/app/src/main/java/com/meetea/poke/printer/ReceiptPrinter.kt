@@ -8,8 +8,8 @@ private const val SEP  = "--------------------------------"
 
 object ReceiptPrinter {
 
-    fun print(order: Order) {
-        val svc = SunmiPrinter.service ?: return
+    fun print(order: Order): Boolean {
+        val svc = SunmiPrinter.service ?: return false
         val cb  = SunmiPrinter.nullCallback
 
         svc.initPrinter(cb)
@@ -42,6 +42,7 @@ object ReceiptPrinter {
 
         svc.lineWrap(4, cb)
         svc.cutPaper(cb)
+        return true
     }
 
     private fun printItem(item: OrderItem) {

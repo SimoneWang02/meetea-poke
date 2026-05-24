@@ -53,11 +53,13 @@ class PrintService : Service() {
                 try {
                     val orders = api.printQueue()
                     orders.forEach { order ->
-                        ReceiptPrinter.print(order)
-                        try {
-                            api.markStampato(order.id)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "markStampato failed for ${order.id}", e)
+                        val printed = ReceiptPrinter.print(order)
+                        if (printed) {
+                            try {
+                                api.markStampato(order.id)
+                            } catch (e: Exception) {
+                                Log.e(TAG, "markStampato failed for ${order.id}", e)
+                            }
                         }
                     }
                 } catch (e: Exception) {
