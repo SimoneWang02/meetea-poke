@@ -174,7 +174,6 @@ export const BOBA_CATEGORIE = [
             { nome: "Pesca", prezzi: { M: 4, G: 5 } },
             { nome: "Zenzero", prezzi: { M: 4, G: 5 } },
             { nome: "Uva", prezzi: { M: 4, G: 5 } },
-            { nome: "Gelso", prezzi: { M: 4, G: 5 } },
             { nome: "Ciliegia", prezzi: { M: 4, G: 5 } },
             { nome: "Litchi", prezzi: { M: 4, G: 5 } },
             { nome: "Limone", prezzi: { M: 4, G: 5 } },
@@ -217,7 +216,6 @@ export const BOBA_CATEGORIE = [
                 ingredienti: "Tè verde, passion fruit e mango freschi",
                 image: "passion_fruit_mango.PNG",
             },
-            { nome: "Passion Fruit al Mojito", prezzi: { G: 5.5 } },
             {
                 nome: "I Miss You",
                 prezzi: { G: 5.5 },
@@ -232,12 +230,6 @@ export const BOBA_CATEGORIE = [
                 image: "yakult_fragola.PNG",
             },
             {
-                nome: "Tè Verde Miele e Pompelmo",
-                prezzi: { G: 5.5 },
-                ingredienti:
-                    "Tè verde, miele, pompelmo e fette di limone fresco",
-            },
-            {
                 nome: "Yakult all'Ananas",
                 prezzi: { G: 5.5 },
                 ingredienti: "Latte probiotico, ananas fresca",
@@ -249,7 +241,6 @@ export const BOBA_CATEGORIE = [
                 ingredienti: "Latte probiotico, arancia fresca",
                 image: "yakult_arancia.PNG",
             },
-            { nome: "Anguria Fresca al Cocco", prezzi: { G: 5.5 }, image: "anguria_fresca_cocco.PNG" },
             { nome: "Tè all'Arancia Fresca con Maracuja", prezzi: { G: 5.5 } },
         ],
     },
@@ -315,7 +306,6 @@ export const BOBA_CATEGORIE = [
                 prezzi: { G: 5.5 },
                 ingredienti: "Marmellata di fragola con pezzetti, latte",
             },
-            { nome: "Red Bean con Budino", prezzi: { G: 5.5 }, image: "red_bean_budino.PNG" },
             { nome: "Latte di Cocco Denso al Mango", prezzi: { G: 5.5 }, image: "latte_cocco_denso_mango.PNG" },
         ],
     },
@@ -343,7 +333,6 @@ export const BOBA_CATEGORIE = [
                 ingredienti: "Granita all'ananas, frutta secca",
                 image: "ananas_fresca_granita.PNG",
             },
-            { nome: "Red Bean Matcha", prezzi: { G: 5.5 }, image: "red_bean_matcha.PNG" },
             { nome: "Cheese Dragon", prezzi: { G: 5.5 }, image: "cheese_dragon.PNG" },
             { nome: "Cheese Mango", prezzi: { G: 5.5 }, topSeller: true, image: "cheese_mango.PNG" },
         ],
@@ -441,14 +430,6 @@ export const CONTATTI = {
 
 export const SNACKS_LISTA = [
     {
-        nome: "Zuppa di Suino",
-        image: "zuppa_suino.JPG",
-        opzioni: [
-            { qty: "Porzione Piccola", prezzo: 3.5 },
-            { qty: "Porzione Grande", prezzo: 5 },
-        ],
-    },
-    {
         nome: "Ravioli di Carne",
         image: "ravioli_carne.JPG",
         opzioni: [{ qty: "6pz", prezzo: 4 }],
@@ -457,11 +438,6 @@ export const SNACKS_LISTA = [
         nome: "Ravioli di Gamberi",
         image: "ravioli_gamberi.JPG",
         opzioni: [{ qty: "4pz", prezzo: 5 }],
-    },
-    {
-        nome: "Tortellini Cinesi",
-        image: "tortellini_cinesi.JPG",
-        opzioni: [{ qty: "10pz", prezzo: 5 }],
     },
     {
         nome: "Pollo Riempito con Riso",
