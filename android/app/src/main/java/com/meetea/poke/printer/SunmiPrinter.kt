@@ -6,24 +6,32 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
-import woyou.aidl.service.ICallback
-import woyou.aidl.service.IWoyouService
+import woyou.aidlservice.jiuiv5.ICallback
+import woyou.aidlservice.jiuiv5.IWoyouService
 
 private const val TAG = "SunmiPrinter"
-private const val PRINTER_SERVICE_PACKAGE = "com.sunmi.peripheral.printer"
-private const val PRINTER_SERVICE_ACTION = "woyou.aidl.service.REMOTE_SERVICE"
+private const val PRINTER_SERVICE_PACKAGE = "woyou.aidlservice.jiuiv5"
+// Bind directly to PrinterService via the IWoyouService action.
+// sendRawData (transact code 11) works correctly at this level.
+private const val PRINTER_SERVICE_ACTION = "woyou.aidlservice.jiuiv5.IWoyouService"
 
 object SunmiPrinter {
     var service: IWoyouService? = null
         private set
 
+    // Raw IBinder for direct transact() calls (bypasses AIDL code-order mismatches).
+    var binder: IBinder? = null
+        private set
+
     private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName, binder: IBinder) {
-            service = IWoyouService.Stub.asInterface(binder)
+        override fun onServiceConnected(name: ComponentName, rawBinder: IBinder) {
+            binder = rawBinder
+            service = IWoyouService.Stub.asInterface(rawBinder)
             Log.d(TAG, "Printer service connected")
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
+            binder = null
             service = null
             Log.w(TAG, "Printer service disconnected")
         }
@@ -40,6 +48,7 @@ object SunmiPrinter {
         try {
             context.unbindService(connection)
         } catch (_: Exception) {}
+        binder = null
         service = null
     }
 
