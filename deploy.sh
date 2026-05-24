@@ -56,6 +56,7 @@ docker compose -f $COMPOSE_FILE ps
 EOF
 
 step "Health check: $HEALTH_URL"
+sleep 3
 for i in 1 2 3 4 5 6; do
     if curl -fsS -o /dev/null --max-time 5 "$HEALTH_URL"; then
         ok "Deploy successful — site is up"
