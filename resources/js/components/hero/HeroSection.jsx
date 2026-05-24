@@ -3,29 +3,7 @@ import { Link } from "react-router-dom";
 import HeroDeliveryIcons from "./HeroDeliveryIcons";
 import GridMotion from "./GridMotion";
 import { CONTATTI, isGiornoChiuso } from "../../lib/options";
-
-const heroGridSources = [
-    "/images/hero_grid/IMG_1456.JPG",
-    "/images/hero_grid/IMG_1457.JPG",
-    "/images/hero_grid/IMG_1458.JPG",
-    "/images/hero_grid/IMG_1459.JPG",
-    "/images/hero_grid/IMG_1461.JPG",
-    "/images/hero_grid/IMG_1462.JPG",
-    "/images/hero_grid/IMG_1464.JPG",
-    "/images/hero_grid/IMG_1466.JPG",
-    "/images/hero_grid/IMG_1467.JPG",
-    "/images/hero_grid/IMG_1468.JPG",
-    "/images/hero_grid/IMG_1469.JPG",
-    "/images/hero_grid/IMG_2889.JPG",
-    "/images/hero_grid/grid_item.png",
-    "/images/hero_grid/grid_item (2).png",
-    "/images/hero_grid/grid_item (3).png",
-    "/images/hero_grid/grid_item (4).png",
-    "/images/hero_grid/grid_item (5).png",
-    "/images/hero_grid/grid_item (6).png",
-    "/images/hero_grid/grid_item (7).png",
-    "/images/hero_grid/grid_item (8).png",
-];
+import { heroGridSources } from "../../lib/heroImages";
 
 function buildRandomHeroImages() {
     const total = 28;

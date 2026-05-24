@@ -17,6 +17,8 @@ import BobaSection from "../components/BobaSection";
 import SnacksSection from "../components/SnacksSection";
 import Navbar from "../components/Navbar";
 import HeroSection from "../components/hero/HeroSection";
+import PageLoader from "../components/PageLoader";
+import { heroGridSources } from "../lib/heroImages";
 import { useInView } from "../lib/useInView";
 
 function BentoTile({
@@ -66,6 +68,7 @@ export default function Home() {
 
     return (
         <div className="font-sans text-stone-900">
+            <PageLoader images={heroGridSources} />
             <Navbar />
 
             {/* Hero */}
