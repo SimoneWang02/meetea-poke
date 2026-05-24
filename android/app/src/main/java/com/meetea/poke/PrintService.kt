@@ -94,7 +94,7 @@ class PrintService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("MeeTea & Poke")
             .setContentText("In ascolto ordini...")
-            .setSmallIcon(android.R.drawable.ic_print)
+            .setSmallIcon(R.drawable.ic_notification)
             .setOngoing(true)
             .build()
     }
