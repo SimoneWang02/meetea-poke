@@ -1,11 +1,52 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import HeroDeliveryIcons from "./HeroDeliveryIcons";
+import GridMotion from "./GridMotion";
 import { CONTATTI, isGiornoChiuso } from "../../lib/options";
 
+const heroGridSources = [
+    "/images/hero_grid/IMG_1456.JPG",
+    "/images/hero_grid/IMG_1457.JPG",
+    "/images/hero_grid/IMG_1458.JPG",
+    "/images/hero_grid/IMG_1459.JPG",
+    "/images/hero_grid/IMG_1461.JPG",
+    "/images/hero_grid/IMG_1462.JPG",
+    "/images/hero_grid/IMG_1464.JPG",
+    "/images/hero_grid/IMG_1466.JPG",
+    "/images/hero_grid/IMG_1467.JPG",
+    "/images/hero_grid/IMG_1468.JPG",
+    "/images/hero_grid/IMG_1469.JPG",
+    "/images/hero_grid/IMG_2889.JPG",
+    "/images/hero_grid/grid_item.png",
+    "/images/hero_grid/grid_item (2).png",
+    "/images/hero_grid/grid_item (3).png",
+    "/images/hero_grid/grid_item (4).png",
+    "/images/hero_grid/grid_item (5).png",
+    "/images/hero_grid/grid_item (6).png",
+    "/images/hero_grid/grid_item (7).png",
+    "/images/hero_grid/grid_item (8).png",
+];
+
+function buildRandomHeroImages() {
+    const total = 28;
+    const pool = [];
+    while (pool.length < total) {
+        const shuffled = [...heroGridSources].sort(() => Math.random() - 0.5);
+        pool.push(...shuffled);
+    }
+    return pool.slice(0, total);
+}
+
 export default function HeroSection() {
+    const [heroImages] = useState(buildRandomHeroImages);
+
     return (
-        <section className="relative flex h-screen min-h-[640px] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-mint-400 via-mint-600 to-mint-800 text-white">
-            <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-mint-200 opacity-30 blur-3xl" />
+        <section className="relative flex h-screen min-h-[640px] w-full items-center justify-center overflow-hidden text-white">
+            <div className="absolute inset-0 z-0">
+                <GridMotion items={heroImages} gradientColor="#1c1917" />
+            </div>
+            <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/65 via-black/50 to-black/75" />
+            <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.5),transparent_65%)]" />
 
             <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
                 <img
@@ -81,7 +122,7 @@ export default function HeroSection() {
                 </div>
             </div>
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-mint-900/30" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-24 bg-gradient-to-b from-transparent to-black/50" />
         </section>
     );
 }
