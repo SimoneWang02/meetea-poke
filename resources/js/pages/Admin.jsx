@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { adminLogin, listOrders, updateStato } from '../lib/api';
+import { staffLogin, listOrders, updateStato } from '../lib/api';
 import { beepNewOrder } from '../lib/beep';
 import OrdineCard from '../components/admin/OrdineCard';
 
@@ -16,7 +16,7 @@ function Login({ onSuccess }) {
         setError('');
         setLoading(true);
         try {
-            const { token } = await adminLogin(password);
+            const { token } = await staffLogin(password);
             onSuccess(token);
         } catch (err) {
             setError(err?.response?.data?.message || 'Password errata');

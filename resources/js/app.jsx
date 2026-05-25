@@ -6,18 +6,21 @@ import Home from './pages/Home';
 import Ordina from './pages/Ordina';
 import Admin from './pages/Admin';
 import Privacy from './pages/Privacy';
+import { MenuProvider } from './lib/MenuProvider';
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/ordina" element={<Ordina />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="*" element={<Home />} />
-            </Routes>
-        </BrowserRouter>
+        <MenuProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/ordina" element={<Ordina />} />
+                    <Route path="/staff" element={<Admin />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="*" element={<Home />} />
+                </Routes>
+            </BrowserRouter>
+        </MenuProvider>
     );
 }
 

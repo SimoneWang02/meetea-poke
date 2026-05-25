@@ -5,8 +5,8 @@ export async function createOrder(payload) {
     return data;
 }
 
-export async function adminLogin(password) {
-    const { data } = await axios.post('/admin/login', { password });
+export async function staffLogin(password) {
+    const { data } = await axios.post('/staff/login', { password });
     return data;
 }
 
