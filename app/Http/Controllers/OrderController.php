@@ -146,6 +146,16 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
+    public function recentOrders(): JsonResponse
+    {
+        $orders = Order::with('items')
+            ->whereDate('created_at', today())
+            ->orderBy('created_at')
+            ->get();
+
+        return response()->json($orders);
+    }
+
     public function markStampato(Order $order): JsonResponse
     {
         $order->update(['stampato' => true]);

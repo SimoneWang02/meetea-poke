@@ -10,5 +10,7 @@ data class Order(
     @SerializedName("orario_ritiro") val orarioRitiro: String,
     val note: String?,
     val totale: Double?,
-    val items: List<OrderItem>
+    val items: List<OrderItem>,
+    val stato: String?,
+    @SerializedName("created_at") val createdAt: String?
 )

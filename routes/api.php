@@ -15,5 +15,6 @@ Route::middleware('admin')->group(function () {
 
 Route::middleware(PrintAuth::class)->group(function () {
     Route::get('/print-queue', [OrderController::class, 'printQueue']);
+    Route::get('/recent-orders', [OrderController::class, 'recentOrders']);
     Route::post('/orders/{order}/stampa', [OrderController::class, 'markStampato']);
 });

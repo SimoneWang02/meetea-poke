@@ -50,4 +50,5 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.coroutines.android)
     implementation(libs.gson)
+    implementation(libs.viewpager2)
 }
