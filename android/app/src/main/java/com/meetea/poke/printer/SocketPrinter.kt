@@ -13,6 +13,8 @@ private val PORTS = listOf(9100, 6101, 4000)
 private val ESC = 0x1B.toByte()
 private val GS  = 0x1D.toByte()
 
+private val GBK = java.nio.charset.Charset.forName("GBK")
+
 object SocketPrinter {
 
     fun print(order: Order): Boolean {
@@ -57,7 +59,7 @@ object SocketPrinter {
 
     @Suppress("UNCHECKED_CAST")
     private fun buildReceipt(order: Order, out: OutputStream) {
-        fun text(s: String) = out.write(s.toByteArray(java.nio.charset.Charset.forName("GBK")))
+        fun text(s: String) = out.write(s.toByteArray(GBK))
         fun esc(vararg b: Byte) = out.write(b)
 
         esc(ESC, 0x61, 0x01)          // center
@@ -69,18 +71,15 @@ object SocketPrinter {
         text("--------------------------------\n")
         esc(ESC, 0x61, 0x00)          // left
         esc(ESC, 0x45, 0x01)          // bold
-        text("Cliente: ")
-        text("${order.nomeCliente}\n")
-        text("Tel: ")
-        text("${order.telefono}\n")
-        text("Ritiro: ")
-        text("${order.orarioRitiro}\n")
+        text("Cliente: ${order.nomeCliente}\n")
+        text("Tel: ${order.telefono}\n")
+        text("Ritiro: ${order.orarioRitiro}\n")
         text("--------------------------------\n")
         if (!order.note.isNullOrBlank()) {
             text("Note: ${order.note}\n")
-            esc(ESC, 0x61, 0x01)          // center
+            esc(ESC, 0x61, 0x01)      // center
             text("--------------------------------\n")
-            esc(ESC, 0x61, 0x00)          // left
+            esc(ESC, 0x61, 0x00)      // left
         }
         esc(GS,  0x21, 0x00)          // normal
         val tipoOrdine = mapOf("poke" to 0, "bubbletea" to 1)
@@ -88,11 +87,11 @@ object SocketPrinter {
 
         esc(ESC, 0x45, 0x01)          // bold
         text("--------------------------------\n")
-        if (order.totale != null) {
-            val totaleStr = "%.2f €".format(order.totale)
-            val padding = 32 - "Totale".length - totaleStr.length
-            text("Totale" + " ".repeat(padding.coerceAtLeast(1)) + "$totaleStr\n")
-        }
+        val totale = order.totale
+            ?: order.items.sumOf { it.quantita * ((it.configurazione["prezzo_base"] as? Number)?.toDouble() ?: 0.0) }
+        val totaleNum = "%.2f".format(totale)
+        val totPadding = (32 - "Totale".length - totaleNum.length).coerceAtLeast(1)
+        text("Totale" + " ".repeat(totPadding) + "$totaleNum\n")
 
         esc(ESC, 0x64, 0x05)          // feed 5 lines
         esc(GS,  0x56, 0x41, 0x00)   // cut
@@ -101,21 +100,21 @@ object SocketPrinter {
 
     @Suppress("UNCHECKED_CAST")
     private fun writeItem(out: OutputStream, item: OrderItem) {
-        fun text(s: String) = out.write(s.toByteArray(java.nio.charset.Charset.forName("GBK")))
+        fun text(s: String) = out.write(s.toByteArray(GBK))
         fun esc(vararg b: Byte) = out.write(b)
         val cfg = item.configurazione
         val titolo = when (item.tipo) {
-            "poke" -> cfg["dimensione"]?.toString()?.replaceFirstChar { it.uppercase() } ?: "Poke Bowl"
+            "poke"      -> cfg["dimensione"]?.toString()?.replaceFirstChar { it.uppercase() } ?: "Poke Bowl"
             "bubbletea" -> cfg["nome"]?.toString()?.ifBlank { null } ?: "Bubble Tea"
-            else   -> cfg["nome"]?.toString()?.ifBlank { null } ?: item.tipo.replaceFirstChar { it.uppercase() }
+            else        -> cfg["nome"]?.toString()?.ifBlank { null } ?: item.tipo.replaceFirstChar { it.uppercase() }
         }
         esc(ESC, 0x45, 0x01)
         val prezzoBase = (cfg["prezzo_base"] as? Number)?.toDouble()
         if (prezzoBase != null) {
-            val prezzoTot = "%.2f €".format(prezzoBase * item.quantita)
+            val numStr = "%.2f".format(prezzoBase * item.quantita)
             val left = "${item.quantita}x $titolo"
-            val padding = 32 - left.length - prezzoTot.length
-            text("$left${" ".repeat(padding.coerceAtLeast(1))}$prezzoTot\n")
+            val padding = (32 - left.length - numStr.length).coerceAtLeast(1)
+            text("$left${" ".repeat(padding)}$numStr\n")
         } else {
             text("${item.quantita}x $titolo\n")
         }
@@ -141,8 +140,8 @@ object SocketPrinter {
             "bubbletea" -> {
                 val size = when (cfg["size"]?.toString()) { "M" -> "Media"; "G" -> "Grande"; else -> cfg["size"]?.toString() ?: "" }
                 val temp = cfg["temperatura"]?.toString()?.replaceFirstChar { it.uppercase() } ?: ""
-                if (size.isNotBlank()) text(" - $size\n")
-                if (temp.isNotBlank()) text(" - $temp\n")
+                if (size.isNotBlank()) text("  - $size\n")
+                if (temp.isNotBlank()) text("  - $temp\n")
                 val toppings = cfg["toppings"] as? List<*>
                 toppings?.forEach { t ->
                     val tMap  = t as? Map<*, *> ?: return@forEach
