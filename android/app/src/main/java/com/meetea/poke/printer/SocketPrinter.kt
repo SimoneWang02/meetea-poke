@@ -79,7 +79,7 @@ object SocketPrinter {
         if (!order.note.isNullOrBlank()) text("Note: ${order.note}\n")
         esc(ESC, 0x61, 0x01)          // center
         text("--------------------------------\n")
-        
+        esc(ESC, 0x61, 0x00)          // left
         esc(GS,  0x21, 0x00)          // normal
         val tipoOrdine = mapOf("poke" to 0, "bubbletea" to 1)
         order.items.sortedBy { tipoOrdine[it.tipo] ?: 2 }.forEach { item -> writeItem(out, item) }
@@ -100,7 +100,7 @@ object SocketPrinter {
         val titolo = when (item.tipo) {
             "poke" -> cfg["dimensione"]?.toString()?.replaceFirstChar { it.uppercase() } ?: "Poke Bowl"
             "bubbletea" -> cfg["nome"]?.toString()?.ifBlank { null } ?: "Bubble Tea"
-            else   -> item.tipo.replaceFirstChar { it.uppercase() }
+            else   -> cfg["nome"]?.toString()?.ifBlank { null } ?: item.tipo.replaceFirstChar { it.uppercase() }
         }
         esc(ESC, 0x45, 0x01)
         text("${item.quantita}x $titolo\n")
@@ -119,15 +119,15 @@ object SocketPrinter {
                         text("  + $nome\n")
                     }
                 }
-                if (cfg["salsa_a_parte"] == true) text("  • Salsa a parte\n")
+                if (cfg["salsa_a_parte"] == true) text("  - Salsa a parte\n")
                 val posate = cfg["posate"]?.toString()
-                if (!posate.isNullOrBlank() && posate != "Senza Posate") text("  • $posate\n")
+                if (!posate.isNullOrBlank() && posate != "Senza Posate") text("  - $posate\n")
             }
             "bubbletea" -> {
                 val size = when (cfg["size"]?.toString()) { "M" -> "Media"; "G" -> "Grande"; else -> cfg["size"]?.toString() ?: "" }
                 val temp = cfg["temperatura"]?.toString()?.replaceFirstChar { it.uppercase() } ?: ""
-                if (size.isNotBlank()) text(" • $size\n")
-                if (temp.isNotBlank()) text(" • $temp\n")
+                if (size.isNotBlank()) text(" - $size\n")
+                if (temp.isNotBlank()) text(" - $temp\n")
                 val toppings = cfg["toppings"] as? List<*>
                 toppings?.forEach { t ->
                     val tMap  = t as? Map<*, *> ?: return@forEach
@@ -137,9 +137,8 @@ object SocketPrinter {
                 }
             }
             else -> {
-                val label = listOf(cfg["nome"]?.toString(), cfg["qty"]?.toString())
-                    .filterNotNull().filter { it.isNotBlank() }.joinToString(" - ")
-                if (label.isNotBlank()) text("  $label\n")
+                val porzione = cfg["porzione"]?.toString()
+                if (!porzione.isNullOrBlank()) text("  $porzione\n")
             }
         }
         esc(ESC, 0x45, 0x00)

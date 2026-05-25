@@ -194,7 +194,7 @@ export default function Ordina() {
             image: sfizio.image,
             prezzo_base: op.prezzo,
             quantita: 1,
-            configurazione: { porzione: op.qty },
+            configurazione: { nome: sfizio.nome, porzione: op.qty },
         });
     };
 

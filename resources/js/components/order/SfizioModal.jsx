@@ -22,7 +22,7 @@ export default function SfizioModal({ open, sfizio, onClose, onAdd, initialConfi
             image: sfizio.image,
             prezzo_base: opzione.prezzo,
             quantita,
-            configurazione: { porzione: opzione.qty },
+            configurazione: { nome: sfizio.nome, porzione: opzione.qty },
         });
     };
 
