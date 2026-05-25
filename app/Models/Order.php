@@ -19,6 +19,7 @@ class Order extends Model
 
     protected $casts = [
         'stampato' => 'boolean',
+        'totale' => 'decimal:2',
     ];
 
     public function items(): HasMany
