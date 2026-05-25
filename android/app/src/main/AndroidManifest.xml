@@ -24,6 +24,12 @@
             android:label="Configurazione"
             android:exported="false" />
 
+        <activity
+            android:name=".OrderDetailActivity"
+            android:label="Dettaglio ordine"
+            android:exported="false"
+            android:parentActivityName=".ConfigActivity" />
+
         <service
             android:name=".PrintService"
             android:exported="false"

@@ -110,17 +110,6 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
-    public function updateStato(Request $request, Order $order): JsonResponse
-    {
-        $data = $request->validate([
-            'stato' => ['required', 'in:nuovo,in_preparazione,pronto'],
-        ]);
-
-        $order->update(['stato' => $data['stato']]);
-
-        return response()->json($order->load('items'));
-    }
-
     public function printQueue(): JsonResponse
     {
         $orders = Order::with('items')

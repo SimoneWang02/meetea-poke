@@ -5,47 +5,20 @@
     android:orientation="vertical"
     android:background="@drawable/card_bg"
     android:padding="14dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
-    <!-- Top row: numero ordine + stato badge -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="4dp">
-
-        <TextView
-            android:id="@+id/txtNumeroOrdine"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="#001"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#1A1A1A" />
-
-        <TextView
-            android:id="@+id/txtStato"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="nuovo"
-            android:textSize="11sp"
-            android:textColor="#FFFFFF"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="3dp"
-            android:background="@drawable/badge_bg" />
-
-    </LinearLayout>
-
-    <!-- Nome cliente -->
+    <!-- Numero ordine + nome cliente -->
     <TextView
-        android:id="@+id/txtNomeCliente"
+        android:id="@+id/txtNumeroOrdine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mario Rossi"
-        android:textSize="14sp"
-        android:textColor="#333333"
+        android:text="#001 — Mario Rossi"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"
         android:layout_marginBottom="6dp" />
 
     <!-- Orari row -->

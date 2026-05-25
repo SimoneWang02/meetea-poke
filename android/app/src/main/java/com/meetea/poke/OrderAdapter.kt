@@ -1,9 +1,10 @@
 package com.meetea.poke
 
-import android.graphics.Color
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.meetea.poke.api.models.Order
 import com.meetea.poke.databinding.ItemOrderBinding
 
@@ -45,28 +46,25 @@ class OrderAdapter : RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
     class ViewHolder(private val binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(order: Order) {
-            binding.txtNumeroOrdine.text = "#${order.numeroOrdine}"
-            binding.txtNomeCliente.text = order.nomeCliente
-
+            binding.txtNumeroOrdine.text = "#${order.numeroOrdine} — ${order.nomeCliente}"
             binding.txtRitiro.text = order.orarioRitiro
             binding.txtRicezione.text = formatTime(order.createdAt)
 
             val itemCount = order.items.sumOf { it.quantita }
             binding.txtItems.text = "$itemCount ${if (itemCount == 1) "prodotto" else "prodotti"}"
 
-            val (label, color) = when (order.stato) {
-                "in_preparazione" -> "in prep." to "#2980B9"
-                "pronto" -> "pronto" to "#2D6A4F"
-                else -> "nuovo" to "#E67E22"
+            binding.root.setOnClickListener {
+                val ctx = it.context
+                val intent = Intent(ctx, OrderDetailActivity::class.java).apply {
+                    putExtra(OrderDetailActivity.EXTRA_ORDER_JSON, Gson().toJson(order))
+                }
+                ctx.startActivity(intent)
             }
-            binding.txtStato.text = label
-            binding.txtStato.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor(color))
         }
 
         private fun formatTime(isoString: String?): String {
             if (isoString.isNullOrBlank()) return "--:--"
             return try {
-                // ISO format: "2026-05-25T10:30:00.000000Z" or "2026-05-25 10:30:00"
                 val timePart = isoString.substringAfter("T").ifEmpty {
                     isoString.substringAfter(" ")
                 }

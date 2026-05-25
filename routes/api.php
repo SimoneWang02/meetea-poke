@@ -10,7 +10,6 @@ Route::post('/admin/login', [AdminController::class, 'login']);
 
 Route::middleware('admin')->group(function () {
     Route::get('/orders', [OrderController::class, 'index']);
-    Route::patch('/orders/{order}/stato', [OrderController::class, 'updateStato']);
 });
 
 Route::middleware(PrintAuth::class)->group(function () {

@@ -14,7 +14,6 @@ class Order extends Model
         'orario_ritiro',
         'note',
         'totale',
-        'stato',
         'stampato',
     ];
 
