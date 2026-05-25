@@ -48,6 +48,9 @@ docker compose -f $COMPOSE_FILE build
 echo "▶ Recreating containers"
 docker compose -f $COMPOSE_FILE up -d --remove-orphans
 
+echo "▶ Running migrations"
+docker compose -f $COMPOSE_FILE exec -T app php artisan migrate --force
+
 echo "▶ Pruning dangling images"
 docker image prune -f >/dev/null
 
