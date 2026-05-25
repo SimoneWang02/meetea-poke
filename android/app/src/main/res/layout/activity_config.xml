@@ -25,73 +25,152 @@
             android:text="Configurazione Stampante"
             android:textSize="14sp"
             android:textColor="#888888"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="24dp" />
 
-        <TextView
+        <!-- Status indicator -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="URL base API"
-            android:textSize="14sp"
-            android:textColor="#444444"
-            android:layout_marginBottom="6dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="20dp">
 
-        <EditText
-            android:id="@+id/editBaseUrl"
+            <TextView
+                android:id="@+id/txtStatusDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="●"
+                android:textSize="18sp"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/txtStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Servizio inattivo"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#555555" />
+
+        </LinearLayout>
+
+        <!-- Accordion container -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="es. https://meetea-poke.com"
-            android:inputType="textUri"
-            android:padding="14dp"
-            android:background="@drawable/input_bg"
-            android:textSize="15sp"
-            android:layout_marginBottom="20dp" />
+            android:orientation="vertical"
+            android:background="@drawable/card_bg"
+            android:layout_marginBottom="20dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bearer Token (PRINT_API_TOKEN)"
-            android:textSize="14sp"
-            android:textColor="#444444"
-            android:layout_marginBottom="6dp" />
+            <!-- Accordion header -->
+            <LinearLayout
+                android:id="@+id/llAccordionHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
 
-        <EditText
-            android:id="@+id/editToken"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Token dal file .env"
-            android:inputType="textPassword"
-            android:padding="14dp"
-            android:background="@drawable/input_bg"
-            android:textSize="15sp"
-            android:layout_marginBottom="32dp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Configurazione"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333" />
 
+                <TextView
+                    android:id="@+id/txtAccordionArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="▼"
+                    android:textSize="14sp"
+                    android:textColor="#888888" />
+
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:id="@+id/dividerAccordion"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EEEEEE"
+                android:visibility="gone" />
+
+            <!-- Accordion content -->
+            <LinearLayout
+                android:id="@+id/llAccordionContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="URL base API"
+                    android:textSize="13sp"
+                    android:textColor="#444444"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/editBaseUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="es. https://meetea-poke.com"
+                    android:inputType="textUri"
+                    android:padding="14dp"
+                    android:background="@drawable/input_bg"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bearer Token (PRINT_API_TOKEN)"
+                    android:textSize="13sp"
+                    android:textColor="#444444"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/editToken"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Token dal file .env"
+                    android:inputType="text"
+                    android:padding="14dp"
+                    android:background="@drawable/input_bg"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="20dp" />
+
+                <Button
+                    android:id="@+id/btnSaveConfig"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="Salva configurazione"
+                    android:textSize="15sp"
+                    android:backgroundTint="#3A3A3A"
+                    android:textColor="#FFFFFF" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Service toggle button -->
         <Button
-            android:id="@+id/btnSave"
+            android:id="@+id/btnToggle"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Salva e avvia stampa"
+            android:text="Avvia servizio stampa"
             android:textSize="16sp"
             android:backgroundTint="#2D6A4F"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp" />
-
-        <Button
-            android:id="@+id/btnStop"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Ferma servizio stampa"
-            android:textSize="16sp"
-            android:backgroundTint="#C0392B"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp" />
-
-        <Button
-            android:id="@+id/btnTest"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Test stampa"
-            android:textSize="16sp"
-            android:backgroundTint="#555555"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>

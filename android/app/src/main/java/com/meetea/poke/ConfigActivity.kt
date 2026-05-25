@@ -1,14 +1,13 @@
 package com.meetea.poke
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.meetea.poke.databinding.ActivityConfigBinding
-import com.meetea.poke.printer.DirectPrinter
-import com.meetea.poke.printer.SocketPrinter
-import com.meetea.poke.printer.SunmiPrinter
 
 const val PREFS_NAME  = "meetea_print"
 const val PREF_BASE_URL = "base_url"
@@ -17,6 +16,7 @@ const val PREF_TOKEN    = "token"
 class ConfigActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityConfigBinding
+    private var isAccordionExpanded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +24,20 @@ class ConfigActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
-        binding.editBaseUrl.setText(prefs.getString(PREF_BASE_URL, ""))
-        binding.editToken.setText(prefs.getString(PREF_TOKEN, ""))
+        val savedUrl = prefs.getString(PREF_BASE_URL, "") ?: ""
+        val savedToken = prefs.getString(PREF_TOKEN, "") ?: ""
 
-        binding.btnSave.setOnClickListener {
+        binding.editBaseUrl.setText(savedUrl)
+        binding.editToken.setText(savedToken)
+
+        // Open accordion only on first run (no config saved yet)
+        setAccordionExpanded(savedUrl.isBlank() || savedToken.isBlank())
+
+        binding.llAccordionHeader.setOnClickListener {
+            setAccordionExpanded(!isAccordionExpanded)
+        }
+
+        binding.btnSaveConfig.setOnClickListener {
             val url   = binding.editBaseUrl.text.toString().trim()
             val token = binding.editToken.text.toString().trim()
 
@@ -41,35 +51,55 @@ class ConfigActivity : AppCompatActivity() {
                 .putString(PREF_TOKEN, token)
                 .apply()
 
-            startService(Intent(this, PrintService::class.java))
-            Toast.makeText(this, "Configurazione salvata. Stampa attiva.", Toast.LENGTH_SHORT).show()
-            finish()
+            setAccordionExpanded(false)
+            Toast.makeText(this, "Configurazione salvata.", Toast.LENGTH_SHORT).show()
         }
 
-        binding.btnStop.setOnClickListener {
-            stopService(Intent(this, PrintService::class.java))
-            Toast.makeText(this, "Servizio stampa fermato.", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.btnTest.setOnClickListener {
-            val binder = SunmiPrinter.binder
-            Log.d("ConfigActivity", "Test stampa — binder=$binder")
-            if (binder == null) {
-                Toast.makeText(this, "Servizio stampante non connesso. Avvia prima la stampa.", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
+        binding.btnToggle.setOnClickListener {
+            if (PrintService.isRunning) {
+                PrintService.isRunning = false
+                stopService(Intent(this, PrintService::class.java))
+                Toast.makeText(this, "Servizio stampa fermato.", Toast.LENGTH_SHORT).show()
+            } else {
+                val url   = prefs.getString(PREF_BASE_URL, "") ?: ""
+                val token = prefs.getString(PREF_TOKEN, "") ?: ""
+                if (url.isBlank() || token.isBlank()) {
+                    Toast.makeText(this, "Salva prima la configurazione.", Toast.LENGTH_SHORT).show()
+                    setAccordionExpanded(true)
+                    return@setOnClickListener
+                }
+                PrintService.isRunning = true
+                startService(Intent(this, PrintService::class.java))
+                Toast.makeText(this, "Servizio stampa avviato.", Toast.LENGTH_SHORT).show()
             }
-            val ESC = 0x1B.toByte(); val GS = 0x1D.toByte()
-            val testBytes = byteArrayOf(
-                ESC, 0x61, 0x01,           // center
-                ESC, 0x45, 0x01,           // bold on
-            ) + "MEETEA TEST\n".toByteArray(Charsets.ISO_8859_1) + byteArrayOf(
-                ESC, 0x45, 0x00,           // bold off
-            ) + "sendRawData OK\n".toByteArray(Charsets.ISO_8859_1) + byteArrayOf(
-                ESC, 0x64, 0x04,           // feed 4 lines
-                GS, 0x56, 0x41, 0x00,      // cut
-            )
-            val sent = DirectPrinter.sendRawData(binder, testBytes)
-            Toast.makeText(this, if (sent) "Test inviato" else "Test fallito (vedi logcat)", Toast.LENGTH_SHORT).show()
+            updateServiceUI()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateServiceUI()
+    }
+
+    private fun setAccordionExpanded(expanded: Boolean) {
+        isAccordionExpanded = expanded
+        binding.llAccordionContent.visibility = if (expanded) View.VISIBLE else View.GONE
+        binding.dividerAccordion.visibility = if (expanded) View.VISIBLE else View.GONE
+        binding.txtAccordionArrow.text = if (expanded) "▲" else "▼"
+    }
+
+    private fun updateServiceUI() {
+        val running = PrintService.isRunning
+        val activeColor = Color.parseColor("#2D6A4F")
+        val inactiveColor = Color.parseColor("#999999")
+
+        binding.txtStatusDot.setTextColor(if (running) activeColor else inactiveColor)
+        binding.txtStatusLabel.text = if (running) "Servizio attivo" else "Servizio inattivo"
+        binding.txtStatusLabel.setTextColor(if (running) activeColor else Color.parseColor("#555555"))
+
+        binding.btnToggle.text = if (running) "Ferma servizio stampa" else "Avvia servizio stampa"
+        binding.btnToggle.backgroundTintList = ColorStateList.valueOf(
+            Color.parseColor(if (running) "#C0392B" else "#2D6A4F")
+        )
     }
 }

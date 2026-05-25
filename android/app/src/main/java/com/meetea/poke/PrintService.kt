@@ -27,10 +27,15 @@ private const val POLL_INTERVAL_MS = 3_000L
 
 class PrintService : Service() {
 
+    companion object {
+        var isRunning = false
+    }
+
     private val scope = CoroutineScope(Dispatchers.IO)
     private var pollJob: Job? = null
 
     override fun onCreate() {
+        isRunning = true
         super.onCreate()
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, buildNotification())
@@ -84,6 +89,7 @@ class PrintService : Service() {
     }
 
     override fun onDestroy() {
+        isRunning = false
         pollJob?.cancel()
         SunmiPrinter.disconnect(this)
         super.onDestroy()
