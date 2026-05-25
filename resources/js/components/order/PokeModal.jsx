@@ -1,14 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { formatPrezzo } from "../../lib/format";
-import {
-    POKE_BASI,
-    POKE_BASI_MAX,
-    POKE_PROTEINE,
-    POKE_GREEN,
-    POKE_CRISPY,
-    POKE_SALSE,
-    POKE_EXTRA_PREZZI,
-} from "../../lib/options";
+import { useMenu } from "../../lib/MenuProvider";
 import ModalShell from "./ModalShell";
 import MultiSelect from "./MultiSelect";
 
@@ -19,43 +11,6 @@ const totalQty = (map) => Object.values(map).reduce((s, q) => s + q, 0);
 
 const flattenMap = (map) =>
     Object.entries(map).flatMap(([nome, qty]) => Array(qty).fill(nome));
-
-const ITEM_LOOKUP = Object.fromEntries([
-    ...POKE_PROTEINE.map((n) => [
-        n,
-        { cat: "proteine", prezzo: POKE_EXTRA_PREZZI.proteine },
-    ]),
-    ...POKE_GREEN.map((n) => [
-        n,
-        { cat: "green", prezzo: POKE_EXTRA_PREZZI.green },
-    ]),
-    ...POKE_CRISPY.map((n) => [
-        n,
-        { cat: "crispy", prezzo: POKE_EXTRA_PREZZI.crispy },
-    ]),
-    ...POKE_SALSE.map((n) => [
-        n,
-        { cat: "salse", prezzo: POKE_EXTRA_PREZZI.salse },
-    ]),
-]);
-
-const EXTRA_PROTEINE_ITEMS = POKE_PROTEINE.map((n) => ({
-    nome: n,
-    prezzo: POKE_EXTRA_PREZZI.proteine,
-}));
-
-const EXTRA_GREEN_ITEMS = POKE_GREEN.map((n) => ({
-    nome: n,
-    prezzo: POKE_EXTRA_PREZZI.green,
-}));
-const EXTRA_CRISPY_ITEMS = POKE_CRISPY.map((n) => ({
-    nome: n,
-    prezzo: POKE_EXTRA_PREZZI.crispy,
-}));
-const EXTRA_SALSE_ITEMS = POKE_SALSE.map((n) => ({
-    nome: n,
-    prezzo: POKE_EXTRA_PREZZI.salse,
-}));
 
 const POSATE = ["Cucchiaio", "Bacchette", "Forchetta", "Senza Posate"];
 
@@ -129,6 +84,27 @@ export default function PokeModal({
     initialConfig,
     initialQuantita = 1,
 }) {
+    const { menu } = useMenu();
+    const POKE_BASI = menu?.POKE_BASI ?? [];
+    const POKE_BASI_MAX = menu?.POKE_BASI_MAX ?? 2;
+    const POKE_PROTEINE = menu?.POKE_PROTEINE ?? [];
+    const POKE_GREEN = menu?.POKE_GREEN ?? [];
+    const POKE_CRISPY = menu?.POKE_CRISPY ?? [];
+    const POKE_SALSE = menu?.POKE_SALSE ?? [];
+    const POKE_EXTRA_PREZZI = menu?.POKE_EXTRA_PREZZI ?? { proteine: 0, green: 0, crispy: 0, salse: 0 };
+
+    const ITEM_LOOKUP = useMemo(() => Object.fromEntries([
+        ...POKE_PROTEINE.map((n) => [n, { cat: "proteine", prezzo: POKE_EXTRA_PREZZI.proteine }]),
+        ...POKE_GREEN.map((n) => [n, { cat: "green", prezzo: POKE_EXTRA_PREZZI.green }]),
+        ...POKE_CRISPY.map((n) => [n, { cat: "crispy", prezzo: POKE_EXTRA_PREZZI.crispy }]),
+        ...POKE_SALSE.map((n) => [n, { cat: "salse", prezzo: POKE_EXTRA_PREZZI.salse }]),
+    ]), [POKE_PROTEINE, POKE_GREEN, POKE_CRISPY, POKE_SALSE, POKE_EXTRA_PREZZI]);
+
+    const EXTRA_PROTEINE_ITEMS = useMemo(() => POKE_PROTEINE.map((n) => ({ nome: n, prezzo: POKE_EXTRA_PREZZI.proteine })), [POKE_PROTEINE, POKE_EXTRA_PREZZI]);
+    const EXTRA_GREEN_ITEMS = useMemo(() => POKE_GREEN.map((n) => ({ nome: n, prezzo: POKE_EXTRA_PREZZI.green })), [POKE_GREEN, POKE_EXTRA_PREZZI]);
+    const EXTRA_CRISPY_ITEMS = useMemo(() => POKE_CRISPY.map((n) => ({ nome: n, prezzo: POKE_EXTRA_PREZZI.crispy })), [POKE_CRISPY, POKE_EXTRA_PREZZI]);
+    const EXTRA_SALSE_ITEMS = useMemo(() => POKE_SALSE.map((n) => ({ nome: n, prezzo: POKE_EXTRA_PREZZI.salse })), [POKE_SALSE, POKE_EXTRA_PREZZI]);
+
     const [basi, setBasi] = useState(arrayToQtyMap(initialConfig?.basi));
     const [proteine, setProteine] = useState(
         arrayToQtyMap(initialConfig?.proteine),
@@ -153,7 +129,7 @@ export default function PokeModal({
         return () => { cancelAnimationFrame(raf); clearTimeout(hide); clearTimeout(clear); };
     }, [error]);
 
-    if (!dimensione) return null;
+    if (!dimensione || !menu) return null;
 
     const makeIncrement = (state, setState, maxHard) => (item) => {
         if (maxHard !== undefined && totalQty(state) >= maxHard) return;

@@ -1,18 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatPrezzo, formatNumero } from "../lib/format";
-import {
-    POKE_DIMENSIONI,
-    POKE_BASI,
-    POKE_BASI_MAX,
-    POKE_PROTEINE,
-    POKE_GREEN,
-    POKE_CRISPY,
-    POKE_SALSE,
-    POKE_EXTRA_PREZZI,
-    ORARI_APERTURA,
-    CONTATTI,
-} from "../lib/options";
+import { ORARI_APERTURA, CONTATTI } from "../lib/options";
+import { useMenu } from "../lib/MenuProvider";
 import BobaSection from "../components/BobaSection";
 import SnacksSection from "../components/SnacksSection";
 import Navbar from "../components/Navbar";
@@ -61,6 +51,16 @@ function BentoTile({
 }
 
 export default function Home() {
+    const { menu } = useMenu();
+    const POKE_DIMENSIONI = menu?.POKE_DIMENSIONI ?? [];
+    const POKE_BASI = menu?.POKE_BASI ?? [];
+    const POKE_BASI_MAX = menu?.POKE_BASI_MAX ?? 2;
+    const POKE_PROTEINE = menu?.POKE_PROTEINE ?? [];
+    const POKE_GREEN = menu?.POKE_GREEN ?? [];
+    const POKE_CRISPY = menu?.POKE_CRISPY ?? [];
+    const POKE_SALSE = menu?.POKE_SALSE ?? [];
+    const POKE_EXTRA_PREZZI = menu?.POKE_EXTRA_PREZZI ?? { proteine: 0, green: 0, crispy: 0, salse: 0 };
+
     const [pokeHeaderRef, pokeHeaderInView] = useInView();
     const [pokeGridRef, pokeGridInView] = useInView();
     const [orariRef, orariInView] = useInView();
@@ -421,10 +421,10 @@ export default function Home() {
                     </div>
                     <nav className="flex flex-wrap gap-4 text-sm">
                         <Link
-                            to="/admin"
+                            to="/staff"
                             className="text-stone-500 hover:text-stone-300"
                         >
-                            Admin
+                            Staff
                         </Link>
                     </nav>
                 </div>

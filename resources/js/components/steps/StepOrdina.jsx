@@ -1,22 +1,21 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-    POKE_DIMENSIONI,
-    BOBA_CATEGORIE,
-    SNACKS_LISTA,
-} from "../../lib/options";
+import { useMenu } from "../../lib/MenuProvider";
 import { formatPrezzo, formatNumero } from "../../lib/format";
 import { animateScroll } from "../../lib/scroll";
 
 export const TAB_BAR_HEIGHT = 60;
 
 export function useMenuNav(headerHeight) {
+    const { menu } = useMenu();
+    const BOBA_CATEGORIE = menu?.BOBA_CATEGORIE ?? [];
+
     const sections = useMemo(
         () => [
             { id: "poke", titolo: "Poke" },
             ...BOBA_CATEGORIE.map((c) => ({ id: c.id, titolo: c.titolo })),
             { id: "sfizi", titolo: "Sfizi" },
         ],
-        [],
+        [BOBA_CATEGORIE],
     );
 
     const [active, setActive] = useState(sections[0].id);
@@ -153,6 +152,13 @@ export default function StepOrdina({
     onOpenModal,
     onAddSfizioDirect,
 }) {
+    const { menu } = useMenu();
+    const POKE_DIMENSIONI = menu?.POKE_DIMENSIONI ?? [];
+    const BOBA_CATEGORIE = menu?.BOBA_CATEGORIE ?? [];
+    const SNACKS_LISTA = menu?.SNACKS_LISTA ?? [];
+
+    if (!menu) return null;
+
     return (
         <div className="space-y-10 pb-8">
             {/* Poke */}
@@ -290,7 +296,7 @@ function BobaCard({ item, onClick }) {
             <div className="flex min-w-0 flex-1 items-center gap-3">
                 {item.image && (
                     <img
-                        src={`/images/boba/${item.image}`}
+                        src={item.image}
                         alt=""
                         className="h-14 w-14 shrink-0 rounded-xl object-contain"
                     />
@@ -338,7 +344,7 @@ function SfizioCard({ sfizio, onClick }) {
             <div className="flex min-w-0 flex-1 items-center gap-3">
                 {sfizio.image && (
                     <img
-                        src={`/images/snacks/${sfizio.image}`}
+                        src={sfizio.image}
                         alt=""
                         className="h-14 w-14 shrink-0 rounded-xl object-cover"
                     />

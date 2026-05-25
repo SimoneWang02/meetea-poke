@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { BOBA_TOPPING } from "../../lib/options";
+import { useMenu } from "../../lib/MenuProvider";
 import ModalShell from "./ModalShell";
 import { formatPrezzo, formatNumero } from "../../lib/format";
 
@@ -20,6 +20,9 @@ export default function BobaModal({
     initialConfig,
     initialQuantita = 1,
 }) {
+    const { menu } = useMenu();
+    const BOBA_TOPPING = menu?.BOBA_TOPPING ?? { singoli: [], gruppi: [] };
+
     const availableSizes = useMemo(
         () => (item ? Object.keys(item.prezzi) : []),
         [item],
@@ -65,7 +68,7 @@ export default function BobaModal({
         };
     }, [error]);
 
-    if (!item) return null;
+    if (!item || !menu) return null;
 
     const toggleSingolo = (nome) => {
         setSingoli((prev) =>

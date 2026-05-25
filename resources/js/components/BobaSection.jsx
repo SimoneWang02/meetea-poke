@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabScrollButton from "@mui/material/TabScrollButton";
-import { BOBA_CATEGORIE, BOBA_TOPPING } from "../lib/options";
+import { useMenu } from "../lib/MenuProvider";
 import { formatPrezzo } from "../lib/format";
 import { useInView } from "../lib/useInView";
 
@@ -84,14 +84,14 @@ const tabsSx = {
     },
 };
 
-const NavContext = React.createContext({ activeIndex: 0, onNav: () => {} });
+const NavContext = React.createContext({ activeIndex: 0, length: 0, onNav: () => {} });
 
 const ScrollButtonNav = React.forwardRef(function ScrollButtonNav(props, ref) {
     const { onClick: _ignored, direction, ...rest } = props;
-    const { activeIndex, onNav } = React.useContext(NavContext);
+    const { activeIndex, length, onNav } = React.useContext(NavContext);
     const navDisabled =
         direction === "right"
-            ? activeIndex >= BOBA_CATEGORIE.length - 1
+            ? activeIndex >= length - 1
             : activeIndex <= 0;
     return (
         <TabScrollButton
@@ -340,7 +340,7 @@ function ToppingSubsection({ titolo, prezzo, gusti }) {
     );
 }
 
-function ToppingCard() {
+function ToppingCard({ BOBA_TOPPING }) {
     return (
         <div className="rounded-3xl bg-white p-6 ring-1 ring-stone-300 sm:p-8">
             <div className="border-b border-stone-200 pb-3">
@@ -374,12 +374,16 @@ function ToppingCard() {
 }
 
 export default function BobaSection() {
+    const { menu } = useMenu();
+    const BOBA_CATEGORIE = menu?.BOBA_CATEGORIE ?? [];
+    const BOBA_TOPPING = menu?.BOBA_TOPPING ?? { singoli: [], gruppi: [] };
+
     const [headerRef, headerInView] = useInView();
-    const [activeId, setActiveId] = useState(BOBA_CATEGORIE[0].id);
+    const [activeId, setActiveId] = useState(BOBA_CATEGORIE[0]?.id);
     const activeIndex = useMemo(() => {
         const idx = BOBA_CATEGORIE.findIndex((c) => c.id === activeId);
         return idx === -1 ? 0 : idx;
-    }, [activeId]);
+    }, [activeId, BOBA_CATEGORIE]);
     const activeCategoria = BOBA_CATEGORIE[activeIndex];
     const tabsRef = useRef(null);
 
@@ -390,10 +394,14 @@ export default function BobaSection() {
     };
 
     const navCtx = useMemo(
-        () => ({ activeIndex, onNav: (dir) => onNav(dir) }),
+        () => ({ activeIndex, length: BOBA_CATEGORIE.length, onNav: (dir) => onNav(dir) }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [activeIndex],
+        [activeIndex, BOBA_CATEGORIE.length],
     );
+
+    useEffect(() => {
+        if (!activeId && BOBA_CATEGORIE.length > 0) setActiveId(BOBA_CATEGORIE[0].id);
+    }, [BOBA_CATEGORIE, activeId]);
 
     useEffect(() => {
         const scroller = tabsRef.current?.querySelector(".MuiTabs-scroller");
@@ -484,17 +492,19 @@ export default function BobaSection() {
                 </div>
 
                 <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-5 lg:items-start">
-                    <div
-                        role="tabpanel"
-                        id={`boba-panel-${activeCategoria.id}`}
-                        aria-labelledby={`boba-tab-${activeCategoria.id}`}
-                        className="lg:col-span-3"
-                    >
-                        <CategoryCard categoria={activeCategoria} />
-                    </div>
+                    {activeCategoria && (
+                        <div
+                            role="tabpanel"
+                            id={`boba-panel-${activeCategoria.id}`}
+                            aria-labelledby={`boba-tab-${activeCategoria.id}`}
+                            className="lg:col-span-3"
+                        >
+                            <CategoryCard categoria={activeCategoria} />
+                        </div>
+                    )}
 
                     <aside className="lg:col-span-2 lg:sticky lg:top-20">
-                        <ToppingCard />
+                        <ToppingCard BOBA_TOPPING={BOBA_TOPPING} />
                     </aside>
                 </div>
             </div>

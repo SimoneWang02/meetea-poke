@@ -1,11 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-    isGiornoChiuso,
-    POKE_DIMENSIONI,
-    BOBA_CATEGORIE,
-    SNACKS_LISTA,
-} from "../lib/options";
+import { isGiornoChiuso } from "../lib/options";
+import { useMenu } from "../lib/MenuProvider";
 import StepOrdina, {
     useMenuNav,
     CategoryNav,
@@ -78,6 +74,11 @@ function ProgressBar({ step }) {
 }
 
 export default function Ordina() {
+    const { menu } = useMenu();
+    const POKE_DIMENSIONI = menu?.POKE_DIMENSIONI ?? [];
+    const BOBA_CATEGORIE = menu?.BOBA_CATEGORIE ?? [];
+    const SNACKS_LISTA = menu?.SNACKS_LISTA ?? [];
+
     const [step, setStep] = useState("ordina");
     const [items, setItems] = useState([]);
     const [modal, setModal] = useState(null);

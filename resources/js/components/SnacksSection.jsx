@@ -1,5 +1,5 @@
 import React from "react";
-import { SNACKS_LISTA } from "../lib/options";
+import { useMenu } from "../lib/MenuProvider";
 import { formatPrezzo } from "../lib/format";
 import { useInView } from "../lib/useInView";
 
@@ -39,7 +39,7 @@ function PolaroidCard({ snack, index, inView, delay }) {
                 <div className="aspect-square w-full overflow-hidden rounded-sm bg-stone-100">
                     {snack.image ? (
                         <img
-                            src={`/images/snacks/${snack.image}`}
+                            src={snack.image}
                             alt={snack.nome}
                             loading="lazy"
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -70,8 +70,12 @@ function PolaroidCard({ snack, index, inView, delay }) {
 }
 
 export default function SnacksSection() {
+    const { menu } = useMenu();
+    const SNACKS_LISTA = menu?.SNACKS_LISTA ?? [];
     const [headerRef, headerInView] = useInView();
     const [gridRef, gridInView] = useInView();
+
+    if (!menu) return null;
 
     return (
         <section
