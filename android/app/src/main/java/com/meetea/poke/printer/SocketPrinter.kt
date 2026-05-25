@@ -76,10 +76,12 @@ object SocketPrinter {
         text("Ritiro: ")
         text("${order.orarioRitiro}\n")
         text("--------------------------------\n")
-        if (!order.note.isNullOrBlank()) text("Note: ${order.note}\n")
-        esc(ESC, 0x61, 0x01)          // center
-        text("--------------------------------\n")
-        esc(ESC, 0x61, 0x00)          // left
+        if (!order.note.isNullOrBlank()) {
+            text("Note: ${order.note}\n")
+            esc(ESC, 0x61, 0x01)          // center
+            text("--------------------------------\n")
+            esc(ESC, 0x61, 0x00)          // left
+        }
         esc(GS,  0x21, 0x00)          // normal
         val tipoOrdine = mapOf("poke" to 0, "bubbletea" to 1)
         order.items.sortedBy { tipoOrdine[it.tipo] ?: 2 }.forEach { item ->
