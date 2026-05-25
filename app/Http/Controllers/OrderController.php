@@ -28,9 +28,17 @@ class OrderController extends Controller
             'note' => ['nullable', 'string', 'max:500'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.tipo' => ['required', 'in:poke,bubbletea,sfizio'],
+            'items.*.nome' => ['nullable', 'string', 'max:200'],
             'items.*.quantita' => ['required', 'integer', 'min:1', 'max:10'],
             'items.*.configurazione' => ['required', 'array'],
         ]);
+
+        $data['items'] = array_map(function ($item) {
+            if (!empty($item['nome']) && empty($item['configurazione']['nome'])) {
+                $item['configurazione']['nome'] = $item['nome'];
+            }
+            return array_intersect_key($item, array_flip(['tipo', 'quantita', 'configurazione']));
+        }, $data['items']);
 
         $orario = Carbon::today()->setTimeFromTimeString($data['orario_ritiro']);
         if ($orario->isPast()) {

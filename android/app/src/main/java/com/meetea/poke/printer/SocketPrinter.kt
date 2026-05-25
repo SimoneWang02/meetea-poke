@@ -82,7 +82,10 @@ object SocketPrinter {
         esc(ESC, 0x61, 0x00)          // left
         esc(GS,  0x21, 0x00)          // normal
         val tipoOrdine = mapOf("poke" to 0, "bubbletea" to 1)
-        order.items.sortedBy { tipoOrdine[it.tipo] ?: 2 }.forEach { item -> writeItem(out, item) }
+        order.items.sortedBy { tipoOrdine[it.tipo] ?: 2 }.forEach { item ->
+            writeItem(out, item)
+            text("\n")
+        }
 
         esc(ESC, 0x45, 0x01)          // bold
         text("--------------------------------\n")
