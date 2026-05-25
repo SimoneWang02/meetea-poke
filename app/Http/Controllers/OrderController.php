@@ -44,7 +44,7 @@ class OrderController extends Controller
             $order = retry(3, function () use ($data) {
                 return DB::transaction(function () use ($data) {
                     $progressivo = Order::whereDate('created_at', today())->count() + 1;
-                    $numero = 'ORD-' . str_pad((string) $progressivo, 3, '0', STR_PAD_LEFT);
+                    $numero = $progressivo;
 
                     $order = Order::create([
                         'numero_ordine' => $numero,
@@ -120,6 +120,7 @@ class OrderController extends Controller
                 'nome_cliente'  => $o->nome_cliente,
                 'orario_ritiro' => $o->orario_ritiro,
                 'note'          => $o->note,
+                'telefono'      => $o->telefono,
                 'items'         => $o->items->map(fn ($item) => [
                     'tipo'           => $item->tipo,
                     'quantita'       => $item->quantita,

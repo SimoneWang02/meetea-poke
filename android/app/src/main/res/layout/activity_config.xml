@@ -72,6 +72,26 @@
             android:text="Salva e avvia stampa"
             android:textSize="16sp"
             android:backgroundTint="#2D6A4F"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Ferma servizio stampa"
+            android:textSize="16sp"
+            android:backgroundTint="#C0392B"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnTest"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Test stampa"
+            android:textSize="16sp"
+            android:backgroundTint="#555555"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>

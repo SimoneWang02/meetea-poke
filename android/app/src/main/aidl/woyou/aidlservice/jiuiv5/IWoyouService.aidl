@@ -1,7 +1,7 @@
-package woyou.aidl.service;
+package woyou.aidlservice.jiuiv5;
 
 import android.graphics.Bitmap;
-import woyou.aidl.service.ICallback;
+import woyou.aidlservice.jiuiv5.ICallback;
 
 interface IWoyouService {
     void printerSelfChecking(in ICallback callback);

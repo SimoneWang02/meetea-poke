@@ -63,22 +63,31 @@ object SocketPrinter {
         esc(ESC, 0x61, 0x01)          // center
         esc(ESC, 0x45, 0x01)          // bold
         esc(GS,  0x21, 0x11)          // 2x size
-        text("MEETEA POKE\n")
-        text("${order.numeroOrdine}\n")
+        text("MeeTea&Poke\n")
+        text("#%03d\n".format(order.numeroOrdine))
         esc(GS,  0x21, 0x00)          // normal
         esc(ESC, 0x45, 0x00)          // bold off
-        text("================================\n")
-        esc(ESC, 0x61, 0x00)          // left
-        text("Cliente: ${order.nomeCliente}\n")
-        text("Ritiro:  ${order.orarioRitiro}\n")
         text("--------------------------------\n")
-
-        order.items.forEach { item -> writeItem(out, item) }
-
+        esc(ESC, 0x61, 0x00)          // left
+        text("Cliente: ")
+        esc(ESC, 0x45, 0x01)          // bold
+        text("${order.nomeCliente}\n")
+        esc(GS,  0x21, 0x00)          // normal
+        text("Tel: ")
+        esc(ESC, 0x45, 0x01)          // bold
+        text("${order.telefono}\n")
+        esc(GS,  0x21, 0x00)          // normal
+        text("Ritiro: ")
+        esc(ESC, 0x45, 0x01)          // bold
+        text("${order.orarioRitiro}\n")
         text("--------------------------------\n")
         if (!order.note.isNullOrBlank()) text("Note: ${order.note}\n")
         esc(ESC, 0x61, 0x01)          // center
-        text("================================\n")
+        text("--------------------------------\n")
+        
+        esc(GS,  0x21, 0x00)          // normal
+        order.items.forEach { item -> writeItem(out, item) }
+
         esc(ESC, 0x64, 0x05)          // feed 5 lines
         esc(GS,  0x56, 0x41, 0x00)   // cut
         out.flush()
@@ -90,7 +99,8 @@ object SocketPrinter {
         fun esc(vararg b: Byte) = out.write(b)
         val cfg = item.configurazione
         val titolo = when (item.tipo) {
-            "poke" -> "Poke Bowl"; "bubbletea" -> "Bubble Tea"
+            "poke" -> "Poke Bowl"
+            "bubbletea" -> cfg["nome"]?.toString()?.ifBlank { null } ?: "Bubble Tea"
             else   -> item.tipo.replaceFirstChar { it.uppercase() }
         }
         esc(ESC, 0x45, 0x01); text("${item.quantita}x $titolo\n"); esc(ESC, 0x45, 0x00)
@@ -118,10 +128,8 @@ object SocketPrinter {
                 }
             }
             "bubbletea" -> {
-                val nome = cfg["nome"]?.toString() ?: ""
                 val size = when (cfg["size"]?.toString()) { "M" -> "Media"; "G" -> "Grande"; else -> cfg["size"]?.toString() ?: "" }
                 val temp = cfg["temperatura"]?.toString()?.replaceFirstChar { it.uppercase() } ?: ""
-                if (nome.isNotBlank()) text("  $nome\n")
                 if (size.isNotBlank()) text("  Dim: $size\n")
                 if (temp.isNotBlank()) text("  Temp: $temp\n")
                 val toppings = cfg["toppings"] as? List<*>

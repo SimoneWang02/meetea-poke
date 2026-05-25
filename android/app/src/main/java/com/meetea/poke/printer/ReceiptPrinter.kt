@@ -12,7 +12,7 @@ object ReceiptPrinter {
             Log.w(TAG, "print() called but binder is null")
             return false
         }
-        Log.d(TAG, "Printing order ${order.numeroOrdine} via sendRawData")
+        Log.d(TAG, "Printing order #%03d via sendRawData".format(order.numeroOrdine))
         return try {
             val bytes = SocketPrinter.buildReceiptBytes(order)
             DirectPrinter.sendRawData(binder, bytes)

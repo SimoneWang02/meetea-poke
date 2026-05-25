@@ -9,8 +9,10 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import android.media.RingtoneManager
 import com.meetea.poke.api.ApiClient
 import com.meetea.poke.printer.ReceiptPrinter
+import com.meetea.poke.printer.SocketPrinter
 import com.meetea.poke.printer.SunmiPrinter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,8 +54,17 @@ class PrintService : Service() {
             while (true) {
                 try {
                     val orders = api.printQueue()
+                    if (orders.isNotEmpty()) {
+                        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                        RingtoneManager.getRingtone(applicationContext, uri)?.play()
+                    }
                     orders.forEach { order ->
-                        val printed = ReceiptPrinter.print(order)
+                        val printed = try {
+                            ReceiptPrinter.print(order)
+                        } catch (t: Throwable) {
+                            Log.w(TAG, "AIDL print failed for ${order.id}, trying socket", t)
+                            false
+                        }.let { if (it) it else SocketPrinter.print(order) }
                         if (printed) {
                             try {
                                 api.markStampato(order.id)
@@ -62,8 +73,8 @@ class PrintService : Service() {
                             }
                         }
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Poll failed", e)
+                } catch (t: Throwable) {
+                    Log.e(TAG, "Poll failed", t)
                 }
                 delay(POLL_INTERVAL_MS)
             }

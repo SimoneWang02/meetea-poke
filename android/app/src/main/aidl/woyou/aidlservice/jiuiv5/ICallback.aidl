@@ -1,4 +1,4 @@
-package woyou.aidl.service;
+package woyou.aidlservice.jiuiv5;
 
 interface ICallback {
     void onRunResult(boolean isSuccess);

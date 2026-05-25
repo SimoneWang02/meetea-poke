@@ -118,7 +118,7 @@ export default function BobaModal({
             categoria,
             prezzo_base: prezzoBase + prezzoToppings,
             quantita,
-            configurazione: { size, temperatura, toppings: toppingsArr },
+            configurazione: { nome: item.nome, size, temperatura, toppings: toppingsArr },
         });
     };
 

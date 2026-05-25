@@ -13,12 +13,10 @@ class MainActivity : AppCompatActivity() {
         val baseUrl = prefs.getString(PREF_BASE_URL, "") ?: ""
         val token   = prefs.getString(PREF_TOKEN, "") ?: ""
 
-        if (baseUrl.isBlank() || token.isBlank()) {
-            startActivity(Intent(this, ConfigActivity::class.java))
-        } else {
+        if (baseUrl.isNotBlank() && token.isNotBlank()) {
             startService(Intent(this, PrintService::class.java))
         }
-
+        startActivity(Intent(this, ConfigActivity::class.java))
         finish()
     }
 }
