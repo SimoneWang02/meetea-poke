@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Middleware\PrintAuth;
@@ -8,9 +9,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/orders', [OrderController::class, 'store'])->middleware('throttle:orders');
 Route::get('/ordering-status', [SettingsController::class, 'orderingStatus']);
-Route::post('/admin/login', [AdminController::class, 'login']);
+Route::get('/menu', [MenuController::class, 'index']);
+Route::post('/staff/login', [AdminController::class, 'login']);
 
-Route::middleware('admin')->group(function () {
+Route::middleware('staff')->group(function () {
     Route::get('/orders', [OrderController::class, 'index']);
 });
 
