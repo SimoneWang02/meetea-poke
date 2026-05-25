@@ -59,7 +59,9 @@ export default function Navbar() {
                     <img
                         src="/images/logo.svg"
                         alt="MeeTea&Poke"
-                        className="h-10 w-auto sm:h-12"
+                        className={`h-10 w-auto sm:h-12 transition-[filter] duration-300 ${
+                            scrolled || open ? "" : "brightness-0 invert"
+                        }`}
                     />
                 </Link>
 
