@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidConfigurationException;
 use App\Models\Order;
+use App\Services\MenuPriceCalculator;
 use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-    public function store(Request $request, NotificationService $notifier): JsonResponse
+    public function store(Request $request, NotificationService $notifier, MenuPriceCalculator $calculator): JsonResponse
     {
         if (Carbon::today()->dayOfWeek === Carbon::THURSDAY) {
             return response()->json(
@@ -54,6 +56,17 @@ class OrderController extends Controller
         }
 
         try {
+            $totaleServer = 0.0;
+            foreach ($data['items'] as $item) {
+                $prezzoItem = $calculator->calculate($item['tipo'], $item['configurazione']);
+                $totaleServer += $prezzoItem * $item['quantita'];
+            }
+            $data['totale'] = round($totaleServer, 2);
+        } catch (InvalidConfigurationException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
+
+        try {
             $order = retry(3, function () use ($data) {
                 return DB::transaction(function () use ($data) {
                     $progressivo = Order::whereDate('created_at', today())->count() + 1;
@@ -65,7 +78,7 @@ class OrderController extends Controller
                         'telefono' => $data['telefono'],
                         'orario_ritiro' => $data['orario_ritiro'],
                         'note' => $data['note'] ?? null,
-                        'totale' => $data['totale'] ?? null,
+                        'totale' => $data['totale'],
                     ]);
 
                     $order->items()->createMany($data['items']);
