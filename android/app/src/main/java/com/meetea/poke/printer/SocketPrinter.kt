@@ -57,7 +57,7 @@ object SocketPrinter {
 
     @Suppress("UNCHECKED_CAST")
     private fun buildReceipt(order: Order, out: OutputStream) {
-        fun text(s: String) = out.write(s.toByteArray(Charsets.ISO_8859_1))
+        fun text(s: String) = out.write(s.toByteArray(java.nio.charset.Charset.forName("GBK")))
         fun esc(vararg b: Byte) = out.write(b)
 
         esc(ESC, 0x61, 0x01)          // center
@@ -66,19 +66,14 @@ object SocketPrinter {
         text("MeeTea&Poke\n")
         text("#%03d\n".format(order.numeroOrdine))
         esc(GS,  0x21, 0x00)          // normal
-        esc(ESC, 0x45, 0x00)          // bold off
         text("--------------------------------\n")
         esc(ESC, 0x61, 0x00)          // left
+        esc(ESC, 0x45, 0x01)          // bold
         text("Cliente: ")
-        esc(ESC, 0x45, 0x01)          // bold
         text("${order.nomeCliente}\n")
-        esc(GS,  0x21, 0x00)          // normal
         text("Tel: ")
-        esc(ESC, 0x45, 0x01)          // bold
         text("${order.telefono}\n")
-        esc(GS,  0x21, 0x00)          // normal
         text("Ritiro: ")
-        esc(ESC, 0x45, 0x01)          // bold
         text("${order.orarioRitiro}\n")
         text("--------------------------------\n")
         if (!order.note.isNullOrBlank()) text("Note: ${order.note}\n")
@@ -86,7 +81,11 @@ object SocketPrinter {
         text("--------------------------------\n")
         
         esc(GS,  0x21, 0x00)          // normal
-        order.items.forEach { item -> writeItem(out, item) }
+        val tipoOrdine = mapOf("poke" to 0, "bubbletea" to 1)
+        order.items.sortedBy { tipoOrdine[it.tipo] ?: 2 }.forEach { item -> writeItem(out, item) }
+
+        esc(ESC, 0x45, 0x01)          // bold
+        text("--------------------------------\n")
 
         esc(ESC, 0x64, 0x05)          // feed 5 lines
         esc(GS,  0x56, 0x41, 0x00)   // cut
@@ -95,43 +94,40 @@ object SocketPrinter {
 
     @Suppress("UNCHECKED_CAST")
     private fun writeItem(out: OutputStream, item: OrderItem) {
-        fun text(s: String) = out.write(s.toByteArray(Charsets.ISO_8859_1))
+        fun text(s: String) = out.write(s.toByteArray(java.nio.charset.Charset.forName("GBK")))
         fun esc(vararg b: Byte) = out.write(b)
         val cfg = item.configurazione
         val titolo = when (item.tipo) {
-            "poke" -> "Poke Bowl"
+            "poke" -> cfg["dimensione"]?.toString()?.replaceFirstChar { it.uppercase() } ?: "Poke Bowl"
             "bubbletea" -> cfg["nome"]?.toString()?.ifBlank { null } ?: "Bubble Tea"
             else   -> item.tipo.replaceFirstChar { it.uppercase() }
         }
-        esc(ESC, 0x45, 0x01); text("${item.quantita}x $titolo\n"); esc(ESC, 0x45, 0x00)
+        esc(ESC, 0x45, 0x01)
+        text("${item.quantita}x $titolo\n")
 
         when (item.tipo) {
             "poke" -> {
-                val dim      = cfg["dimensione"]?.toString()?.replaceFirstChar { it.uppercase() } ?: ""
-                val basi     = (cfg["basi"]     as? List<*>)?.joinToString(", ") ?: ""
-                val proteine = (cfg["proteine"] as? List<*>)?.joinToString(", ") ?: ""
-                val green    = (cfg["green"]    as? List<*>)?.joinToString(", ") ?: ""
-                val crispy   = (cfg["crispy"]   as? List<*>)?.joinToString(", ") ?: ""
-                val salse    = (cfg["salse"]    as? List<*>)?.joinToString(", ") ?: ""
-                if (dim.isNotBlank())      text("  Dim: $dim\n")
-                if (basi.isNotBlank())     text("  Basi: $basi\n")
-                if (proteine.isNotBlank()) text("  Proteine: $proteine\n")
-                if (green.isNotBlank())    text("  Green: $green\n")
-                if (crispy.isNotBlank())   text("  Crispy: $crispy\n")
-                if (salse.isNotBlank())    text("  Salse: $salse\n")
-                val extras = cfg["extras"] as? Map<String, List<*>>
-                extras?.forEach { (_, items) ->
-                    items.forEach { e ->
-                        val nome = (e as? Map<*, *>)?.get("nome")?.toString() ?: return@forEach
-                        text("  + $nome (extra)\n")
+                listOf("basi", "proteine", "green", "crispy", "salse").forEach { campo ->
+                    (cfg[campo] as? List<*>)?.forEach { ingr ->
+                        val s = ingr?.toString() ?: return@forEach
+                        text("  + $s\n")
                     }
                 }
+                (cfg["extras"] as? Map<*, *>)?.values?.forEach { cat ->
+                    (cat as? List<*>)?.forEach { e ->
+                        val nome = (e as? Map<*, *>)?.get("nome")?.toString() ?: return@forEach
+                        text("  + $nome\n")
+                    }
+                }
+                if (cfg["salsa_a_parte"] == true) text("  • Salsa a parte\n")
+                val posate = cfg["posate"]?.toString()
+                if (!posate.isNullOrBlank() && posate != "Senza Posate") text("  • $posate\n")
             }
             "bubbletea" -> {
                 val size = when (cfg["size"]?.toString()) { "M" -> "Media"; "G" -> "Grande"; else -> cfg["size"]?.toString() ?: "" }
                 val temp = cfg["temperatura"]?.toString()?.replaceFirstChar { it.uppercase() } ?: ""
-                if (size.isNotBlank()) text("  Dim: $size\n")
-                if (temp.isNotBlank()) text("  Temp: $temp\n")
+                if (size.isNotBlank()) text(" • $size\n")
+                if (temp.isNotBlank()) text(" • $temp\n")
                 val toppings = cfg["toppings"] as? List<*>
                 toppings?.forEach { t ->
                     val tMap  = t as? Map<*, *> ?: return@forEach
@@ -146,5 +142,6 @@ object SocketPrinter {
                 if (label.isNotBlank()) text("  $label\n")
             }
         }
+        esc(ESC, 0x45, 0x00)
     }
 }

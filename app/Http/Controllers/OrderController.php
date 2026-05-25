@@ -27,7 +27,7 @@ class OrderController extends Controller
             'orario_ritiro' => ['required', 'string', 'regex:/^\d{2}:\d{2}$/'],
             'note' => ['nullable', 'string', 'max:500'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.tipo' => ['required', 'in:poke,bubbletea'],
+            'items.*.tipo' => ['required', 'in:poke,bubbletea,sfizio'],
             'items.*.quantita' => ['required', 'integer', 'min:1', 'max:10'],
             'items.*.configurazione' => ['required', 'array'],
         ]);
