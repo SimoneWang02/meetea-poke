@@ -66,7 +66,6 @@ class OrderController extends Controller
                         'orario_ritiro' => $data['orario_ritiro'],
                         'note' => $data['note'] ?? null,
                         'totale' => $data['totale'] ?? null,
-                        'stato' => 'nuovo',
                     ]);
 
                     $order->items()->createMany($data['items']);
