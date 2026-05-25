@@ -1,9 +1,12 @@
 package com.meetea.poke.api
 
 import com.meetea.poke.api.models.Order
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+
+data class PrintStatusRequest(val enabled: Boolean)
 
 interface PrintApi {
     @GET("api/print-queue")
@@ -14,4 +17,7 @@ interface PrintApi {
 
     @POST("api/orders/{id}/stampa")
     suspend fun markStampato(@Path("id") id: Int)
+
+    @POST("api/print-service/status")
+    suspend fun updatePrintStatus(@Body body: PrintStatusRequest)
 }

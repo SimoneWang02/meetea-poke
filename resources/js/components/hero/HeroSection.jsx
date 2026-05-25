@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeroDeliveryIcons from "./HeroDeliveryIcons";
 import GridMotion from "./GridMotion";
@@ -17,6 +17,14 @@ function buildRandomHeroImages() {
 
 export default function HeroSection() {
     const [heroImages] = useState(buildRandomHeroImages);
+    const [orderingAvailable, setOrderingAvailable] = useState(true);
+
+    useEffect(() => {
+        fetch("/api/ordering-status")
+            .then((r) => r.json())
+            .then((data) => setOrderingAvailable(data.ordering_available))
+            .catch(() => {});
+    }, []);
 
     return (
         <section className="relative flex h-screen min-h-[640px] w-full items-center justify-center overflow-hidden text-white">
@@ -73,6 +81,10 @@ export default function HeroSection() {
                 {isGiornoChiuso() ? (
                     <div className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-white/30 px-7 py-4 text-base font-semibold text-white/60 cursor-not-allowed sm:text-lg animate-fade-in-up [animation-delay:500ms]">
                         Chiusi Oggi
+                    </div>
+                ) : !orderingAvailable ? (
+                    <div className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-white/30 px-7 py-4 text-base font-semibold text-white/60 cursor-not-allowed sm:text-lg animate-fade-in-up [animation-delay:500ms]">
+                        Servizio non disponibile
                     </div>
                 ) : (
                     <Link

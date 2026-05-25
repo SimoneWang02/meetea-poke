@@ -4,12 +4,17 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.meetea.poke.api.ApiClient
+import com.meetea.poke.api.PrintStatusRequest
 import com.meetea.poke.databinding.FragmentConfigBinding
+import kotlinx.coroutines.launch
 
 class ConfigFragment : Fragment() {
 
@@ -75,6 +80,7 @@ class ConfigFragment : Fragment() {
                 Toast.makeText(requireContext(), "Servizio stampa avviato.", Toast.LENGTH_SHORT).show()
             }
             updateServiceUI()
+            notifyBackendPrintStatus(prefs)
         }
     }
 
@@ -86,6 +92,20 @@ class ConfigFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun notifyBackendPrintStatus(prefs: android.content.SharedPreferences) {
+        val url   = prefs.getString(PREF_BASE_URL, "") ?: ""
+        val token = prefs.getString(PREF_TOKEN, "") ?: ""
+        if (url.isBlank() || token.isBlank()) return
+        lifecycleScope.launch {
+            try {
+                val api = ApiClient.build(url, token)
+                api.updatePrintStatus(PrintStatusRequest(enabled = PrintService.isRunning))
+            } catch (e: Exception) {
+                Log.w("ConfigFragment", "updatePrintStatus failed", e)
+            }
+        }
     }
 
     private fun setAccordionExpanded(expanded: Boolean) {
