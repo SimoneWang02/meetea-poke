@@ -1,4 +1,4 @@
-# MeeTea&Poke — Click & Collect
+# MeeTea&Poke - Click & Collect
 
 Applicazione web per ordinazioni d'asporto di poke bowl e bubble tea per
 **MeeTea&Poke** (Carpi, MO).
@@ -9,9 +9,9 @@ Sviluppo via **Laravel Sail** (Docker).
 ## Cosa fa
 
 - **Landing pubblica** (`/`) con menu, orari, contatti.
-- **Flusso d'ordine** (`/ordina`) — wizard multi-step per comporre poke
+- **Flusso d'ordine** (`/ordina`) - wizard multi-step per comporre poke
   bowl e bubble tea, raccoglie dati cliente e crea l'ordine.
-- **Pannello staff** (`/admin`) — login con password, polling ogni 10s,
+- **Pannello staff** (`/admin`) - login con password, polling ogni 10s,
   beep su nuovo ordine, gestione stato (nuovo → in_preparazione → pronto).
 - **Notifica WhatsApp** al gestore all'arrivo di ogni nuovo ordine
   via Callmebot (gratuito).
@@ -93,7 +93,7 @@ openssl rand -hex 32
 
 L'admin entra in `/admin`, digita la password, il backend risponde con il
 token che viene tenuto in memoria React per autenticare le chiamate
-successive (niente localStorage — al refresh va rifatto il login).
+successive (niente localStorage - al refresh va rifatto il login).
 
 ## Struttura del progetto
 
@@ -129,8 +129,8 @@ routes/
 
 | Metodo | Path                     | Auth   | Descrizione                    |
 | ------ | ------------------------ | ------ | ------------------------------ |
-| POST   | `/api/orders`            | —      | Crea un nuovo ordine           |
-| POST   | `/api/admin/login`       | —      | Restituisce il token admin     |
+| POST   | `/api/orders`            | -      | Crea un nuovo ordine           |
+| POST   | `/api/admin/login`       | -      | Restituisce il token admin     |
 | GET    | `/api/orders`            | Bearer | Lista ordini del giorno        |
 | PATCH  | `/api/orders/{id}/stato` | Bearer | Aggiorna lo stato di un ordine |
 
@@ -143,7 +143,7 @@ L'header per le route protette è `Authorization: Bearer <ADMIN_TOKEN>`.
   in `resources/js/lib/options.js`.
 - Il `NotificationService` è strutturato per ospitare in futuro un canale
   aggiuntivo (es. stampa CloudPRNT su stampante Star Micronics mC-Print3)
-  senza modificare il resto del codice — basta aggiungere un nuovo metodo
+  senza modificare il resto del codice - basta aggiungere un nuovo metodo
   e richiamarlo dal dispatcher `send()`.
 - Il contatore `numero_ordine` riparte da `ORD-001` ogni giorno
   (basato su `whereDate('created_at', today())`).

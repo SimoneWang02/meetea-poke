@@ -34,7 +34,7 @@ class OrderDetailActivity : AppCompatActivity() {
         binding.txtOrderTitle.text = "Ordine #${order.numeroOrdine}"
         binding.txtCliente.text = order.nomeCliente
         binding.txtDetailRitiro.text = order.orarioRitiro
-        binding.txtDetailTelefono.text = order.telefono?.takeIf { it.isNotBlank() } ?: "—"
+        binding.txtDetailTelefono.text = order.telefono?.takeIf { it.isNotBlank() } ?: "-"
 
         if (!order.note.isNullOrBlank()) {
             binding.txtDetailNote.text = "Note: ${order.note}"

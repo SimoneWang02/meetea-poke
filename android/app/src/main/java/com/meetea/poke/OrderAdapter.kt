@@ -46,7 +46,7 @@ class OrderAdapter : RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
     class ViewHolder(private val binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(order: Order) {
-            binding.txtNumeroOrdine.text = "#${order.numeroOrdine} — ${order.nomeCliente}"
+            binding.txtNumeroOrdine.text = "#${order.numeroOrdine} - ${order.nomeCliente}"
             binding.txtRitiro.text = order.orarioRitiro
             binding.txtRicezione.text = formatTime(order.createdAt)
 

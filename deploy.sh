@@ -62,7 +62,7 @@ step "Health check: $HEALTH_URL"
 sleep 3
 for i in 1 2 3 4 5 6; do
     if curl -fsS -o /dev/null --max-time 5 "$HEALTH_URL"; then
-        ok "Deploy successful — site is up"
+        ok "Deploy successful - site is up"
         exit 0
     fi
     warn "Attempt $i failed, retrying in 5s..."

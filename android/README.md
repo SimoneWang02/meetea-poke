@@ -1,4 +1,4 @@
-# MeeTea Poke — APK Stampante Sunmi
+# MeeTea Poke - APK Stampante Sunmi
 
 APK Android per la stampa automatica degli ordini sul Sunmi V2S.
 
@@ -24,9 +24,9 @@ Oppure copiare l'APK nel browser del device e aprirlo (richiede "Origini sconosc
 
 All'avvio l'app mostra la schermata di configurazione:
 
-| Campo | Valore |
-|-------|--------|
-| URL base API | `https://meetea-poke.com` |
+| Campo        | Valore                                             |
+| ------------ | -------------------------------------------------- |
+| URL base API | `https://meetea-poke.com`                          |
 | Bearer Token | Valore di `PRINT_API_TOKEN` dal `.env` del backend |
 
 Dopo aver salvato, il servizio parte in background e fa polling ogni 3 secondi.
@@ -39,7 +39,7 @@ Dopo aver salvato, il servizio parte in background e fa polling ogni 3 secondi.
 
 ## Note tecniche
 
-- Il `PrintService` è un **Foreground Service** — sopravvive al background kill di Android
+- Il `PrintService` è un **Foreground Service** - sopravvive al background kill di Android
 - Il binding al printer service Sunmi avviene via AIDL (`IWoyouService`) preinstallato su SUNMI OS
 - Se la stampante non è disponibile al momento del polling, lo scontrino viene saltato (non accodato)
 - Il token di stampa è separato dall'`ADMIN_TOKEN` del pannello web
