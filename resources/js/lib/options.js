@@ -216,31 +216,6 @@ export const BOBA_CATEGORIE = [
                 ingredienti: "Tè verde, passion fruit e mango freschi",
                 image: "passion_fruit_mango.PNG",
             },
-            {
-                nome: "I Miss You",
-                prezzi: { G: 5.5 },
-                ingredienti:
-                    "Latte probiotico gusto tropical con panna montata",
-                image: "i_miss_you.PNG",
-            },
-            {
-                nome: "Yakult alla Fragola",
-                prezzi: { G: 5.5 },
-                ingredienti: "Latte probiotico, fragola fresca",
-                image: "yakult_fragola.PNG",
-            },
-            {
-                nome: "Yakult all'Ananas",
-                prezzi: { G: 5.5 },
-                ingredienti: "Latte probiotico, ananas fresca",
-                image: "yakult_ananas.PNG",
-            },
-            {
-                nome: "Yakult all'Arancia",
-                prezzi: { G: 5.5 },
-                ingredienti: "Latte probiotico, arancia fresca",
-                image: "yakult_arancia.PNG",
-            },
             { nome: "Tè all'Arancia Fresca con Maracuja", prezzi: { G: 5.5 } },
         ],
     },
@@ -306,7 +281,36 @@ export const BOBA_CATEGORIE = [
                 prezzi: { G: 5.5 },
                 ingredienti: "Marmellata di fragola con pezzetti, latte",
             },
-            { nome: "Latte di Cocco Denso al Mango", prezzi: { G: 5.5 }, image: "latte_cocco_denso_mango.PNG" },
+            {
+                nome: "Latte di Cocco Denso al Mango",
+                prezzi: { G: 5.5 },
+                image: "latte_cocco_denso_mango.PNG",
+            },
+            {
+                nome: "I Miss You",
+                prezzi: { G: 5.5 },
+                ingredienti:
+                    "Latte probiotico gusto tropical con panna montata",
+                image: "i_miss_you.PNG",
+            },
+            {
+                nome: "Yakult alla Fragola",
+                prezzi: { G: 5.5 },
+                ingredienti: "Latte probiotico, fragola fresca",
+                image: "yakult_fragola.PNG",
+            },
+            {
+                nome: "Yakult all'Ananas",
+                prezzi: { G: 5.5 },
+                ingredienti: "Latte probiotico, ananas fresca",
+                image: "yakult_ananas.PNG",
+            },
+            {
+                nome: "Yakult all'Arancia",
+                prezzi: { G: 5.5 },
+                ingredienti: "Latte probiotico, arancia fresca",
+                image: "yakult_arancia.PNG",
+            },
         ],
     },
     {
@@ -333,8 +337,17 @@ export const BOBA_CATEGORIE = [
                 ingredienti: "Granita all'ananas, frutta secca",
                 image: "ananas_fresca_granita.PNG",
             },
-            { nome: "Cheese Dragon", prezzi: { G: 5.5 }, image: "cheese_dragon.PNG" },
-            { nome: "Cheese Mango", prezzi: { G: 5.5 }, topSeller: true, image: "cheese_mango.PNG" },
+            {
+                nome: "Cheese Dragon",
+                prezzi: { G: 5.5 },
+                image: "cheese_dragon.PNG",
+            },
+            {
+                nome: "Cheese Mango",
+                prezzi: { G: 5.5 },
+                topSeller: true,
+                image: "cheese_mango.PNG",
+            },
         ],
     },
 ];
@@ -395,11 +408,19 @@ export const ORARI_APERTURA = [
     { giorno: "Domenica", orario: "10:00 – 22:30" },
 ];
 
-const GIORNI_JS = ["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+const GIORNI_JS = [
+    "Domenica",
+    "Lunedì",
+    "Martedì",
+    "Mercoledì",
+    "Giovedì",
+    "Venerdì",
+    "Sabato",
+];
 
 export function isGiornoChiuso() {
     const oggi = GIORNI_JS[new Date().getDay()];
-    return ORARI_APERTURA.find(o => o.giorno === oggi)?.orario === "chiuso";
+    return ORARI_APERTURA.find((o) => o.giorno === oggi)?.orario === "chiuso";
 }
 
 export function generateSlotsRitiro() {
