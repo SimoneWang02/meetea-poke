@@ -412,7 +412,7 @@ export default function Home() {
                     <div>
                         <img
                             src="/images/name.svg"
-                            alt="MeeTea & Poke"
+                            alt="MeeTea&Poke"
                             className="h-10 w-auto"
                         />
                         <div className="mt-2 text-sm text-stone-400">

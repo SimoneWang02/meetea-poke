@@ -29,7 +29,7 @@ export default function HeroSection() {
             <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
                 <img
                     src="/images/name.svg"
-                    alt="MeeTea & Poke"
+                    alt="MeeTea&Poke"
                     className="w-[min(90%,540px)] drop-shadow-[0_10px_30px_rgba(0,0,0,0.25)] animate-fade-in-scale"
                 />
                 <a

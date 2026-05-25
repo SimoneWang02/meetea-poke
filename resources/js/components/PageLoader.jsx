@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 
-export default function PageLoader({ images = [], minDuration = 350, maxDuration = 6000 }) {
+export default function PageLoader({
+    images = [],
+    minDuration = 350,
+    maxDuration = 6000,
+}) {
     const skip =
-        typeof window !== "undefined" && sessionStorage.getItem("heroImagesPreloaded") === "1";
+        typeof window !== "undefined" &&
+        sessionStorage.getItem("heroImagesPreloaded") === "1";
     const [done, setDone] = useState(skip);
     const [removed, setRemoved] = useState(skip);
 
@@ -50,7 +55,7 @@ export default function PageLoader({ images = [], minDuration = 350, maxDuration
             <div className="flex flex-col items-center gap-6">
                 <img
                     src="/images/name.svg"
-                    alt="MeeTea & Poke"
+                    alt="MeeTea&Poke"
                     className="w-[min(70%,320px)] animate-loader-pulse"
                 />
                 <div className="flex gap-2">

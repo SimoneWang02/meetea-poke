@@ -58,7 +58,7 @@ export default function Navbar() {
                 >
                     <img
                         src="/images/logo.svg"
-                        alt="MeeTea & Poke"
+                        alt="MeeTea&Poke"
                         className="h-10 w-auto sm:h-12"
                     />
                 </Link>

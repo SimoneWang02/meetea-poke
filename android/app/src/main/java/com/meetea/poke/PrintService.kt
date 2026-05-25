@@ -111,7 +111,7 @@ class PrintService : Service() {
 
     private fun buildNotification(): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("MeeTea & Poke")
+            .setContentTitle("MeeTea&Poke")
             .setContentText("In ascolto ordini...")
             .setSmallIcon(R.drawable.ic_notification)
             .setOngoing(true)

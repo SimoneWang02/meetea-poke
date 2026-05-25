@@ -37,7 +37,7 @@ export default function Privacy() {
                     <Link to="/" className="flex justify-center">
                         <img
                             src="/images/logo.svg"
-                            alt="MeeTea & Poke"
+                            alt="MeeTea&Poke"
                             className="h-10 w-auto"
                         />
                     </Link>
