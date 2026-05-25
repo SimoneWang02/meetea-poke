@@ -13,6 +13,7 @@ class Order extends Model
         'telefono',
         'orario_ritiro',
         'note',
+        'totale',
         'stato',
         'stampato',
     ];

@@ -9,5 +9,6 @@ data class Order(
     val telefono: String?,
     @SerializedName("orario_ritiro") val orarioRitiro: String,
     val note: String?,
+    val totale: Double?,
     val items: List<OrderItem>
 )

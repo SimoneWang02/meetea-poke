@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createOrder } from '../../lib/api';
 
+function itemSubtotale(item) {
+    return (item.prezzo_base ?? 0) * (item.quantita ?? 1);
+}
+
 export default function StepConferma({ items, cliente, onReset }) {
     const [status, setStatus] = useState('loading');
     const [result, setResult] = useState(null);
@@ -13,11 +17,13 @@ export default function StepConferma({ items, cliente, onReset }) {
 
         (async () => {
             try {
+                const totale = items.reduce((s, it) => s + itemSubtotale(it), 0);
                 const data = await createOrder({
                     nome_cliente: cliente.nome,
                     telefono: cliente.telefono,
                     orario_ritiro: cliente.orario_ritiro,
                     note: cliente.note || null,
+                    totale,
                     items,
                 });
                 setResult(data);

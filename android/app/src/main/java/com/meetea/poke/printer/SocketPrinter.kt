@@ -88,6 +88,11 @@ object SocketPrinter {
 
         esc(ESC, 0x45, 0x01)          // bold
         text("--------------------------------\n")
+        if (order.totale != null) {
+            val totaleStr = "%.2f €".format(order.totale)
+            val padding = 32 - "Totale".length - totaleStr.length
+            text("Totale" + " ".repeat(padding.coerceAtLeast(1)) + "$totaleStr\n")
+        }
 
         esc(ESC, 0x64, 0x05)          // feed 5 lines
         esc(GS,  0x56, 0x41, 0x00)   // cut
@@ -105,7 +110,15 @@ object SocketPrinter {
             else   -> cfg["nome"]?.toString()?.ifBlank { null } ?: item.tipo.replaceFirstChar { it.uppercase() }
         }
         esc(ESC, 0x45, 0x01)
-        text("${item.quantita}x $titolo\n")
+        val prezzoBase = (cfg["prezzo_base"] as? Number)?.toDouble()
+        if (prezzoBase != null) {
+            val prezzoTot = "%.2f €".format(prezzoBase * item.quantita)
+            val left = "${item.quantita}x $titolo"
+            val padding = 32 - left.length - prezzoTot.length
+            text("$left${" ".repeat(padding.coerceAtLeast(1))}$prezzoTot\n")
+        } else {
+            text("${item.quantita}x $titolo\n")
+        }
 
         when (item.tipo) {
             "poke" -> {
@@ -118,7 +131,7 @@ object SocketPrinter {
                 (cfg["extras"] as? Map<*, *>)?.values?.forEach { cat ->
                     (cat as? List<*>)?.forEach { e ->
                         val nome = (e as? Map<*, *>)?.get("nome")?.toString() ?: return@forEach
-                        text("  + $nome\n")
+                        text("  ++ $nome\n")
                     }
                 }
                 if (cfg["salsa_a_parte"] == true) text("  - Salsa a parte\n")

@@ -26,9 +26,11 @@ class OrderController extends Controller
             'telefono' => ['required', 'string', 'max:30'],
             'orario_ritiro' => ['required', 'string', 'regex:/^\d{2}:\d{2}$/'],
             'note' => ['nullable', 'string', 'max:500'],
+            'totale' => ['nullable', 'numeric', 'min:0'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.tipo' => ['required', 'in:poke,bubbletea,sfizio'],
             'items.*.nome' => ['nullable', 'string', 'max:200'],
+            'items.*.prezzo_base' => ['nullable', 'numeric', 'min:0'],
             'items.*.quantita' => ['required', 'integer', 'min:1', 'max:10'],
             'items.*.configurazione' => ['required', 'array'],
         ]);
@@ -36,6 +38,9 @@ class OrderController extends Controller
         $data['items'] = array_map(function ($item) {
             if (!empty($item['nome']) && empty($item['configurazione']['nome'])) {
                 $item['configurazione']['nome'] = $item['nome'];
+            }
+            if (isset($item['prezzo_base']) && !isset($item['configurazione']['prezzo_base'])) {
+                $item['configurazione']['prezzo_base'] = $item['prezzo_base'];
             }
             return array_intersect_key($item, array_flip(['tipo', 'quantita', 'configurazione']));
         }, $data['items']);
@@ -60,6 +65,7 @@ class OrderController extends Controller
                         'telefono' => $data['telefono'],
                         'orario_ritiro' => $data['orario_ritiro'],
                         'note' => $data['note'] ?? null,
+                        'totale' => $data['totale'] ?? null,
                         'stato' => 'nuovo',
                     ]);
 
@@ -128,6 +134,7 @@ class OrderController extends Controller
                 'nome_cliente'  => $o->nome_cliente,
                 'orario_ritiro' => $o->orario_ritiro,
                 'note'          => $o->note,
+                'totale'        => $o->totale,
                 'telefono'      => $o->telefono,
                 'items'         => $o->items->map(fn ($item) => [
                     'tipo'           => $item->tipo,
