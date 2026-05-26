@@ -214,10 +214,6 @@ export default function PokeModal({
             setError("Scegli almeno una base.");
             return;
         }
-        if (totalQty(proteine) === 0) {
-            setError("Scegli almeno una proteina.");
-            return;
-        }
         if (!posate) {
             setError("Scegli le posate.");
             return;
