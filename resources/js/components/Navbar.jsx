@@ -19,8 +19,14 @@ function scrollToId(id) {
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
+    const [orderingAvailable, setOrderingAvailable] = useState(true);
 
     useEffect(() => {
+        fetch("/api/ordering-status")
+            .then((r) => r.json())
+            .then((data) => setOrderingAvailable(data.ordering_available))
+            .catch(() => {});
+
         const onScroll = () => setScrolled(window.scrollY > 20);
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
@@ -83,12 +89,14 @@ export default function Navbar() {
                 </nav>
 
                 <div className="flex items-center gap-2">
-                    <Link
-                        to="/ordina"
-                        className="hidden rounded-full bg-mint-700 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-mint-900/20 transition hover:bg-mint-800 sm:inline-flex"
-                    >
-                        Ordina
-                    </Link>
+                    {orderingAvailable && (
+                        <Link
+                            to="/ordina"
+                            className="hidden rounded-full bg-mint-700 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-mint-900/20 transition hover:bg-mint-800 sm:inline-flex"
+                        >
+                            Ordina
+                        </Link>
+                    )}
                     <button
                         type="button"
                         aria-label={open ? "Chiudi menu" : "Apri menu"}
