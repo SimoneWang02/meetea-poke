@@ -26,9 +26,9 @@ class BobaToppingGroupResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $modelLabel = 'Gruppo topping';
+    protected static ?string $modelLabel = 'Topping';
 
-    protected static ?string $pluralModelLabel = 'Gruppi topping';
+    protected static ?string $pluralModelLabel = 'Toppings';
 
     protected static ?string $recordTitleAttribute = 'nome';
 
