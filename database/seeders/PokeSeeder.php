@@ -70,7 +70,6 @@ class PokeSeeder extends Seeder
                     ['group_id' => $groupIds[$groupSlug], 'slug' => Str::slug($nome)],
                     [
                         'nome' => $nome,
-                        'vegano' => false,
                         'sort_order' => $i,
                         'active' => true,
                     ],
