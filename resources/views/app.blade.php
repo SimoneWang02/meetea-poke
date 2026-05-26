@@ -7,6 +7,7 @@
     <title>MeeTea&Poke</title>
     <link rel="icon" type="image/png" href="/images/logo.svg">
     <meta name="description" content="Poke bowl e bubble tea artigianali a Carpi. Ordina d'asporto online e ritira in negozio.">
+    <meta name="google-site-verification" content="oKZFEMyPD9UTemjMwkTTsIO-9Kb6d_h8EnnTvHiF4Eg" />
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet">
     @viteReactRefresh
