@@ -90,17 +90,24 @@ export default function SfizioModal({
                     <div className="mb-2 text-sm font-semibold uppercase tracking-wider text-stone-500">
                         Gusto
                     </div>
-                    <select
-                        value={gusto}
-                        onChange={(e) => setGusto(e.target.value)}
-                        className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base outline-none transition focus:border-mint-500 focus:ring-2 focus:ring-mint-200"
-                    >
+                    <ul className="divide-y divide-stone-100">
                         {gusti.map((g) => (
-                            <option key={g} value={g}>
-                                {g}
-                            </option>
+                            <li key={g}>
+                                <label className="flex cursor-pointer items-center gap-3 py-2.5">
+                                    <input
+                                        type="radio"
+                                        name="gusto"
+                                        value={g}
+                                        checked={gusto === g}
+                                        onChange={() => setGusto(g)}
+                                        required
+                                        className="h-4 w-4 accent-mint-600"
+                                    />
+                                    <span className="text-sm text-stone-700">{g}</span>
+                                </label>
+                            </li>
                         ))}
-                    </select>
+                    </ul>
                 </div>
             )}
             <div className="mb-2 text-sm font-semibold uppercase tracking-wider text-stone-500">
