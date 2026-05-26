@@ -22,13 +22,13 @@ class BobaCategoryForm
                 TextInput::make('slug')
                     ->hidden()
                     ->dehydrated(),
-                Toggle::make('active')
-                    ->label('Attiva')
-                    ->default(true),
                 TagsInput::make('basi')
                     ->label('Basi disponibili')
                     ->placeholder('Aggiungi base...')
                     ->helperText('Opzioni base selezionabili dal cliente (es. Granita, Tè Verde Normale)'),
+                Toggle::make('active')
+                    ->label('Attiva')
+                    ->default(true),
             ]);
     }
 }
