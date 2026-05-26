@@ -4,6 +4,6 @@
 
 2. forse migliorare hero section
 
-3. fare gusti misti per i mochi, con un sistema simile a poke
+3. ~~fare gusti misti per i mochi, con un sistema simile a poke~~
 
-4. proteina non obbligatoria
+4. ~~proteina non obbligatoria~~
