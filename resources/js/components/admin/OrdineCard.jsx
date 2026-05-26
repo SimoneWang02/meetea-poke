@@ -1,175 +1,182 @@
-import React from "react";
-import StatoBadge from "./StatoBadge";
+import React from 'react';
 
-const TIPO_LABEL = {
-    poke: "🥗 Poke Bowl",
-    bubbletea: "🧋 Bubble Tea",
-    sfizio: "🥟 Sfizio",
-    bevande: "🥤 Bevanda",
-};
+function Divider() {
+    return <div className="border-t border-dashed border-stone-300 my-2" />;
+}
 
-function ItemDettaglio({ item }) {
-    const cfg = item.configurazione || {};
+function PokeItem({ cfg, quantita }) {
+    const titolo = cfg.dimensione
+        ? cfg.dimensione.charAt(0).toUpperCase() + cfg.dimensione.slice(1)
+        : 'Poke Bowl';
+    const prezzo = cfg.prezzo_base != null
+        ? (cfg.prezzo_base * quantita).toFixed(2)
+        : null;
+
+    const righe = [
+        ...(cfg.basi || []).map((v) => ({ sym: '+', val: v })),
+        ...(cfg.proteine || []).map((v) => ({ sym: '+', val: v })),
+        ...(cfg.green || []).map((v) => ({ sym: '+', val: v })),
+        ...(cfg.crispy || []).map((v) => ({ sym: '+', val: v })),
+        ...(cfg.salse || []).map((v) => ({ sym: '+', val: v })),
+        ...Object.values(cfg.extras || {}).flat().map((e) => ({ sym: '++', val: e.nome || e })),
+        ...(cfg.salsa_a_parte ? [{ sym: '-', val: 'Salsa a parte' }] : []),
+        ...(cfg.posate && cfg.posate !== 'Senza Posate' ? [{ sym: '-', val: cfg.posate }] : []),
+    ];
+
     return (
-        <div className="rounded-xl bg-stone-50 p-3 ring-1 ring-stone-200">
-            <div className="flex items-center justify-between">
-                <div className="font-semibold">
-                    {TIPO_LABEL[item.tipo] ?? item.tipo}
-                </div>
-                <div className="text-sm font-bold text-mint-700">
-                    × {item.quantita}
-                </div>
+        <div>
+            <div className="flex justify-between font-bold text-sm">
+                <span>{quantita}x {titolo}</span>
+                {prezzo && <span>{prezzo}</span>}
             </div>
-            <ul className="mt-2 space-y-0.5 text-sm text-stone-700">
-                {item.tipo === "poke" && (
-                    <>
-                        <li>
-                            Dimensione:{" "}
-                            <span className="font-medium capitalize">
-                                {cfg.dimensione}
-                            </span>
-                        </li>
-                        <li>
-                            Basi:{" "}
-                            <span className="font-medium">
-                                {(cfg.basi || []).join(", ")}
-                            </span>
-                        </li>
-                        <li>
-                            Proteine:{" "}
-                            <span className="font-medium">
-                                {(cfg.proteine || []).join(", ")}
-                            </span>
-                        </li>
-                        <li>
-                            Green:{" "}
-                            <span className="font-medium">
-                                {(cfg.green || []).join(", ") || "-"}
-                            </span>
-                        </li>
-                        <li>
-                            Crispy:{" "}
-                            <span className="font-medium">
-                                {(cfg.crispy || []).join(", ") || "-"}
-                            </span>
-                        </li>
-                        <li>
-                            Salse:{" "}
-                            <span className="font-medium">
-                                {(cfg.salse || []).join(", ") || "-"}
-                            </span>
-                        </li>
-                    </>
-                )}
-                {item.tipo === "bubbletea" && (
-                    <>
-                        <li>
-                            Nome:{" "}
-                            <span className="font-medium">{cfg.nome}</span>
-                        </li>
-                        <li>
-                            Size:{" "}
-                            <span className="font-medium">{cfg.size}</span>
-                        </li>
-                        <li>
-                            Temperatura:{" "}
-                            <span className="font-medium capitalize">
-                                {cfg.temperatura}
-                            </span>
-                        </li>
-                        <li>
-                            Toppings:{" "}
-                            <span className="font-medium">
-                                {(cfg.toppings || [])
-                                    .map((t) =>
-                                        t.gusto ? `${t.nome} (${t.gusto})` : t.nome,
-                                    )
-                                    .join(", ") || "-"}
-                            </span>
-                        </li>
-                    </>
-                )}
-                {item.tipo === "sfizio" && (
-                    <>
-                        <li>
-                            Nome:{" "}
-                            <span className="font-medium">{cfg.nome}</span>
-                        </li>
-                        <li>
-                            Porzione:{" "}
-                            <span className="font-medium">{cfg.porzione}</span>
-                        </li>
-                    </>
-                )}
-                {item.tipo === "bevande" && (
-                    <li>
-                        Nome: <span className="font-medium">{cfg.nome}</span>
-                    </li>
-                )}
-            </ul>
+            {righe.map((r, i) => (
+                <div key={i} className="text-xs text-stone-600 pl-3">
+                    {r.sym} {r.val}
+                </div>
+            ))}
         </div>
     );
 }
 
-export default function OrdineCard({ order, onAdvance }) {
-    const next =
-        order.stato === "nuovo"
-            ? "in_preparazione"
-            : order.stato === "in_preparazione"
-              ? "pronto"
-              : null;
-    const buttonLabel =
-        order.stato === "nuovo"
-            ? "Inizia preparazione"
-            : order.stato === "in_preparazione"
-              ? "Segna come pronto"
-              : null;
+function BubbleteaItem({ cfg, quantita }) {
+    const titolo = cfg.nome || 'Bubble Tea';
+    const prezzo = cfg.prezzo_base != null
+        ? (cfg.prezzo_base * quantita).toFixed(2)
+        : null;
+
+    const size = cfg.size === 'M' ? 'Media' : cfg.size === 'G' ? 'Grande' : cfg.size;
+    const temp = cfg.temperatura
+        ? cfg.temperatura.charAt(0).toUpperCase() + cfg.temperatura.slice(1)
+        : null;
+
+    const toppings = (cfg.toppings || []).map((t) =>
+        t.gusto ? `${t.nome} (${t.gusto})` : t.nome
+    );
 
     return (
-        <article className="flex flex-col rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
-            <header className="flex items-start justify-between gap-2">
-                <div>
-                    <div className="text-2xl font-extrabold tracking-tight">
-                        {order.numero_ordine}
-                    </div>
-                    <div className="mt-1 inline-flex items-center gap-1 text-base font-semibold text-mint-700">
-                        🕐 {order.orario_ritiro}
-                    </div>
-                </div>
-                <StatoBadge stato={order.stato} />
-            </header>
+        <div>
+            <div className="flex justify-between font-bold text-sm">
+                <span>{quantita}x {titolo}</span>
+                {prezzo && <span>{prezzo}</span>}
+            </div>
+            {size && <div className="text-xs text-stone-600 pl-3">- {size}</div>}
+            {temp && <div className="text-xs text-stone-600 pl-3">- {temp}</div>}
+            {toppings.map((t, i) => (
+                <div key={i} className="text-xs text-stone-600 pl-3">+ {t}</div>
+            ))}
+        </div>
+    );
+}
 
-            <div className="mt-3 border-t border-stone-100 pt-3">
-                <div className="font-semibold">{order.nome_cliente}</div>
-                <a
-                    href={`tel:${order.telefono}`}
-                    className="text-sm text-stone-600 hover:text-stone-800"
-                >
-                    📞 {order.telefono}
-                </a>
+function AltroItem({ cfg, quantita, tipo }) {
+    const titolo = cfg.nome || tipo.charAt(0).toUpperCase() + tipo.slice(1);
+    const prezzo = cfg.prezzo_base != null
+        ? (cfg.prezzo_base * quantita).toFixed(2)
+        : null;
+
+    return (
+        <div>
+            <div className="flex justify-between font-bold text-sm">
+                <span>{quantita}x {titolo}</span>
+                {prezzo && <span>{prezzo}</span>}
+            </div>
+            {cfg.porzione && (
+                <div className="text-xs text-stone-600 pl-3">{cfg.porzione}</div>
+            )}
+        </div>
+    );
+}
+
+function ItemDettaglio({ item }) {
+    const cfg = item.configurazione || {};
+    if (item.tipo === 'poke') return <PokeItem cfg={cfg} quantita={item.quantita} />;
+    if (item.tipo === 'bubbletea') return <BubbleteaItem cfg={cfg} quantita={item.quantita} />;
+    return <AltroItem cfg={cfg} quantita={item.quantita} tipo={item.tipo} />;
+}
+
+const TIPO_ORDER = { poke: 0, bubbletea: 1 };
+
+export default function OrdineCard({ order, onAdvance }) {
+    const next =
+        order.stato === 'nuovo'
+            ? 'in_preparazione'
+            : order.stato === 'in_preparazione'
+              ? 'pronto'
+              : null;
+
+    const buttonLabel =
+        order.stato === 'nuovo'
+            ? 'Inizia preparazione'
+            : order.stato === 'in_preparazione'
+              ? 'Segna come pronto'
+              : null;
+
+    const buttonCls =
+        order.stato === 'nuovo'
+            ? 'border-amber-600 text-amber-700 hover:bg-amber-50'
+            : 'border-green-700 text-green-800 hover:bg-green-50';
+
+    const sortedItems = [...(order.items || [])].sort(
+        (a, b) => (TIPO_ORDER[a.tipo] ?? 2) - (TIPO_ORDER[b.tipo] ?? 2)
+    );
+
+    const totale = order.totale
+        ?? sortedItems.reduce(
+            (sum, it) => sum + it.quantita * (it.configurazione?.prezzo_base ?? 0),
+            0
+        );
+
+    return (
+        <article className="flex flex-col bg-stone-50 font-mono shadow-md border border-stone-200">
+            <div className="text-center pt-4 pb-2 px-4">
+                <div className="text-base font-black tracking-tight">MeeTea&amp;Poke</div>
+                <div className="text-4xl font-black tracking-tight leading-none mt-1">
+                    #{String(order.numero_ordine).padStart(3, '0')}
+                </div>
             </div>
 
-            <div className="mt-3 space-y-2">
-                {order.items?.map((it) => (
+            <Divider />
+
+            <div className="px-4 text-sm space-y-0.5">
+                <div><span className="font-bold">Cliente:</span> {order.nome_cliente}</div>
+                <div>
+                    <span className="font-bold">Tel:</span>{' '}
+                    <a href={`tel:${order.telefono}`} className="hover:underline">
+                        {order.telefono}
+                    </a>
+                </div>
+                <div><span className="font-bold">Ritiro:</span> {order.orario_ritiro}</div>
+            </div>
+
+            {order.note && (
+                <>
+                    <Divider />
+                    <div className="px-4 text-sm">
+                        <span className="font-bold">Note:</span> {order.note}
+                    </div>
+                </>
+            )}
+
+            <Divider />
+
+            <div className="px-4 space-y-2">
+                {sortedItems.map((it) => (
                     <ItemDettaglio key={it.id} item={it} />
                 ))}
             </div>
 
-            {order.note && (
-                <div className="mt-3 rounded-xl bg-accent-50 p-3 text-sm text-accent-700 ring-1 ring-accent-200">
-                    <span className="font-semibold">📝 Note:</span> {order.note}
-                </div>
-            )}
+            <Divider />
+
+            <div className="px-4 pb-3 flex justify-between font-black text-sm">
+                <span>TOTALE</span>
+                <span>{totale.toFixed(2)}</span>
+            </div>
 
             {next && (
                 <button
                     type="button"
                     onClick={() => onAdvance(order.id, next)}
-                    className={`mt-4 w-full rounded-xl px-4 py-3 font-semibold text-white transition ${
-                        order.stato === "nuovo"
-                            ? "bg-yellow-500 hover:bg-yellow-600"
-                            : "bg-green-600 hover:bg-green-700"
-                    }`}
+                    className={`border-t border-dashed border-stone-300 px-4 py-3 text-sm font-bold tracking-wide transition ${buttonCls}`}
                 >
                     {buttonLabel}
                 </button>

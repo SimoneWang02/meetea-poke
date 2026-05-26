@@ -29,18 +29,16 @@ function Login({ onSuccess }) {
         <div className="flex min-h-screen items-center justify-center bg-stone-900 px-6">
             <form
                 onSubmit={submit}
-                className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl"
+                className="w-full max-w-sm bg-stone-50 p-8 shadow-xl font-mono border border-stone-200"
             >
-                <div className="text-center">
-                    <div className="text-2xl font-extrabold tracking-tight">
-                        MeeTea<span className="text-accent-400">&amp;</span>Poke
-                    </div>
-                    <div className="mt-1 text-sm font-semibold uppercase tracking-wider text-stone-500">
+                <div className="text-center border-b border-dashed border-stone-300 pb-4">
+                    <div className="text-lg font-black tracking-tight">MeeTea&amp;Poke</div>
+                    <div className="mt-0.5 text-xs font-bold uppercase tracking-widest text-stone-500">
                         Pannello staff
                     </div>
                 </div>
 
-                <label className="mt-8 block text-sm font-semibold text-stone-700">
+                <label className="mt-6 block text-xs font-bold uppercase tracking-widest text-stone-600">
                     Password
                 </label>
                 <input
@@ -48,11 +46,11 @@ function Login({ onSuccess }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     autoFocus
-                    className="mt-1 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base outline-none transition focus:border-mint-500 focus:ring-2 focus:ring-mint-200"
+                    className="mt-1 w-full border border-stone-300 bg-white px-3 py-2 text-base font-mono outline-none transition focus:border-stone-500 focus:ring-1 focus:ring-stone-300"
                 />
 
                 {error && (
-                    <div className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-sm font-medium text-red-700 ring-1 ring-red-200">
+                    <div className="mt-3 border border-red-300 bg-red-50 px-3 py-2 text-xs font-bold text-red-700">
                         {error}
                     </div>
                 )}
@@ -60,17 +58,19 @@ function Login({ onSuccess }) {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="mt-6 w-full rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700 disabled:bg-stone-300"
+                    className="mt-5 w-full border-2 border-stone-800 px-4 py-2.5 text-sm font-black tracking-wide text-stone-800 transition hover:bg-stone-800 hover:text-white disabled:border-stone-300 disabled:text-stone-400"
                 >
                     {loading ? 'Accesso...' : 'Entra'}
                 </button>
 
-                <Link
-                    to="/"
-                    className="mt-4 block text-center text-sm text-stone-500 hover:text-stone-700"
-                >
-                    ← Torna al sito
-                </Link>
+                <div className="mt-4 border-t border-dashed border-stone-300 pt-3">
+                    <Link
+                        to="/"
+                        className="block text-center text-xs text-stone-400 hover:text-stone-600"
+                    >
+                        torna al sito
+                    </Link>
+                </div>
             </form>
         </div>
     );
@@ -132,45 +132,44 @@ function Dashboard({ token, onLogout }) {
     });
 
     return (
-        <div className="min-h-screen bg-stone-100 font-sans">
-            <header className="bg-white shadow-sm">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div className="min-h-screen bg-stone-900 font-mono">
+            <header className="bg-stone-950 border-b border-stone-700">
+                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
                     <div>
-                        <div className="text-xl font-extrabold tracking-tight">
-                            MeeTea<span className="text-accent-400">&amp;</span>Poke · staff
+                        <div className="text-base font-black tracking-tight text-stone-100">
+                            MeeTea&amp;Poke &mdash; staff
                         </div>
-                        <div className="text-sm text-stone-500 capitalize">
-                            {oggi} · {orders.length} ordin{orders.length === 1 ? 'e' : 'i'}
+                        <div className="text-xs text-stone-400 capitalize">
+                            {oggi} &middot; {orders.length} ordin{orders.length === 1 ? 'e' : 'i'}
                         </div>
                     </div>
                     <button
                         type="button"
                         onClick={onLogout}
-                        className="text-sm font-medium text-stone-500 hover:text-stone-700"
+                        className="text-xs font-bold tracking-widest text-stone-400 hover:text-stone-200 border border-stone-600 px-3 py-1.5"
                     >
-                        Esci
+                        ESCI
                     </button>
                 </div>
             </header>
 
             <main className="mx-auto max-w-7xl px-6 py-6">
                 {error && (
-                    <div className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
+                    <div className="mb-4 border border-red-400 bg-red-950 px-4 py-3 text-xs font-bold text-red-300">
                         {error}
                     </div>
                 )}
 
                 {loading ? (
-                    <div className="py-12 text-center text-stone-500">
+                    <div className="py-12 text-center text-sm text-stone-500">
                         Caricamento ordini...
                     </div>
                 ) : orders.length === 0 ? (
-                    <div className="rounded-3xl bg-white py-16 text-center ring-1 ring-stone-200">
-                        <div className="text-5xl">🍃</div>
-                        <p className="mt-4 text-lg font-medium text-stone-700">
+                    <div className="bg-stone-800 border border-stone-700 py-16 text-center">
+                        <p className="text-sm font-bold text-stone-400 tracking-widest uppercase">
                             Nessun ordine per oggi
                         </p>
-                        <p className="text-sm text-stone-500">
+                        <p className="mt-1 text-xs text-stone-600">
                             Gli ordini compariranno qui automaticamente
                         </p>
                     </div>

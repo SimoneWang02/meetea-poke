@@ -20,7 +20,7 @@ const GIORNI_JS = [
 
 export function isGiornoChiuso() {
     const oggi = GIORNI_JS[new Date().getDay()];
-    return ORARI_APERTURA.find((o) => o.giorno === oggi)?.orario === "chiuso";
+    return ORARI_APERTURA.find((o) => o.giorno === oggi)?.orario === "Chiuso";
 }
 
 export function generateSlotsRitiro() {

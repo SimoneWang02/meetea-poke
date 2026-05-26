@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exceptions\InvalidConfigurationException;
 use App\Models\Order;
 use App\Services\MenuPriceCalculator;
-use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -14,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-    public function store(Request $request, NotificationService $notifier, MenuPriceCalculator $calculator): JsonResponse
+    public function store(Request $request, MenuPriceCalculator $calculator): JsonResponse
     {
         if (Carbon::today()->dayOfWeek === Carbon::THURSDAY) {
             return response()->json(
@@ -93,15 +92,6 @@ class OrderController extends Controller
                 ['message' => 'Impossibile creare l\'ordine. Riprova fra poco.'],
                 500
             );
-        }
-
-        try {
-            $notifier->send($order);
-        } catch (\Throwable $e) {
-            Log::error('Notifica ordine fallita', [
-                'order_id' => $order->id,
-                'message' => $e->getMessage(),
-            ]);
         }
 
         return response()->json([

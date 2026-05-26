@@ -24,21 +24,4 @@
 
 ## INVESTIGATE (WTF)
 
-1. NotificationService.php
-
-2. optimize-hero-grid.mjs
-
-## PIANO GESTIONALE
-
-categorie_boba
-boba
-categorie_toppings
-toppings
-dimensioni_poke
-basi
-proteine
-green
-crispy
-salse
-sfizi
-bevande
+1. ~~NotificationService.php~~
