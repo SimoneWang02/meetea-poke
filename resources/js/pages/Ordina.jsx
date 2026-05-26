@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { isGiornoChiuso } from "../lib/options";
+import { readCart, writeCart, clearCart } from "../lib/cartStorage";
 import { useMenu } from "../lib/MenuProvider";
 import StepOrdina, {
     useMenuNav,
@@ -80,10 +81,10 @@ export default function Ordina() {
     const SNACKS_LISTA = menu?.SNACKS_LISTA ?? [];
     const BEVANDE_LISTA = menu?.BEVANDE_LISTA ?? [];
 
-    const [step, setStep] = useState("ordina");
-    const [items, setItems] = useState([]);
+    const [step, setStep] = useState(() => readCart()?.step ?? "ordina");
+    const [items, setItems] = useState(() => readCart()?.items ?? []);
     const [modal, setModal] = useState(null);
-    const [cliente, setCliente] = useState({
+    const [cliente, setCliente] = useState(() => readCart()?.cliente ?? {
         nome: "",
         telefono: "",
         orario_ritiro: "",
@@ -101,6 +102,10 @@ export default function Ordina() {
         return () => ro.disconnect();
     }, []);
 
+    useEffect(() => {
+        writeCart(items, cliente, step === "conferma" ? "dati" : step);
+    }, [items, cliente, step]);
+
     const { sections, active, sectionRefs, tabRefs, scrollToSection } =
         useMenuNav(headerHeight);
 
@@ -110,6 +115,7 @@ export default function Ordina() {
         setStep("ordina");
         setItems([]);
         setCliente({ nome: "", telefono: "", orario_ritiro: "", note: "" });
+        clearCart();
     };
 
     const canonicalKey = (item) => {
