@@ -22,6 +22,8 @@ export default function BobaModal({
 }) {
     const { menu } = useMenu();
     const BOBA_TOPPING = menu?.BOBA_TOPPING ?? { singoli: [], gruppi: [] };
+    const cat = menu?.BOBA_CATEGORIE?.find((c) => c.id === categoria);
+    const basi = cat?.basi ?? [];
 
     const availableSizes = useMemo(
         () => (item ? Object.keys(item.prezzi) : []),
@@ -31,6 +33,7 @@ export default function BobaModal({
     const [size, setSize] = useState(
         initialConfig?.size ?? availableSizes[0] ?? "G",
     );
+    const [base, setBase] = useState(initialConfig?.base ?? "");
     const [temperatura, setTemperatura] = useState(
         initialConfig?.temperatura ?? "",
     );
@@ -110,6 +113,10 @@ export default function BobaModal({
     const totale = prezzoBase * quantita;
 
     const submit = () => {
+        if (basi.length > 0 && !base) {
+            setError("Scegli la base.");
+            return;
+        }
         if (!temperatura) {
             setError("Scegli la temperatura.");
             return;
@@ -127,6 +134,7 @@ export default function BobaModal({
             configurazione: {
                 nome: item.nome,
                 size,
+                ...(base ? { base } : {}),
                 temperatura,
                 toppings: toppingsArr,
             },
@@ -205,6 +213,36 @@ export default function BobaModal({
                                 );
                             });
                         })()}
+                    </ul>
+                </Section>
+            )}
+
+            {basi.length > 0 && (
+                <Section
+                    titolo={
+                        <>
+                            Base <span className="text-red-500">*</span>
+                        </>
+                    }
+                >
+                    <ul className="divide-y divide-stone-100">
+                        {basi.map((b) => (
+                            <li key={b}>
+                                <label className="flex cursor-pointer items-center gap-3 py-2.5">
+                                    <input
+                                        type="radio"
+                                        name="base"
+                                        value={b}
+                                        checked={base === b}
+                                        onChange={() => setBase(b)}
+                                        className="h-4 w-4 accent-mint-600"
+                                    />
+                                    <span className="text-sm text-stone-700">
+                                        {b}
+                                    </span>
+                                </label>
+                            </li>
+                        ))}
                     </ul>
                 </Section>
             )}

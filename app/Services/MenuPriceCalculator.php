@@ -62,7 +62,7 @@ class MenuPriceCalculator
         $drink = BobaDrink::query()
             ->where('nome', $nome)
             ->where('active', true)
-            ->with('sizes')
+            ->with('sizes', 'category')
             ->first();
         if (!$drink) {
             throw new InvalidConfigurationException("Bubble tea non trovato: {$nome}");
@@ -71,6 +71,14 @@ class MenuPriceCalculator
         $size = $drink->sizes->firstWhere('size', $sizeChoice);
         if (!$size) {
             throw new InvalidConfigurationException("Bubble tea {$nome}: formato {$sizeChoice} non disponibile.");
+        }
+
+        $basi = $drink->category?->basi ?? [];
+        if (!empty($basi)) {
+            $base = $cfg['base'] ?? null;
+            if (!$base || !in_array($base, $basi)) {
+                throw new InvalidConfigurationException("Bubble tea {$nome}: base non valida.");
+            }
         }
 
         $totale = (float) $size->prezzo;

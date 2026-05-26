@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\BobaCategories\Schemas;
 
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -24,6 +25,10 @@ class BobaCategoryForm
                 Toggle::make('active')
                     ->label('Attiva')
                     ->default(true),
+                TagsInput::make('basi')
+                    ->label('Basi disponibili')
+                    ->placeholder('Aggiungi base...')
+                    ->helperText('Opzioni base selezionabili dal cliente (es. Granita, Tè Verde Normale)'),
             ]);
     }
 }

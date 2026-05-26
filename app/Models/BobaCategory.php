@@ -13,11 +13,13 @@ class BobaCategory extends Model
         'nome',
         'sort_order',
         'active',
+        'basi',
     ];
 
     protected $casts = [
         'sort_order' => 'integer',
         'active' => 'boolean',
+        'basi' => 'array',
     ];
 
     public function drinks(): HasMany

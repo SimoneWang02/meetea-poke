@@ -47,6 +47,7 @@ class BobaSeeder extends Seeder
             [
                 'slug' => 'te-verde-nero-granita',
                 'nome' => 'Tè Verde, Nero o Granita',
+                'basi' => ['Granita', 'Tè Verde Normale', 'Tè Verde Frizzante', 'Tè Nero Normale', 'Tè Nero Frizzante'],
                 'items' => array_map(fn ($n) => [$n, 4, 5], [
                     'Mango', 'Fragola', 'Ananas', 'Anguria', 'Mela Verde', 'Melone', 'Red Guava', 'Menta',
                     'Mirtillo', 'Kiwi', 'Miele', 'Pesca', 'Zenzero', 'Uva', 'Ciliegia', 'Litchi', 'Limone',
@@ -101,7 +102,7 @@ class BobaSeeder extends Seeder
         foreach ($categorie as $catIdx => $cat) {
             $category = BobaCategory::updateOrCreate(
                 ['slug' => $cat['slug']],
-                ['nome' => $cat['nome'], 'sort_order' => $catIdx, 'active' => true],
+                ['nome' => $cat['nome'], 'sort_order' => $catIdx, 'active' => true, 'basi' => $cat['basi'] ?? null],
             );
 
             foreach ($cat['items'] as $drinkIdx => $tuple) {

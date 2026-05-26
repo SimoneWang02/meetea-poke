@@ -139,8 +139,10 @@ object SocketPrinter {
             }
             "bubbletea" -> {
                 val size = when (cfg["size"]?.toString()) { "M" -> "Media"; "G" -> "Grande"; else -> cfg["size"]?.toString() ?: "" }
+                val base = cfg["base"]?.toString() ?: ""
                 val temp = cfg["temperatura"]?.toString()?.replaceFirstChar { it.uppercase() } ?: ""
                 if (size.isNotBlank()) text("  - $size\n")
+                if (base.isNotBlank()) text("  - $base\n")
                 if (temp.isNotBlank()) text("  - $temp\n")
                 val toppings = cfg["toppings"] as? List<*>
                 toppings?.forEach { t ->
