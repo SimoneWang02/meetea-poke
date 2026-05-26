@@ -14,7 +14,6 @@ class MenuSeeder extends Seeder
         $this->call([
             PokeSeeder::class,
             BobaSeeder::class,
-            TeaOptionsSeeder::class,
             SnackSeeder::class,
         ]);
     }

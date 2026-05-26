@@ -5,16 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class TeaOption extends Model
+class Bevanda extends Model
 {
+    protected $table = 'bevande';
+
     protected $fillable = [
-        'gruppo',
         'nome',
+        'prezzo',
+        'image_path',
         'sort_order',
         'active',
     ];
 
     protected $casts = [
+        'prezzo' => 'decimal:2',
         'sort_order' => 'integer',
         'active' => 'boolean',
     ];

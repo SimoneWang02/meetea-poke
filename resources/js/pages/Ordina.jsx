@@ -78,6 +78,7 @@ export default function Ordina() {
     const POKE_DIMENSIONI = menu?.POKE_DIMENSIONI ?? [];
     const BOBA_CATEGORIE = menu?.BOBA_CATEGORIE ?? [];
     const SNACKS_LISTA = menu?.SNACKS_LISTA ?? [];
+    const BEVANDE_LISTA = menu?.BEVANDE_LISTA ?? [];
 
     const [step, setStep] = useState("ordina");
     const [items, setItems] = useState([]);
@@ -211,6 +212,17 @@ export default function Ordina() {
         });
     };
 
+    const addBevandaDirect = (bevanda) => {
+        addItem({
+            tipo: "bevande",
+            nome: bevanda.nome,
+            image: bevanda.image,
+            prezzo_base: bevanda.prezzo,
+            quantita: 1,
+            configurazione: { nome: bevanda.nome },
+        });
+    };
+
     const isOrdina = step === "ordina";
 
     if (isGiornoChiuso()) {
@@ -327,6 +339,7 @@ export default function Ordina() {
                             headerHeight={headerHeight}
                             onOpenModal={setModal}
                             onAddSfizioDirect={addSfizioDirect}
+                            onAddBevandaDirect={addBevandaDirect}
                         />
                         <CartSidebar
                             items={items}

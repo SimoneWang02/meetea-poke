@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Bevanda;
 use App\Models\BobaCategory;
 use App\Models\BobaDrink;
 use App\Models\BobaDrinkSize;
@@ -12,7 +13,6 @@ use App\Models\PokeIngredientGroup;
 use App\Models\PokeSize;
 use App\Models\Snack;
 use App\Models\SnackVariant;
-use App\Models\TeaOption;
 use App\Observers\MenuCacheObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -43,9 +43,9 @@ class AppServiceProvider extends ServiceProvider
             BobaDrinkSize::class,
             BobaToppingGroup::class,
             BobaTopping::class,
-            TeaOption::class,
             Snack::class,
             SnackVariant::class,
+            Bevanda::class,
         ] as $model) {
             $model::observe(MenuCacheObserver::class);
         }

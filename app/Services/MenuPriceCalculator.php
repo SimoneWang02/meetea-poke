@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\InvalidConfigurationException;
-use App\Models\BobaCategory;
+use App\Models\Bevanda;
 use App\Models\BobaDrink;
 use App\Models\BobaTopping;
 use App\Models\PokeIngredientGroup;
@@ -13,7 +13,7 @@ use App\Models\SnackVariant;
 
 class MenuPriceCalculator
 {
-    private const TOPPING_INCLUSO = 0.50;
+    private const MAX_TOPPINGS_BOBA = 2;
 
     public function calculate(string $tipo, array $configurazione): float
     {
@@ -21,6 +21,7 @@ class MenuPriceCalculator
             'poke' => $this->calculatePoke($configurazione),
             'bubbletea' => $this->calculateBubbleTea($configurazione),
             'sfizio' => $this->calculateSfizio($configurazione),
+            'bevande' => $this->calculateBevanda($configurazione),
             default => throw new InvalidConfigurationException("Tipo prodotto sconosciuto: {$tipo}"),
         };
     }
@@ -75,7 +76,10 @@ class MenuPriceCalculator
         $totale = (float) $size->prezzo;
 
         $toppings = $cfg['toppings'] ?? [];
-        $toppingsCost = 0.0;
+        if (count($toppings) > self::MAX_TOPPINGS_BOBA) {
+            throw new InvalidConfigurationException('Bubble tea: massimo ' . self::MAX_TOPPINGS_BOBA . ' toppings.');
+        }
+
         foreach ($toppings as $t) {
             $toppingNome = $t['nome'] ?? null;
             $gusto = $t['gusto'] ?? null;
@@ -103,13 +107,9 @@ class MenuPriceCalculator
                     throw new InvalidConfigurationException("Gusto {$gusto} non disponibile per {$toppingNome}.");
                 }
             }
-
-            $toppingsCost += (float) $topping->prezzo;
         }
 
-        $toppingsCost = max(0.0, $toppingsCost - self::TOPPING_INCLUSO);
-
-        return round($totale + $toppingsCost, 2);
+        return round($totale, 2);
     }
 
     private function calculateSfizio(array $cfg): float
@@ -134,5 +134,20 @@ class MenuPriceCalculator
         }
 
         return round((float) $variant->prezzo, 2);
+    }
+
+    private function calculateBevanda(array $cfg): float
+    {
+        $nome = $cfg['nome'] ?? null;
+        if (!$nome) {
+            throw new InvalidConfigurationException('Bevanda: nome obbligatorio.');
+        }
+
+        $bevanda = Bevanda::query()->where('nome', $nome)->where('active', true)->first();
+        if (!$bevanda) {
+            throw new InvalidConfigurationException("Bevanda non trovata: {$nome}");
+        }
+
+        return round((float) $bevanda->prezzo, 2);
     }
 }

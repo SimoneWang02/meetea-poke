@@ -8,14 +8,16 @@ export const TAB_BAR_HEIGHT = 60;
 export function useMenuNav(headerHeight) {
     const { menu } = useMenu();
     const BOBA_CATEGORIE = menu?.BOBA_CATEGORIE ?? [];
+    const BEVANDE_LISTA = menu?.BEVANDE_LISTA ?? [];
 
     const sections = useMemo(
         () => [
             { id: "poke", titolo: "Poke" },
             ...BOBA_CATEGORIE.map((c) => ({ id: c.id, titolo: c.titolo })),
             { id: "sfizi", titolo: "Sfizi" },
+            ...(BEVANDE_LISTA.length ? [{ id: "bevande", titolo: "Bevande" }] : []),
         ],
-        [BOBA_CATEGORIE],
+        [BOBA_CATEGORIE, BEVANDE_LISTA.length],
     );
 
     const [active, setActive] = useState(sections[0].id);
@@ -151,11 +153,13 @@ export default function StepOrdina({
     headerHeight = 120,
     onOpenModal,
     onAddSfizioDirect,
+    onAddBevandaDirect,
 }) {
     const { menu } = useMenu();
     const POKE_DIMENSIONI = menu?.POKE_DIMENSIONI ?? [];
     const BOBA_CATEGORIE = menu?.BOBA_CATEGORIE ?? [];
     const SNACKS_LISTA = menu?.SNACKS_LISTA ?? [];
+    const BEVANDE_LISTA = menu?.BEVANDE_LISTA ?? [];
 
     if (!menu) return null;
 
@@ -239,6 +243,27 @@ export default function StepOrdina({
                     ))}
                 </div>
             </section>
+
+            {/* Bevande */}
+            {BEVANDE_LISTA.length > 0 && (
+                <section
+                    id="bevande"
+                    ref={(el) => (sectionRefs.current["bevande"] = el)}
+                    style={{ scrollMarginTop: headerHeight }}
+                    className="pt-6"
+                >
+                    <SectionHeader titolo="Bevande" />
+                    <div className="grid gap-3 sm:grid-cols-2">
+                        {BEVANDE_LISTA.map((bevanda) => (
+                            <BevandaCard
+                                key={bevanda.nome}
+                                bevanda={bevanda}
+                                onClick={() => onAddBevandaDirect(bevanda)}
+                            />
+                        ))}
+                    </div>
+                </section>
+            )}
         </div>
     );
 }
@@ -310,6 +335,46 @@ function BobaCard({ item, onClick }) {
                     )}
                     <div className="mt-2 text-lg font-extrabold text-mint-700">
                         {formatPrezzo(minPrice)}
+                    </div>
+                </div>
+            </div>
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mint-600 text-white">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                >
+                    <path d="M12 5v14" />
+                    <path d="M5 12h14" />
+                </svg>
+            </div>
+        </button>
+    );
+}
+
+function BevandaCard({ bevanda, onClick }) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            className="flex w-full items-center justify-between gap-4 rounded-2xl border border-stone-200 bg-white p-4 text-left transition hover:border-mint-300 hover:shadow-sm"
+        >
+            <div className="flex min-w-0 flex-1 items-center gap-3">
+                {bevanda.image && (
+                    <img
+                        src={bevanda.image}
+                        alt=""
+                        className="h-14 w-14 shrink-0 rounded-xl object-cover"
+                    />
+                )}
+                <div className="min-w-0">
+                    <div className="text-base font-bold">{bevanda.nome}</div>
+                    <div className="mt-1 text-lg font-extrabold text-mint-700">
+                        {formatPrezzo(bevanda.prezzo)}
                     </div>
                 </div>
             </div>

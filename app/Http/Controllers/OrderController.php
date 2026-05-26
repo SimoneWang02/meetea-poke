@@ -30,7 +30,7 @@ class OrderController extends Controller
             'note' => ['nullable', 'string', 'max:500'],
             'totale' => ['nullable', 'numeric', 'min:0'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.tipo' => ['required', 'in:poke,bubbletea,sfizio'],
+            'items.*.tipo' => ['required', 'in:poke,bubbletea,sfizio,bevande'],
             'items.*.nome' => ['nullable', 'string', 'max:200'],
             'items.*.prezzo_base' => ['nullable', 'numeric', 'min:0'],
             'items.*.quantita' => ['required', 'integer', 'min:1', 'max:10'],

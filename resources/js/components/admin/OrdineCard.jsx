@@ -1,20 +1,27 @@
 import React from "react";
 import StatoBadge from "./StatoBadge";
 
+const TIPO_LABEL = {
+    poke: "🥗 Poke Bowl",
+    bubbletea: "🧋 Bubble Tea",
+    sfizio: "🥟 Sfizio",
+    bevande: "🥤 Bevanda",
+};
+
 function ItemDettaglio({ item }) {
     const cfg = item.configurazione || {};
     return (
         <div className="rounded-xl bg-stone-50 p-3 ring-1 ring-stone-200">
             <div className="flex items-center justify-between">
                 <div className="font-semibold">
-                    {item.tipo === "poke" ? "🥗 Poke Bowl" : "🧋 Bubble Tea"}
+                    {TIPO_LABEL[item.tipo] ?? item.tipo}
                 </div>
                 <div className="text-sm font-bold text-mint-700">
                     × {item.quantita}
                 </div>
             </div>
             <ul className="mt-2 space-y-0.5 text-sm text-stone-700">
-                {item.tipo === "poke" ? (
+                {item.tipo === "poke" && (
                     <>
                         <li>
                             Dimensione:{" "}
@@ -53,28 +60,51 @@ function ItemDettaglio({ item }) {
                             </span>
                         </li>
                     </>
-                ) : (
+                )}
+                {item.tipo === "bubbletea" && (
                     <>
                         <li>
-                            Tea: <span className="font-medium">{cfg.tea}</span>
+                            Nome:{" "}
+                            <span className="font-medium">{cfg.nome}</span>
                         </li>
                         <li>
-                            Latte:{" "}
-                            <span className="font-medium">{cfg.latte}</span>
+                            Size:{" "}
+                            <span className="font-medium">{cfg.size}</span>
                         </li>
                         <li>
-                            Pearls:{" "}
-                            <span className="font-medium">{cfg.pearls}</span>
+                            Temperatura:{" "}
+                            <span className="font-medium capitalize">
+                                {cfg.temperatura}
+                            </span>
                         </li>
                         <li>
-                            Dolcezza:{" "}
-                            <span className="font-medium">{cfg.dolcezza}</span>
-                        </li>
-                        <li>
-                            Ghiaccio:{" "}
-                            <span className="font-medium">{cfg.ghiaccio}</span>
+                            Toppings:{" "}
+                            <span className="font-medium">
+                                {(cfg.toppings || [])
+                                    .map((t) =>
+                                        t.gusto ? `${t.nome} (${t.gusto})` : t.nome,
+                                    )
+                                    .join(", ") || "-"}
+                            </span>
                         </li>
                     </>
+                )}
+                {item.tipo === "sfizio" && (
+                    <>
+                        <li>
+                            Nome:{" "}
+                            <span className="font-medium">{cfg.nome}</span>
+                        </li>
+                        <li>
+                            Porzione:{" "}
+                            <span className="font-medium">{cfg.porzione}</span>
+                        </li>
+                    </>
+                )}
+                {item.tipo === "bevande" && (
+                    <li>
+                        Nome: <span className="font-medium">{cfg.nome}</span>
+                    </li>
                 )}
             </ul>
         </div>

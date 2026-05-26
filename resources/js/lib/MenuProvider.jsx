@@ -37,17 +37,13 @@ function adaptMenu(raw) {
     const otherToppingGroups = (raw.boba?.topping_groups ?? []).filter((g) => g.slug !== 'singoli');
 
     const BOBA_TOPPING = {
-        singoli: (singoliGroup?.toppings ?? []).map((t) => ({
-            nome: t.nome,
-            prezzo: t.prezzo,
-        })),
+        singoli: (singoliGroup?.toppings ?? []).map((t) => ({ nome: t.nome })),
         gruppi: otherToppingGroups
             .map((g) => {
                 const parent = g.toppings?.[0];
                 if (!parent) return null;
                 return {
                     nome: g.nome,
-                    prezzo: parent.prezzo,
                     gusti: (parent.gusti ?? []).map((c) => c.nome),
                 };
             })
@@ -77,6 +73,12 @@ function adaptMenu(raw) {
         opzioni: (s.variants ?? []).map((v) => ({ qty: v.qty, prezzo: v.prezzo })),
     }));
 
+    const BEVANDE_LISTA = (raw.bevande ?? []).map((b) => ({
+        nome: b.nome,
+        prezzo: Number(b.prezzo),
+        image: b.image_path ? storagePath(b.image_path) : null,
+    }));
+
     return {
         POKE_DIMENSIONI,
         POKE_BASI_MAX: raw.poke?.basi_max ?? 2,
@@ -93,8 +95,8 @@ function adaptMenu(raw) {
         },
         BOBA_CATEGORIE,
         BOBA_TOPPING,
-        TEA: raw.tea ?? {},
         SNACKS_LISTA,
+        BEVANDE_LISTA,
     };
 }
 

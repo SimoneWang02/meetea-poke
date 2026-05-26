@@ -13,7 +13,6 @@ return new class extends Migration
             $table->foreignId('group_id')->constrained('boba_topping_groups')->cascadeOnDelete();
             $table->foreignId('parent_id')->nullable()->constrained('boba_toppings')->cascadeOnDelete();
             $table->string('nome');
-            $table->decimal('prezzo', 5, 2)->default(0);
             $table->unsignedInteger('sort_order')->default(0);
             $table->boolean('active')->default(true);
             $table->timestamps();

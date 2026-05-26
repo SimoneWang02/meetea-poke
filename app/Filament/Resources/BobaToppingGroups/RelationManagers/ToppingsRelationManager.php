@@ -30,14 +30,6 @@ class ToppingsRelationManager extends RelationManager
                     ->label('Nome')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('prezzo')
-                    ->label('Prezzo (€)')
-                    ->required()
-                    ->numeric()
-                    ->step(0.01)
-                    ->prefix('€')
-                    ->default(0)
-                    ->helperText('Per i "gusti" lascia 0: il prezzo è quello del topping genitore.'),
                 Select::make('parent_id')
                     ->label('Topping genitore (per gusti)')
                     ->relationship(
@@ -63,7 +55,6 @@ class ToppingsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('nome')->label('Nome')->searchable(),
                 TextColumn::make('parent.nome')->label('Genitore')->placeholder('—'),
-                TextColumn::make('prezzo')->label('Prezzo')->money('EUR'),
                 IconColumn::make('active')->label('Attivo')->boolean(),
             ])
             ->headerActions([

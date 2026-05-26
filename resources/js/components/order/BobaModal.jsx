@@ -9,7 +9,7 @@ const TEMPERATURE = [
     { id: "calda", label: "Calda" },
 ];
 
-const TOPPING_INCLUSO = 0.5;
+const MAX_TOPPINGS = 2;
 
 export default function BobaModal({
     open,
@@ -95,31 +95,34 @@ export default function BobaModal({
     const toppingsArr = [
         ...BOBA_TOPPING.singoli
             .filter((t) => singoli.includes(t.nome))
-            .map((t) => ({ nome: t.nome, prezzo: t.prezzo })),
+            .map((t) => ({ nome: t.nome })),
         ...BOBA_TOPPING.gruppi.flatMap((g) =>
             (gruppi[g.nome] ?? []).map((gusto) => ({
                 nome: g.nome,
                 gusto,
-                prezzo: g.prezzo,
             })),
         ),
     ];
+    const toppingsCount = toppingsArr.length;
+    const maxRaggiunto = toppingsCount >= MAX_TOPPINGS;
 
     const prezzoBase = item.prezzi[size] ?? 0;
-    const prezzoToppingsLordo = toppingsArr.reduce((s, t) => s + t.prezzo, 0);
-    const prezzoToppings = Math.max(0, prezzoToppingsLordo - TOPPING_INCLUSO);
-    const totale = (prezzoBase + prezzoToppings) * quantita;
+    const totale = prezzoBase * quantita;
 
     const submit = () => {
         if (!temperatura) {
             setError("Scegli la temperatura.");
             return;
         }
+        if (toppingsCount > MAX_TOPPINGS) {
+            setError(`Massimo ${MAX_TOPPINGS} toppings.`);
+            return;
+        }
         onAdd({
             tipo: "bubbletea",
             nome: item.nome,
             categoria,
-            prezzo_base: prezzoBase + prezzoToppings,
+            prezzo_base: prezzoBase,
             quantita,
             configurazione: { nome: item.nome, size, temperatura, toppings: toppingsArr },
         });
@@ -233,29 +236,33 @@ export default function BobaModal({
                 titolo="Toppings"
                 badge={
                     <span className="inline-flex items-center rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
-                        1 topping da 0,50€ incluso
+                        Max {MAX_TOPPINGS} inclusi · {toppingsCount}/{MAX_TOPPINGS}
                     </span>
                 }
             >
                 <ul className="divide-y divide-stone-100">
-                    {BOBA_TOPPING.singoli.map((t) => (
-                        <li key={t.nome}>
-                            <label className="flex cursor-pointer items-center gap-3 py-2.5">
-                                <input
-                                    type="checkbox"
-                                    checked={singoli.includes(t.nome)}
-                                    onChange={() => toggleSingolo(t.nome)}
-                                    className="h-4 w-4 accent-mint-600"
-                                />
-                                <span className="flex-1 text-sm text-stone-700">
-                                    {t.nome}
-                                </span>
-                                <span className="text-sm font-bold text-mint-700">
-                                    {formatPrezzo(t.prezzo)}
-                                </span>
-                            </label>
-                        </li>
-                    ))}
+                    {BOBA_TOPPING.singoli.map((t) => {
+                        const checked = singoli.includes(t.nome);
+                        const disabled = !checked && maxRaggiunto;
+                        return (
+                            <li key={t.nome}>
+                                <label
+                                    className={`flex items-center gap-3 py-2.5 ${disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"}`}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={checked}
+                                        disabled={disabled}
+                                        onChange={() => toggleSingolo(t.nome)}
+                                        className="h-4 w-4 accent-mint-600"
+                                    />
+                                    <span className="flex-1 text-sm text-stone-700">
+                                        {t.nome}
+                                    </span>
+                                </label>
+                            </li>
+                        );
+                    })}
                 </ul>
 
                 {BOBA_TOPPING.gruppi.map((g) => (
@@ -266,28 +273,32 @@ export default function BobaModal({
                             </span>
                         </div>
                         <ul className="divide-y divide-stone-100">
-                            {g.gusti.map((gusto) => (
-                                <li key={gusto}>
-                                    <label className="flex cursor-pointer items-center gap-3 py-2.5 ">
-                                        <input
-                                            type="checkbox"
-                                            checked={(
-                                                gruppi[g.nome] ?? []
-                                            ).includes(gusto)}
-                                            onChange={() =>
-                                                toggleGruppo(g.nome, gusto)
-                                            }
-                                            className="h-4 w-4 accent-mint-600"
-                                        />
-                                        <span className="flex-1 text-sm text-stone-600">
-                                            {gusto}
-                                        </span>
-                                        <span className="text-sm font-bold text-mint-700">
-                                            {formatPrezzo(g.prezzo)}
-                                        </span>
-                                    </label>
-                                </li>
-                            ))}
+                            {g.gusti.map((gusto) => {
+                                const checked = (gruppi[g.nome] ?? []).includes(
+                                    gusto,
+                                );
+                                const disabled = !checked && maxRaggiunto;
+                                return (
+                                    <li key={gusto}>
+                                        <label
+                                            className={`flex items-center gap-3 py-2.5 ${disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"}`}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={checked}
+                                                disabled={disabled}
+                                                onChange={() =>
+                                                    toggleGruppo(g.nome, gusto)
+                                                }
+                                                className="h-4 w-4 accent-mint-600"
+                                            />
+                                            <span className="flex-1 text-sm text-stone-600">
+                                                {gusto}
+                                            </span>
+                                        </label>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 ))}

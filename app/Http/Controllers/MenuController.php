@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bevanda;
 use App\Models\BobaCategory;
 use App\Models\BobaToppingGroup;
 use App\Models\PokeIngredientGroup;
 use App\Models\PokeSize;
 use App\Models\Snack;
-use App\Models\TeaOption;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
@@ -21,8 +21,8 @@ class MenuController extends Controller
             return [
                 'poke' => $this->pokeMenu(),
                 'boba' => $this->bobaMenu(),
-                'tea' => $this->teaMenu(),
                 'snacks' => $this->snacksMenu(),
+                'bevande' => $this->bevandeMenu(),
             ];
         });
 
@@ -108,7 +108,6 @@ class MenuController extends Controller
                         return [
                             'id' => $t->id,
                             'nome' => $t->nome,
-                            'prezzo' => (float) $t->prezzo,
                             'gusti' => $gusti->map(fn ($child) => [
                                 'id' => $child->id,
                                 'nome' => $child->nome,
@@ -122,16 +121,6 @@ class MenuController extends Controller
             'categories' => $categories,
             'topping_groups' => $toppingGroups,
         ];
-    }
-
-    private function teaMenu(): array
-    {
-        $options = TeaOption::query()->active()->ordered()->get();
-        $bucket = ['basi' => [], 'latte' => [], 'pearls' => [], 'dolcezza' => [], 'ghiaccio' => []];
-        foreach ($options as $o) {
-            $bucket[$o->gruppo][] = ['id' => $o->id, 'nome' => $o->nome];
-        }
-        return $bucket;
     }
 
     private function snacksMenu(): array
@@ -151,6 +140,22 @@ class MenuController extends Controller
                     'qty' => $v->qty,
                     'prezzo' => (float) $v->prezzo,
                 ])->values()->all(),
+            ])
+            ->values()
+            ->all();
+    }
+
+    private function bevandeMenu(): array
+    {
+        return Bevanda::query()
+            ->active()
+            ->ordered()
+            ->get()
+            ->map(fn (Bevanda $b) => [
+                'id' => $b->id,
+                'nome' => $b->nome,
+                'prezzo' => (float) $b->prezzo,
+                'image_path' => $b->image_path,
             ])
             ->values()
             ->all();

@@ -304,27 +304,21 @@ function CategoryCard({ categoria }) {
     );
 }
 
-function ToppingRow({ nome, prezzo }) {
+function ToppingRow({ nome }) {
     return (
         <li className="flex items-baseline justify-between gap-4 border-t border-stone-100 py-3 [&:first-child]:border-t-0">
             <span className="font-medium text-stone-800">{nome}</span>
-            <span className="shrink-0 font-semibold text-mint-700 tabular-nums">
-                {formatPrezzo(prezzo)}
-            </span>
         </li>
     );
 }
 
-function ToppingSubsection({ titolo, prezzo, gusti }) {
+function ToppingSubsection({ titolo, gusti }) {
     return (
         <div className="mt-6">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-stone-200 pb-2">
                 <h4 className="text-base font-bold tracking-tight text-stone-900">
                     {titolo}
                 </h4>
-                <span className="font-semibold text-mint-700 tabular-nums">
-                    {formatPrezzo(prezzo)}
-                </span>
             </div>
             <ul className="mt-3 grid grid-cols-3 gap-2">
                 {gusti.map((g) => (
@@ -351,21 +345,20 @@ function ToppingCard({ BOBA_TOPPING }) {
                             Toppings
                         </h3>
                         <span className="inline-flex items-center rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
-                            1 topping da 0,50€ incluso
+                            Max 2 inclusi
                         </span>
                     </div>
                 </div>
             </div>
             <ul>
                 {BOBA_TOPPING.singoli.map((t) => (
-                    <ToppingRow key={t.nome} nome={t.nome} prezzo={t.prezzo} />
+                    <ToppingRow key={t.nome} nome={t.nome} />
                 ))}
             </ul>
             {BOBA_TOPPING.gruppi.map((g) => (
                 <ToppingSubsection
                     key={g.nome}
                     titolo={g.nome}
-                    prezzo={g.prezzo}
                     gusti={g.gusti}
                 />
             ))}

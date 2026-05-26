@@ -73,13 +73,35 @@ class NotificationService
             return implode("\n", $lines);
         }
 
-        $lines = ["🧋 Bubble Tea x{$qta}"];
-        $lines[] = '• Tea: ' . ($cfg['tea'] ?? '-');
-        $lines[] = '• Latte: ' . ($cfg['latte'] ?? '-');
-        $lines[] = '• Pearls: ' . ($cfg['pearls'] ?? '-');
-        $lines[] = '• Dolcezza: ' . ($cfg['dolcezza'] ?? '-');
-        $lines[] = '• Ghiaccio: ' . ($cfg['ghiaccio'] ?? '-');
+        if ($item->tipo === 'bubbletea') {
+            $lines = ["🧋 Bubble Tea x{$qta}"];
+            $lines[] = '• Nome: ' . ($cfg['nome'] ?? '-');
+            $lines[] = '• Size: ' . ($cfg['size'] ?? '-');
+            $lines[] = '• Temperatura: ' . ($cfg['temperatura'] ?? '-');
+            $toppings = array_map(
+                fn ($t) => isset($t['gusto']) ? "{$t['nome']} ({$t['gusto']})" : $t['nome'],
+                $cfg['toppings'] ?? []
+            );
+            $lines[] = '• Toppings: ' . (count($toppings) ? implode(', ', $toppings) : '-');
 
-        return implode("\n", $lines);
+            return implode("\n", $lines);
+        }
+
+        if ($item->tipo === 'sfizio') {
+            $lines = ["🥟 Sfizio x{$qta}"];
+            $lines[] = '• Nome: ' . ($cfg['nome'] ?? '-');
+            $lines[] = '• Porzione: ' . ($cfg['porzione'] ?? '-');
+
+            return implode("\n", $lines);
+        }
+
+        if ($item->tipo === 'bevande') {
+            $lines = ["🥤 Bevanda x{$qta}"];
+            $lines[] = '• Nome: ' . ($cfg['nome'] ?? '-');
+
+            return implode("\n", $lines);
+        }
+
+        return "❓ {$item->tipo} x{$qta}";
     }
 }

@@ -13,13 +13,11 @@ class BobaTopping extends Model
         'group_id',
         'parent_id',
         'nome',
-        'prezzo',
         'sort_order',
         'active',
     ];
 
     protected $casts = [
-        'prezzo' => 'decimal:2',
         'sort_order' => 'integer',
         'active' => 'boolean',
     ];

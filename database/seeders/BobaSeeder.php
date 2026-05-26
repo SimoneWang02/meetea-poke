@@ -139,51 +139,43 @@ class BobaSeeder extends Seeder
 
         $toppingsGroups = [
             'singoli' => [
-                ['Perle di Tapioca', 0.5],
-                ['Jelly Erba', 0.5],
-                ['Granella di Oreo', 0.5],
-                ['Tapioca Trasparente', 1.0],
-                ['Cheese Cream', 1.0],
+                'Perle di Tapioca',
+                'Jelly Erba',
+                'Granella di Oreo',
             ],
-            'gelatine' => [
-                'prezzo' => 0.5,
-                'gusti' => ['Miste', 'Mela', 'Litchi', 'Cocco', 'Fragola'],
-            ],
-            'palline' => [
-                'prezzo' => 0.5,
-                'gusti' => ['Limone', 'Litchi', 'Ciliegia', 'Lampone', 'Maracuja', 'Ananas', 'Fragola', 'Uva', 'Pesca', 'Mirtillo', 'Mela', 'Melograno', 'Mango'],
-            ],
+            'gelatine' => ['Miste', 'Mela', 'Litchi', 'Cocco', 'Fragola'],
+            'palline' => ['Limone', 'Litchi', 'Ciliegia', 'Lampone', 'Maracuja', 'Ananas', 'Fragola', 'Uva', 'Pesca', 'Mirtillo', 'Mela', 'Melograno', 'Mango'],
         ];
 
         $groupSingoli = BobaToppingGroup::updateOrCreate(['slug' => 'singoli'], ['nome' => 'Singoli', 'sort_order' => 0]);
-        foreach ($toppingsGroups['singoli'] as $i => [$nome, $prezzo]) {
+        foreach ($toppingsGroups['singoli'] as $i => $nome) {
             BobaTopping::updateOrCreate(
                 ['group_id' => $groupSingoli->id, 'parent_id' => null, 'nome' => $nome],
-                ['prezzo' => $prezzo, 'sort_order' => $i, 'active' => true],
+                ['sort_order' => $i, 'active' => true],
             );
         }
 
         $groupGelatine = BobaToppingGroup::updateOrCreate(['slug' => 'gelatine'], ['nome' => 'Gelatine', 'sort_order' => 1]);
         $parentGelatine = BobaTopping::updateOrCreate(
             ['group_id' => $groupGelatine->id, 'parent_id' => null, 'nome' => 'Gelatine'],
-            ['prezzo' => 0.5, 'sort_order' => 0, 'active' => true],
+            ['sort_order' => 0, 'active' => true],
         );
-        foreach ($toppingsGroups['gelatine']['gusti'] as $i => $gusto) {
+        foreach ($toppingsGroups['gelatine'] as $i => $gusto) {
             BobaTopping::updateOrCreate(
                 ['group_id' => $groupGelatine->id, 'parent_id' => $parentGelatine->id, 'nome' => $gusto],
-                ['prezzo' => 0, 'sort_order' => $i, 'active' => true],
+                ['sort_order' => $i, 'active' => true],
             );
         }
 
         $groupPalline = BobaToppingGroup::updateOrCreate(['slug' => 'palline'], ['nome' => 'Palline', 'sort_order' => 2]);
         $parentPalline = BobaTopping::updateOrCreate(
             ['group_id' => $groupPalline->id, 'parent_id' => null, 'nome' => 'Palline'],
-            ['prezzo' => 0.5, 'sort_order' => 0, 'active' => true],
+            ['sort_order' => 0, 'active' => true],
         );
-        foreach ($toppingsGroups['palline']['gusti'] as $i => $gusto) {
+        foreach ($toppingsGroups['palline'] as $i => $gusto) {
             BobaTopping::updateOrCreate(
                 ['group_id' => $groupPalline->id, 'parent_id' => $parentPalline->id, 'nome' => $gusto],
-                ['prezzo' => 0, 'sort_order' => $i, 'active' => true],
+                ['sort_order' => $i, 'active' => true],
             );
         }
     }
