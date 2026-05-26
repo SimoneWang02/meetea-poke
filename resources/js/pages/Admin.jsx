@@ -1,25 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { staffLogin, listOrders, updateStato } from '../lib/api';
-import { beepNewOrder } from '../lib/beep';
-import OrdineCard from '../components/admin/OrdineCard';
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { staffLogin, listOrders, updateStato } from "../lib/api";
+import { beepNewOrder } from "../lib/beep";
+import OrdineCard from "../components/admin/OrdineCard";
 
 const POLL_MS = 10_000;
 
 function Login({ onSuccess }) {
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
     const submit = async (e) => {
         e.preventDefault();
-        setError('');
+        setError("");
         setLoading(true);
         try {
             const { token } = await staffLogin(password);
             onSuccess(token);
         } catch (err) {
-            setError(err?.response?.data?.message || 'Password errata');
+            setError(err?.response?.data?.message || "Password errata");
         } finally {
             setLoading(false);
         }
@@ -32,7 +32,9 @@ function Login({ onSuccess }) {
                 className="w-full max-w-sm bg-stone-50 p-8 shadow-xl font-mono border border-stone-200"
             >
                 <div className="text-center border-b border-dashed border-stone-300 pb-4">
-                    <div className="text-lg font-black tracking-tight">MeeTea&amp;Poke</div>
+                    <div className="text-lg font-black tracking-tight">
+                        MeeTea&amp;Poke
+                    </div>
                     <div className="mt-0.5 text-xs font-bold uppercase tracking-widest text-stone-500">
                         Pannello staff
                     </div>
@@ -60,7 +62,7 @@ function Login({ onSuccess }) {
                     disabled={loading}
                     className="mt-5 w-full border-2 border-stone-800 px-4 py-2.5 text-sm font-black tracking-wide text-stone-800 transition hover:bg-stone-800 hover:text-white disabled:border-stone-300 disabled:text-stone-400"
                 >
-                    {loading ? 'Accesso...' : 'Entra'}
+                    {loading ? "Accesso..." : "Entra"}
                 </button>
 
                 <div className="mt-4 border-t border-dashed border-stone-300 pt-3">
@@ -79,7 +81,7 @@ function Login({ onSuccess }) {
 function Dashboard({ token, onLogout }) {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const seenIds = useRef(new Set());
     const isFirstLoad = useRef(true);
 
@@ -97,13 +99,13 @@ function Dashboard({ token, onLogout }) {
             }
 
             setOrders(data);
-            setError('');
+            setError("");
         } catch (err) {
             if (err?.response?.status === 401) {
                 onLogout();
                 return;
             }
-            setError('Errore nel caricamento ordini');
+            setError("Errore nel caricamento ordini");
         } finally {
             setLoading(false);
         }
@@ -119,16 +121,18 @@ function Dashboard({ token, onLogout }) {
     const advance = async (orderId, stato) => {
         try {
             const updated = await updateStato(token, orderId, stato);
-            setOrders((prev) => prev.map((o) => (o.id === orderId ? updated : o)));
+            setOrders((prev) =>
+                prev.map((o) => (o.id === orderId ? updated : o)),
+            );
         } catch (err) {
-            setError('Errore nell\'aggiornamento dell\'ordine');
+            setError("Errore nell'aggiornamento dell'ordine");
         }
     };
 
-    const oggi = new Date().toLocaleDateString('it-IT', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
+    const oggi = new Date().toLocaleDateString("it-IT", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
     });
 
     return (
@@ -137,10 +141,11 @@ function Dashboard({ token, onLogout }) {
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
                     <div>
                         <div className="text-base font-black tracking-tight text-stone-100">
-                            MeeTea&amp;Poke &mdash; staff
+                            MeeTea&Poke - Staff
                         </div>
                         <div className="text-xs text-stone-400 capitalize">
-                            {oggi} &middot; {orders.length} ordin{orders.length === 1 ? 'e' : 'i'}
+                            {oggi} - {orders.length} Ordin
+                            {orders.length === 1 ? "e" : "i"}
                         </div>
                     </div>
                     <button
@@ -176,7 +181,11 @@ function Dashboard({ token, onLogout }) {
                 ) : (
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {orders.map((o) => (
-                            <OrdineCard key={o.id} order={o} onAdvance={advance} />
+                            <OrdineCard
+                                key={o.id}
+                                order={o}
+                                onAdvance={advance}
+                            />
                         ))}
                     </div>
                 )}
@@ -186,11 +195,21 @@ function Dashboard({ token, onLogout }) {
 }
 
 export default function Admin() {
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState(() => localStorage.getItem('staff_token'));
+
+    const handleLogin = (t) => {
+        localStorage.setItem('staff_token', t);
+        setToken(t);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('staff_token');
+        setToken(null);
+    };
 
     if (!token) {
-        return <Login onSuccess={setToken} />;
+        return <Login onSuccess={handleLogin} />;
     }
 
-    return <Dashboard token={token} onLogout={() => setToken(null)} />;
+    return <Dashboard token={token} onLogout={handleLogout} />;
 }
