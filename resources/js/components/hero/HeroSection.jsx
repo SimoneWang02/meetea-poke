@@ -84,7 +84,7 @@ export default function HeroSection() {
                     </div>
                 ) : !orderingAvailable ? (
                     <div className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-white/30 px-7 py-4 text-base font-semibold text-white/60 cursor-not-allowed sm:text-lg animate-fade-in-up [animation-delay:500ms]">
-                        Ordinazione da Asporto Attualmente Indisponibile
+                        Ordinazione da Asporto Attualmente Non Disponibile
                     </div>
                 ) : (
                     <Link
