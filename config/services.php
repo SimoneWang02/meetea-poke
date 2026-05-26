@@ -35,11 +35,6 @@ return [
         ],
     ],
 
-    'whatsapp' => [
-        'number' => env('WHATSAPP_NUMBER'),
-        'apikey' => env('WHATSAPP_APIKEY'),
-    ],
-
     'admin' => [
         'password' => env('ADMIN_PASSWORD'),
         'token' => env('ADMIN_TOKEN'),

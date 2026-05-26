@@ -29,8 +29,6 @@ cp .env.example .env
 php artisan key:generate
 
 # 3. Aprire .env e impostare:
-#    - WHATSAPP_NUMBER  (numero del negozio con prefisso, es. 393331234567)
-#    - WHATSAPP_APIKEY  (apikey Callmebot, vedi sezione dedicata)
 #    - ADMIN_PASSWORD   (password per /admin)
 #    - ADMIN_TOKEN      (stringa lunga random, es. `openssl rand -hex 32`)
 ```
@@ -68,10 +66,6 @@ da un'API HTTP senza dover gestire la WhatsApp Business API.
 2. Dal proprio WhatsApp invia il messaggio:
    `I allow callmebot to send me messages`
 3. Aspetta la risposta automatica con l'**apikey** (arriva in pochi minuti).
-4. Imposta in `.env`:
-    - `WHATSAPP_NUMBER` = numero del gestore con prefisso, senza `+` e senza
-      spazi (es. `393331234567`)
-    - `WHATSAPP_APIKEY` = apikey ricevuta
 
 Se le credenziali non sono impostate, l'invio viene saltato silenziosamente
 e l'ordine viene comunque creato a database.
