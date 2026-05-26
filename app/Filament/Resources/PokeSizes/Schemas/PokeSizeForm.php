@@ -17,8 +17,7 @@ class PokeSizeForm
                     ->required(),
                 TextInput::make('slug')
                     ->label('Slug')
-                    ->required()
-                    ->helperText('Identificatore tecnico, usato dal frontend.'),
+                    ->required(),
                 TextInput::make('prezzo')
                     ->label('Prezzo (€)')
                     ->required()
