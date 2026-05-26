@@ -31,8 +31,9 @@ class SizesRelationManager extends RelationManager
                 TextInput::make('prezzo')
                     ->label('Prezzo (€)')
                     ->required()
-                    ->numeric()
-                    ->step(0.01)
+                    ->inputMode('decimal')
+                    ->rules(['regex:/^\d+([.,]\d{1,2})?$/'])
+                    ->dehydrateStateUsing(fn ($state) => $state !== null && $state !== '' ? (float) str_replace(',', '.', (string) $state) : $state)
                     ->prefix('€'),
             ]);
     }

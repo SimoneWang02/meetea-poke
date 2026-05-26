@@ -29,6 +29,8 @@ class BevandaResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Bevande';
 
+    protected static ?string $slug = 'bevande';
+
     protected static ?string $recordTitleAttribute = 'nome';
 
     public static function form(Schema $schema): Schema
