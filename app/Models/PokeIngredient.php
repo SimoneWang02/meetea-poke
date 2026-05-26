@@ -12,13 +12,11 @@ class PokeIngredient extends Model
         'group_id',
         'slug',
         'nome',
-        'vegano',
         'sort_order',
         'active',
     ];
 
     protected $casts = [
-        'vegano' => 'boolean',
         'active' => 'boolean',
         'sort_order' => 'integer',
     ];

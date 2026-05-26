@@ -35,7 +35,6 @@ class IngredientsRelationManager extends RelationManager
                 TextInput::make('slug')
                     ->label('Slug')
                     ->required(),
-                Toggle::make('vegano')->label('Vegano'),
                 Toggle::make('active')->label('Attivo')->default(true),
             ]);
     }
@@ -48,7 +47,6 @@ class IngredientsRelationManager extends RelationManager
             ->reorderable('sort_order')
             ->columns([
                 TextColumn::make('nome')->label('Nome')->searchable(),
-                IconColumn::make('vegano')->label('Vegano')->boolean(),
                 IconColumn::make('active')->label('Attivo')->boolean(),
             ])
             ->headerActions([
