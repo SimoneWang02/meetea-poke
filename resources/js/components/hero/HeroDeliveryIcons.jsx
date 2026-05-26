@@ -5,15 +5,14 @@ const DELIVEROO_URL =
 const GLOVO_URL = "https://glovoapp.com/it/it/carpi/stores/meeteapoke-crp";
 
 export default function HeroDeliveryIcons({ tone = "light" }) {
-    const labelClass =
-        tone === "dark" ? "text-stone-600" : "text-white/85";
+    const labelClass = tone === "dark" ? "text-stone-600" : "text-white/85";
 
     return (
         <div className="flex flex-col items-center gap-5">
             <span
                 className={`text-xs font-semibold uppercase tracking-[0.2em] ${labelClass}`}
             >
-                Oppure ordina su
+                Oppure ordina a domicilio su
             </span>
             <div className="flex items-center gap-4">
                 <a
