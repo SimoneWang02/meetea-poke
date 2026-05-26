@@ -10,6 +10,9 @@ export default function SfizioModal({
     initialConfig,
     initialQuantita = 1,
 }) {
+    const gusti = sfizio?.gusti ?? [];
+    const hasGusti = gusti.length > 0;
+
     const [opzioneIdx, setOpzioneIdx] = useState(() => {
         if (!initialConfig?.porzione || !sfizio) return 0;
         const idx = sfizio.opzioni.findIndex(
@@ -18,6 +21,9 @@ export default function SfizioModal({
         return idx >= 0 ? idx : 0;
     });
     const [quantita, setQuantita] = useState(initialQuantita);
+    const [gusto, setGusto] = useState(
+        () => initialConfig?.gusto ?? gusti[0] ?? "",
+    );
 
     if (!sfizio) return null;
 
@@ -31,7 +37,11 @@ export default function SfizioModal({
             image: sfizio.image,
             prezzo_base: opzione.prezzo,
             quantita,
-            configurazione: { nome: sfizio.nome, porzione: opzione.qty },
+            configurazione: {
+                nome: sfizio.nome,
+                porzione: opzione.qty,
+                ...(hasGusti && { gusto }),
+            },
         });
     };
 
@@ -75,6 +85,24 @@ export default function SfizioModal({
             title={sfizio.nome}
             footer={footer}
         >
+            {hasGusti && (
+                <div className="mb-4">
+                    <div className="mb-2 text-sm font-semibold uppercase tracking-wider text-stone-500">
+                        Gusto
+                    </div>
+                    <select
+                        value={gusto}
+                        onChange={(e) => setGusto(e.target.value)}
+                        className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base outline-none transition focus:border-mint-500 focus:ring-2 focus:ring-mint-200"
+                    >
+                        {gusti.map((g) => (
+                            <option key={g} value={g}>
+                                {g}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
             <div className="mb-2 text-sm font-semibold uppercase tracking-wider text-stone-500">
                 Porzione
             </div>

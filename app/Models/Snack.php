@@ -26,6 +26,11 @@ class Snack extends Model
         return $this->hasMany(SnackVariant::class);
     }
 
+    public function flavors(): HasMany
+    {
+        return $this->hasMany(SnackFlavor::class);
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('active', true);

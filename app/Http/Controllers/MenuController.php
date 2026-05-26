@@ -54,9 +54,7 @@ class MenuController extends Controller
                 'prezzo_extra' => (float) $g->prezzo_extra,
                 'ingredients' => $g->ingredients->map(fn ($i) => [
                     'id' => $i->id,
-                    'slug' => $i->slug,
                     'nome' => $i->nome,
-                    'vegano' => (bool) $i->vegano,
                 ])->values()->all(),
             ])->values()->all();
 
@@ -80,6 +78,7 @@ class MenuController extends Controller
                 'id' => $c->id,
                 'slug' => $c->slug,
                 'nome' => $c->nome,
+                'basi' => $c->basi ?? [],
                 'drinks' => $c->drinks->map(fn ($d) => [
                     'id' => $d->id,
                     'slug' => $d->slug,
@@ -127,7 +126,10 @@ class MenuController extends Controller
         return Snack::query()
             ->active()
             ->ordered()
-            ->with(['variants' => fn ($q) => $q->orderBy('sort_order')])
+            ->with([
+                'variants' => fn ($q) => $q->orderBy('sort_order'),
+                'flavors'  => fn ($q) => $q->where('active', true)->orderBy('sort_order'),
+            ])
             ->get()
             ->map(fn (Snack $s) => [
                 'id' => $s->id,
@@ -139,6 +141,7 @@ class MenuController extends Controller
                     'qty' => $v->qty,
                     'prezzo' => (float) $v->prezzo,
                 ])->values()->all(),
+                'flavors' => $s->flavors->pluck('nome')->values()->all(),
             ])
             ->values()
             ->all();

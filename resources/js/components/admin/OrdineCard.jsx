@@ -60,6 +60,7 @@ function BubbleteaItem({ cfg, quantita }) {
                 {prezzo && <span>{prezzo}</span>}
             </div>
             {size && <div className="text-xs text-stone-600 pl-3">- {size}</div>}
+            {cfg.base && <div className="text-xs text-stone-600 pl-3">- {cfg.base}</div>}
             {temp && <div className="text-xs text-stone-600 pl-3">- {temp}</div>}
             {toppings.map((t, i) => (
                 <div key={i} className="text-xs text-stone-600 pl-3">+ {t}</div>
@@ -81,7 +82,9 @@ function AltroItem({ cfg, quantita, tipo }) {
                 {prezzo && <span>{prezzo}</span>}
             </div>
             {cfg.porzione && (
-                <div className="text-xs text-stone-600 pl-3">{cfg.porzione}</div>
+                <div className="text-xs text-stone-600 pl-3">
+                    {cfg.porzione}{cfg.gusto ? ` — ${cfg.gusto}` : ""}
+                </div>
             )}
         </div>
     );

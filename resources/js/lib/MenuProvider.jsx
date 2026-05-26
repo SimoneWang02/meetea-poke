@@ -56,12 +56,12 @@ function adaptMenu(raw) {
         return {
             id: c.slug,
             titolo: c.nome,
+            basi: c.basi ?? [],
             sizes: ['M', 'G'].filter((s) => sizesPresent.has(s)),
             items: c.drinks.map((d) => ({
                 nome: d.nome,
                 prezzi: d.sizes ?? {},
                 ingredienti: d.ingredienti ?? undefined,
-                topSeller: d.top_seller || undefined,
                 image: d.image_path ? storagePath(d.image_path) : undefined,
             })),
         };
@@ -71,6 +71,7 @@ function adaptMenu(raw) {
         nome: s.nome,
         image: s.image_path ? storagePath(s.image_path) : null,
         opzioni: (s.variants ?? []).map((v) => ({ qty: v.qty, prezzo: v.prezzo })),
+        gusti: s.flavors ?? [],
     }));
 
     const BEVANDE_LISTA = (raw.bevande ?? []).map((b) => ({

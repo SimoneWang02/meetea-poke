@@ -171,6 +171,12 @@ function ItemDetails({ item }) {
                     • Dimensione:{" "}
                     <span className="font-medium">{sizeLabel}</span>
                 </li>
+                {cfg.base && (
+                    <li>
+                        • Base:{" "}
+                        <span className="font-medium">{cfg.base}</span>
+                    </li>
+                )}
                 <li>
                     • Temperatura:{" "}
                     <span className="font-medium capitalize">
@@ -199,6 +205,12 @@ function ItemDetails({ item }) {
                     • Porzione:{" "}
                     <span className="font-medium">{cfg.porzione}</span>
                 </li>
+                {cfg.gusto && (
+                    <li>
+                        • Gusto:{" "}
+                        <span className="font-medium">{cfg.gusto}</span>
+                    </li>
+                )}
             </ul>
         );
     }

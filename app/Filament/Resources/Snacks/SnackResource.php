@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Snacks;
 use App\Filament\Resources\Snacks\Pages\CreateSnack;
 use App\Filament\Resources\Snacks\Pages\EditSnack;
 use App\Filament\Resources\Snacks\Pages\ListSnacks;
+use App\Filament\Resources\Snacks\RelationManagers\FlavorsRelationManager;
 use App\Filament\Resources\Snacks\RelationManagers\VariantsRelationManager;
 use App\Filament\Resources\Snacks\Schemas\SnackForm;
 use App\Filament\Resources\Snacks\Tables\SnacksTable;
@@ -46,6 +47,7 @@ class SnackResource extends Resource
     {
         return [
             VariantsRelationManager::class,
+            FlavorsRelationManager::class,
         ];
     }
 
