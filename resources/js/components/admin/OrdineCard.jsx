@@ -120,8 +120,9 @@ export default function OrdineCard({ order, onAdvance }) {
         (a, b) => (TIPO_ORDER[a.tipo] ?? 2) - (TIPO_ORDER[b.tipo] ?? 2)
     );
 
-    const totale = order.totale
-        ?? sortedItems.reduce(
+    const totale = order.totale != null
+        ? parseFloat(order.totale)
+        : sortedItems.reduce(
             (sum, it) => sum + it.quantita * (it.configurazione?.prezzo_base ?? 0),
             0
         );

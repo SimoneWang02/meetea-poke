@@ -235,8 +235,8 @@ export default function BobaModal({
             <Section
                 titolo="Toppings"
                 badge={
-                    <span className="inline-flex items-center rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
-                        Max {MAX_TOPPINGS} inclusi · {toppingsCount}/{MAX_TOPPINGS}
+                    <span className={`text-sm font-medium ${maxRaggiunto ? "text-mint-600" : "text-stone-400"}`}>
+                        {toppingsCount}/{MAX_TOPPINGS}
                     </span>
                 }
             >
