@@ -5,7 +5,7 @@ export const ORARI_APERTURA = [
     { giorno: "Giovedì", orario: "Chiuso" },
     { giorno: "Venerdì", orario: "10:30 - 22:30" },
     { giorno: "Sabato", orario: "10:30 - 22:30" },
-    { giorno: "Domenica", orario: "10:30 - 22:30" },
+    { giorno: "Domenica", orario: "11:00 - 22:30" },
 ];
 
 const GIORNI_JS = [
