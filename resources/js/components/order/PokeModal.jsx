@@ -65,7 +65,9 @@ function ExtraList({ items, extraQty, setExtraQty }) {
                                 </button>
                             </div>
                         )}
-                        <span className="flex-1 text-sm text-stone-700">{nome}</span>
+                        <span className="flex-1 text-sm text-stone-700">
+                            {nome}
+                        </span>
                         <span className="text-sm font-bold text-mint-700">
                             +{formatPrezzo(prezzo)}
                         </span>
@@ -91,19 +93,68 @@ export default function PokeModal({
     const POKE_GREEN = menu?.POKE_GREEN ?? [];
     const POKE_CRISPY = menu?.POKE_CRISPY ?? [];
     const POKE_SALSE = menu?.POKE_SALSE ?? [];
-    const POKE_EXTRA_PREZZI = menu?.POKE_EXTRA_PREZZI ?? { proteine: 0, green: 0, crispy: 0, salse: 0 };
+    const POKE_EXTRA_PREZZI = menu?.POKE_EXTRA_PREZZI ?? {
+        proteine: 0,
+        green: 0,
+        crispy: 0,
+        salse: 0,
+    };
 
-    const ITEM_LOOKUP = useMemo(() => Object.fromEntries([
-        ...POKE_PROTEINE.map((n) => [n, { cat: "proteine", prezzo: POKE_EXTRA_PREZZI.proteine }]),
-        ...POKE_GREEN.map((n) => [n, { cat: "green", prezzo: POKE_EXTRA_PREZZI.green }]),
-        ...POKE_CRISPY.map((n) => [n, { cat: "crispy", prezzo: POKE_EXTRA_PREZZI.crispy }]),
-        ...POKE_SALSE.map((n) => [n, { cat: "salse", prezzo: POKE_EXTRA_PREZZI.salse }]),
-    ]), [POKE_PROTEINE, POKE_GREEN, POKE_CRISPY, POKE_SALSE, POKE_EXTRA_PREZZI]);
+    const ITEM_LOOKUP = useMemo(
+        () =>
+            Object.fromEntries([
+                ...POKE_PROTEINE.map((n) => [
+                    n,
+                    { cat: "proteine", prezzo: POKE_EXTRA_PREZZI.proteine },
+                ]),
+                ...POKE_GREEN.map((n) => [
+                    n,
+                    { cat: "green", prezzo: POKE_EXTRA_PREZZI.green },
+                ]),
+                ...POKE_CRISPY.map((n) => [
+                    n,
+                    { cat: "crispy", prezzo: POKE_EXTRA_PREZZI.crispy },
+                ]),
+                ...POKE_SALSE.map((n) => [
+                    n,
+                    { cat: "salse", prezzo: POKE_EXTRA_PREZZI.salse },
+                ]),
+            ]),
+        [POKE_PROTEINE, POKE_GREEN, POKE_CRISPY, POKE_SALSE, POKE_EXTRA_PREZZI],
+    );
 
-    const EXTRA_PROTEINE_ITEMS = useMemo(() => POKE_PROTEINE.map((n) => ({ nome: n, prezzo: POKE_EXTRA_PREZZI.proteine })), [POKE_PROTEINE, POKE_EXTRA_PREZZI]);
-    const EXTRA_GREEN_ITEMS = useMemo(() => POKE_GREEN.map((n) => ({ nome: n, prezzo: POKE_EXTRA_PREZZI.green })), [POKE_GREEN, POKE_EXTRA_PREZZI]);
-    const EXTRA_CRISPY_ITEMS = useMemo(() => POKE_CRISPY.map((n) => ({ nome: n, prezzo: POKE_EXTRA_PREZZI.crispy })), [POKE_CRISPY, POKE_EXTRA_PREZZI]);
-    const EXTRA_SALSE_ITEMS = useMemo(() => POKE_SALSE.map((n) => ({ nome: n, prezzo: POKE_EXTRA_PREZZI.salse })), [POKE_SALSE, POKE_EXTRA_PREZZI]);
+    const EXTRA_PROTEINE_ITEMS = useMemo(
+        () =>
+            POKE_PROTEINE.map((n) => ({
+                nome: n,
+                prezzo: POKE_EXTRA_PREZZI.proteine,
+            })),
+        [POKE_PROTEINE, POKE_EXTRA_PREZZI],
+    );
+    const EXTRA_GREEN_ITEMS = useMemo(
+        () =>
+            POKE_GREEN.map((n) => ({
+                nome: n,
+                prezzo: POKE_EXTRA_PREZZI.green,
+            })),
+        [POKE_GREEN, POKE_EXTRA_PREZZI],
+    );
+    const EXTRA_CRISPY_ITEMS = useMemo(
+        () =>
+            POKE_CRISPY.map((n) => ({
+                nome: n,
+                prezzo: POKE_EXTRA_PREZZI.crispy,
+            })),
+        [POKE_CRISPY, POKE_EXTRA_PREZZI],
+    );
+    const EXTRA_SALSE_ITEMS = useMemo(
+        () =>
+            POKE_SALSE.map((n) => ({
+                nome: n,
+                prezzo: POKE_EXTRA_PREZZI.salse,
+            })),
+        [POKE_SALSE, POKE_EXTRA_PREZZI],
+    );
 
     const [basi, setBasi] = useState(arrayToQtyMap(initialConfig?.basi));
     const [proteine, setProteine] = useState(
@@ -122,11 +173,18 @@ export default function PokeModal({
     const [errorVisible, setErrorVisible] = useState(false);
 
     useEffect(() => {
-        if (!error) { setErrorVisible(false); return; }
+        if (!error) {
+            setErrorVisible(false);
+            return;
+        }
         const raf = requestAnimationFrame(() => setErrorVisible(true));
         const hide = setTimeout(() => setErrorVisible(false), 5000);
         const clear = setTimeout(() => setError(""), 5300);
-        return () => { cancelAnimationFrame(raf); clearTimeout(hide); clearTimeout(clear); };
+        return () => {
+            cancelAnimationFrame(raf);
+            clearTimeout(hide);
+            clearTimeout(clear);
+        };
     }, [error]);
 
     if (!dimensione || !menu) return null;
@@ -195,36 +253,36 @@ export default function PokeModal({
 
     const footer = (
         <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
-                    <button
-                        type="button"
-                        onClick={() => setQuantita(Math.max(1, quantita - 1))}
-                        className="h-10 w-10 rounded-full border border-stone-200 text-lg font-bold text-stone-700 transition hover:bg-stone-50"
-                        aria-label="Diminuisci quantità"
-                    >
-                        −
-                    </button>
-                    <span className="w-8 text-center text-lg font-bold">
-                        {quantita}
-                    </span>
-                    <button
-                        type="button"
-                        onClick={() => setQuantita(Math.min(10, quantita + 1))}
-                        className="h-10 w-10 rounded-full border border-stone-200 text-lg font-bold text-stone-700 transition hover:bg-stone-50"
-                        aria-label="Aumenta quantità"
-                    >
-                        +
-                    </button>
-                </div>
+            <div className="flex items-center gap-2">
                 <button
                     type="button"
-                    onClick={submit}
-                    className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
+                    onClick={() => setQuantita(Math.max(1, quantita - 1))}
+                    className="h-10 w-10 rounded-full border border-stone-200 text-lg font-bold text-stone-700 transition hover:bg-stone-50"
+                    aria-label="Diminuisci quantità"
                 >
-                    {initialConfig ? "Salva" : "Aggiungi"} ·{" "}
-                    {formatPrezzo(prezzoTotale * quantita)}
+                    −
+                </button>
+                <span className="w-8 text-center text-lg font-bold">
+                    {quantita}
+                </span>
+                <button
+                    type="button"
+                    onClick={() => setQuantita(Math.min(10, quantita + 1))}
+                    className="h-10 w-10 rounded-full border border-stone-200 text-lg font-bold text-stone-700 transition hover:bg-stone-50"
+                    aria-label="Aumenta quantità"
+                >
+                    +
                 </button>
             </div>
+            <button
+                type="button"
+                onClick={submit}
+                className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
+            >
+                {initialConfig ? "Salva" : "Aggiungi"} -{" "}
+                {formatPrezzo(prezzoTotale * quantita)}
+            </button>
+        </div>
     );
 
     return (
@@ -376,7 +434,9 @@ export default function PokeModal({
                 </div>
 
                 {error && (
-                    <div className={`sticky bottom-0 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200 transition-all duration-300 ease-in-out ${errorVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
+                    <div
+                        className={`sticky bottom-0 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200 transition-all duration-300 ease-in-out ${errorVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}
+                    >
                         {error}
                     </div>
                 )}

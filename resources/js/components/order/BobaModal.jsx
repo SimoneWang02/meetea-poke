@@ -124,7 +124,12 @@ export default function BobaModal({
             categoria,
             prezzo_base: prezzoBase,
             quantita,
-            configurazione: { nome: item.nome, size, temperatura, toppings: toppingsArr },
+            configurazione: {
+                nome: item.nome,
+                size,
+                temperatura,
+                toppings: toppingsArr,
+            },
         });
     };
 
@@ -156,7 +161,7 @@ export default function BobaModal({
                 onClick={submit}
                 className="flex-1 rounded-xl bg-mint-600 px-4 py-3 font-semibold text-white transition hover:bg-mint-700"
             >
-                {initialConfig ? "Salva" : "Aggiungi"} · {formatPrezzo(totale)}
+                {initialConfig ? "Salva" : "Aggiungi"} - {formatPrezzo(totale)}
             </button>
         </div>
     );
@@ -235,7 +240,9 @@ export default function BobaModal({
             <Section
                 titolo="Toppings"
                 badge={
-                    <span className={`text-sm font-medium ${maxRaggiunto ? "text-mint-600" : "text-stone-400"}`}>
+                    <span
+                        className={`text-sm font-medium ${maxRaggiunto ? "text-mint-600" : "text-stone-400"}`}
+                    >
                         {toppingsCount}/{MAX_TOPPINGS}
                     </span>
                 }

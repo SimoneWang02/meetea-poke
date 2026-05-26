@@ -54,7 +54,7 @@ class ToppingsRelationManager extends RelationManager
             ->reorderable('sort_order')
             ->columns([
                 TextColumn::make('nome')->label('Nome')->searchable(),
-                TextColumn::make('parent.nome')->label('Genitore')->placeholder('—'),
+                TextColumn::make('parent.nome')->label('Genitore')->placeholder('-'),
                 IconColumn::make('active')->label('Attivo')->boolean(),
             ])
             ->headerActions([
