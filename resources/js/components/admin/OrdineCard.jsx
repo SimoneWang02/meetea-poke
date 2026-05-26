@@ -96,26 +96,7 @@ function ItemDettaglio({ item }) {
 
 const TIPO_ORDER = { poke: 0, bubbletea: 1 };
 
-export default function OrdineCard({ order, onAdvance }) {
-    const next =
-        order.stato === 'nuovo'
-            ? 'in_preparazione'
-            : order.stato === 'in_preparazione'
-              ? 'pronto'
-              : null;
-
-    const buttonLabel =
-        order.stato === 'nuovo'
-            ? 'Inizia preparazione'
-            : order.stato === 'in_preparazione'
-              ? 'Segna come pronto'
-              : null;
-
-    const buttonCls =
-        order.stato === 'nuovo'
-            ? 'border-amber-600 text-amber-700 hover:bg-amber-50'
-            : 'border-green-700 text-green-800 hover:bg-green-50';
-
+export default function OrdineCard({ order }) {
     const sortedItems = [...(order.items || [])].sort(
         (a, b) => (TIPO_ORDER[a.tipo] ?? 2) - (TIPO_ORDER[b.tipo] ?? 2)
     );
@@ -173,15 +154,6 @@ export default function OrdineCard({ order, onAdvance }) {
                 <span>{totale.toFixed(2)}</span>
             </div>
 
-            {next && (
-                <button
-                    type="button"
-                    onClick={() => onAdvance(order.id, next)}
-                    className={`border-t border-dashed border-stone-300 px-4 py-3 text-sm font-bold tracking-wide transition ${buttonCls}`}
-                >
-                    {buttonLabel}
-                </button>
-            )}
         </article>
     );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { staffLogin, listOrders, updateStato } from "../lib/api";
+import { staffLogin, listOrders } from "../lib/api";
 import { beepNewOrder } from "../lib/beep";
 import OrdineCard from "../components/admin/OrdineCard";
 
@@ -118,17 +118,6 @@ function Dashboard({ token, onLogout }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
 
-    const advance = async (orderId, stato) => {
-        try {
-            const updated = await updateStato(token, orderId, stato);
-            setOrders((prev) =>
-                prev.map((o) => (o.id === orderId ? updated : o)),
-            );
-        } catch (err) {
-            setError("Errore nell'aggiornamento dell'ordine");
-        }
-    };
-
     const oggi = new Date().toLocaleDateString("it-IT", {
         weekday: "long",
         day: "numeric",
@@ -181,11 +170,7 @@ function Dashboard({ token, onLogout }) {
                 ) : (
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {orders.map((o) => (
-                            <OrdineCard
-                                key={o.id}
-                                order={o}
-                                onAdvance={advance}
-                            />
+                            <OrdineCard key={o.id} order={o} />
                         ))}
                     </div>
                 )}

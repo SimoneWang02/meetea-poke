@@ -17,11 +17,3 @@ export async function listOrders(token) {
     return data;
 }
 
-export async function updateStato(token, orderId, stato) {
-    const { data } = await axios.patch(
-        `/orders/${orderId}/stato`,
-        { stato },
-        { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return data;
-}
