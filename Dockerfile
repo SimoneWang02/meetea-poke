@@ -10,7 +10,8 @@ RUN composer install \
     --no-autoloader \
     --prefer-dist \
     --no-interaction \
-    --no-progress
+    --no-progress \
+    --ignore-platform-reqs
 
 # ---------- Stage 2: frontend assets (Vite) ----------
 FROM node:24-alpine AS assets
