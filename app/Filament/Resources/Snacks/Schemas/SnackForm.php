@@ -20,8 +20,8 @@ class SnackForm
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (string $state, callable $set) => $set('slug', Str::slug($state))),
                 TextInput::make('slug')
-                    ->label('Slug')
-                    ->required(),
+                    ->hidden()
+                    ->dehydrated(),
                 FileUpload::make('image_path')
                     ->label('Immagine')
                     ->image()

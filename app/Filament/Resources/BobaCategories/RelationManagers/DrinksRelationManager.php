@@ -35,7 +35,7 @@ class DrinksRelationManager extends RelationManager
                     ->maxLength(255)
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (string $state, callable $set) => $set('slug', Str::slug($state))),
-                TextInput::make('slug')->label('Slug')->required(),
+                TextInput::make('slug')->hidden()->dehydrated(),
                 Textarea::make('ingredienti')->label('Ingredienti')->rows(2),
                 FileUpload::make('image_path')
                     ->label('Immagine')

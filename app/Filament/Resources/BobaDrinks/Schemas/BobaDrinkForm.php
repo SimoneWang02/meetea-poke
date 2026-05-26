@@ -28,8 +28,8 @@ class BobaDrinkForm
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (string $state, callable $set) => $set('slug', Str::slug($state))),
                 TextInput::make('slug')
-                    ->label('Slug')
-                    ->required(),
+                    ->hidden()
+                    ->dehydrated(),
                 Textarea::make('ingredienti')
                     ->label('Ingredienti')
                     ->rows(2)

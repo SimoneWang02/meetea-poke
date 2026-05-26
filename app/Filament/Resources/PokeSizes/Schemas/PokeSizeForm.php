@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PokeSizes\Schemas;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class PokeSizeForm
 {
@@ -14,10 +15,12 @@ class PokeSizeForm
             ->components([
                 TextInput::make('nome')
                     ->label('Nome')
-                    ->required(),
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (string $state, callable $set) => $set('slug', Str::slug($state))),
                 TextInput::make('slug')
-                    ->label('Slug')
-                    ->required(),
+                    ->hidden()
+                    ->dehydrated(),
                 TextInput::make('prezzo')
                     ->label('Prezzo (€)')
                     ->required()
