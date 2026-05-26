@@ -11,11 +11,15 @@ class SnackVariant extends Model
         'snack_id',
         'qty',
         'prezzo',
+        'mix_gusti',
+        'num_pz',
         'sort_order',
     ];
 
     protected $casts = [
         'prezzo' => 'decimal:2',
+        'mix_gusti' => 'boolean',
+        'num_pz' => 'integer',
         'sort_order' => 'integer',
     ];
 

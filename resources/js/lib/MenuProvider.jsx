@@ -70,7 +70,7 @@ function adaptMenu(raw) {
     const SNACKS_LISTA = (raw.snacks ?? []).map((s) => ({
         nome: s.nome,
         image: s.image_path ? storagePath(s.image_path) : null,
-        opzioni: (s.variants ?? []).map((v) => ({ qty: v.qty, prezzo: v.prezzo })),
+        opzioni: (s.variants ?? []).map((v) => ({ qty: v.qty, prezzo: v.prezzo, mix_gusti: v.mix_gusti ?? false, num_pz: v.num_pz ?? null })),
         gusti: s.flavors ?? [],
     }));
 

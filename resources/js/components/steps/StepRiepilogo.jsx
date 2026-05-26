@@ -205,6 +205,12 @@ function ItemDetails({ item }) {
                     • Porzione:{" "}
                     <span className="font-medium">{cfg.porzione}</span>
                 </li>
+                {cfg.gusti?.length > 0 && (
+                    <li>
+                        • Gusti:{" "}
+                        <span className="font-medium">{cfg.gusti.join(", ")}</span>
+                    </li>
+                )}
                 {cfg.gusto && (
                     <li>
                         • Gusto:{" "}

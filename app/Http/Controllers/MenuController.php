@@ -140,6 +140,8 @@ class MenuController extends Controller
                     'id' => $v->id,
                     'qty' => $v->qty,
                     'prezzo' => (float) $v->prezzo,
+                    'mix_gusti' => (bool) $v->mix_gusti,
+                    'num_pz' => $v->num_pz,
                 ])->values()->all(),
                 'flavors' => $s->flavors->pluck('nome')->values()->all(),
             ])
