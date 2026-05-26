@@ -84,15 +84,17 @@ const tabsSx = {
     },
 };
 
-const NavContext = React.createContext({ activeIndex: 0, length: 0, onNav: () => {} });
+const NavContext = React.createContext({
+    activeIndex: 0,
+    length: 0,
+    onNav: () => {},
+});
 
 const ScrollButtonNav = React.forwardRef(function ScrollButtonNav(props, ref) {
     const { onClick: _ignored, direction, ...rest } = props;
     const { activeIndex, length, onNav } = React.useContext(NavContext);
     const navDisabled =
-        direction === "right"
-            ? activeIndex >= length - 1
-            : activeIndex <= 0;
+        direction === "right" ? activeIndex >= length - 1 : activeIndex <= 0;
     return (
         <TabScrollButton
             {...rest}
@@ -344,9 +346,6 @@ function ToppingCard({ BOBA_TOPPING }) {
                         <h3 className="text-lg font-bold tracking-tight text-stone-900 sm:text-xl">
                             Toppings
                         </h3>
-                        <span className="inline-flex items-center rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
-                            Max 2 inclusi
-                        </span>
                     </div>
                 </div>
             </div>
@@ -387,13 +386,18 @@ export default function BobaSection() {
     };
 
     const navCtx = useMemo(
-        () => ({ activeIndex, length: BOBA_CATEGORIE.length, onNav: (dir) => onNav(dir) }),
+        () => ({
+            activeIndex,
+            length: BOBA_CATEGORIE.length,
+            onNav: (dir) => onNav(dir),
+        }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [activeIndex, BOBA_CATEGORIE.length],
     );
 
     useEffect(() => {
-        if (!activeId && BOBA_CATEGORIE.length > 0) setActiveId(BOBA_CATEGORIE[0].id);
+        if (!activeId && BOBA_CATEGORIE.length > 0)
+            setActiveId(BOBA_CATEGORIE[0].id);
     }, [BOBA_CATEGORIE, activeId]);
 
     useEffect(() => {
