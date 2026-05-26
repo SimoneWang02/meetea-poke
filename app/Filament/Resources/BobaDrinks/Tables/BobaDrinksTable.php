@@ -22,7 +22,6 @@ class BobaDrinksTable
                 ImageColumn::make('image_path')->label('')->disk('public')->square(),
                 TextColumn::make('nome')->label('Nome')->searchable(),
                 TextColumn::make('category.nome')->label('Categoria')->sortable(),
-                IconColumn::make('top_seller')->label('Top')->boolean(),
                 IconColumn::make('active')->label('Attivo')->boolean(),
             ])
             ->filters([

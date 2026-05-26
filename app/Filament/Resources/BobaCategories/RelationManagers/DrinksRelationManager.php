@@ -42,7 +42,6 @@ class DrinksRelationManager extends RelationManager
                     ->image()
                     ->disk('public')
                     ->directory('menu/boba'),
-                Toggle::make('top_seller')->label('Top seller'),
                 Toggle::make('active')->label('Attivo')->default(true),
             ]);
     }
@@ -56,7 +55,6 @@ class DrinksRelationManager extends RelationManager
             ->columns([
                 ImageColumn::make('image_path')->label('')->disk('public')->square(),
                 TextColumn::make('nome')->label('Nome')->searchable(),
-                IconColumn::make('top_seller')->label('Top')->boolean(),
                 IconColumn::make('active')->label('Attivo')->boolean(),
             ])
             ->headerActions([

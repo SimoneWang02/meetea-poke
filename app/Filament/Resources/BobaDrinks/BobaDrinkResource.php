@@ -26,9 +26,9 @@ class BobaDrinkResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $modelLabel = 'Bevanda';
+    protected static ?string $modelLabel = 'Bubble Tea';
 
-    protected static ?string $pluralModelLabel = 'Bevande';
+    protected static ?string $pluralModelLabel = 'Bubble Tea';
 
     protected static ?string $recordTitleAttribute = 'nome';
 

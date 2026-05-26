@@ -86,7 +86,6 @@ class MenuController extends Controller
                     'nome' => $d->nome,
                     'ingredienti' => $d->ingredienti,
                     'image_path' => $d->image_path,
-                    'top_seller' => (bool) $d->top_seller,
                     'sizes' => $d->sizes->mapWithKeys(fn ($s) => [
                         $s->size => (float) $s->prezzo,
                     ])->all(),

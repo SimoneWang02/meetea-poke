@@ -15,13 +15,11 @@ class BobaDrink extends Model
         'nome',
         'ingredienti',
         'image_path',
-        'top_seller',
         'sort_order',
         'active',
     ];
 
     protected $casts = [
-        'top_seller' => 'boolean',
         'active' => 'boolean',
         'sort_order' => 'integer',
     ];

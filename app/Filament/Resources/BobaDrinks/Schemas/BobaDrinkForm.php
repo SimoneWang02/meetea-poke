@@ -40,7 +40,6 @@ class BobaDrinkForm
                     ->disk('public')
                     ->directory('menu/boba')
                     ->columnSpanFull(),
-                Toggle::make('top_seller')->label('Top seller'),
                 Toggle::make('active')->label('Attivo')->default(true),
             ]);
     }

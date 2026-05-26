@@ -59,7 +59,7 @@ class BobaSeeder extends Seeder
                 'items' => [
                     ['Tè Limone alla Fragola',           null, 5.5, 'Tè verde, fette di limone, fragola fresca', 'te_limone_fragola.PNG'],
                     ['Tè Limone con Pesca',              null, 5.5, 'Tè verde, aroma di pesca, pesca e limone freschi', 'te_limone_pesca.PNG'],
-                    ["Passion Fruit all'Ananas",         null, 5.5, 'Tè verde, passion fruit e ananas freschi', 'passion_fruit_ananas.PNG', true],
+                    ["Passion Fruit all'Ananas",         null, 5.5, 'Tè verde, passion fruit e ananas freschi', 'passion_fruit_ananas.PNG'],
                     ['Passion Fruit al Mango',           null, 5.5, 'Tè verde, passion fruit e mango freschi', 'passion_fruit_mango.PNG'],
                     ["Tè all'Arancia Fresca con Maracuja", null, 5.5],
                 ],
@@ -75,7 +75,7 @@ class BobaSeeder extends Seeder
                     ['Matcha e Fragola con Latte',          null, 6,   'Latte, fragole, panna montata al matcha', 'matcha_fragola_latte.PNG'],
                     ['Tè Sporco alla Patata Dolce',         null, 5.5, 'Marmellata di patata dolce, latte'],
                     ['Tè Sporco al Matcha',                 null, 5.5, 'Marmellata di matcha, latte'],
-                    ['Latte di Cocco Denso con Caffè',      null, 5.5, 'Latte di cocco, caffè', 'latte_cocco_denso_caffe.PNG', true],
+                    ['Latte di Cocco Denso con Caffè',      null, 5.5, 'Latte di cocco, caffè', 'latte_cocco_denso_caffe.PNG'],
                     ['Tè Sporco al Mango',                  null, 5.5, 'Marmellata di mango con pezzetti, latte'],
                     ['Tè Sporco alla Fragola',              null, 5.5, 'Marmellata di fragola con pezzetti, latte'],
                     ['Latte di Cocco Denso al Mango',       null, 5.5, null, 'latte_cocco_denso_mango.PNG'],
@@ -93,7 +93,7 @@ class BobaSeeder extends Seeder
                     ['Cheese Uva',              null, 5.5, "Granita all'uva, frutta secca, panna montata", 'cheese_uva.PNG'],
                     ['Ananas Fresca in Granita', null, 5.5, "Granita all'ananas, frutta secca", 'ananas_fresca_granita.PNG'],
                     ['Cheese Dragon',           null, 5.5, null, 'cheese_dragon.PNG'],
-                    ['Cheese Mango',            null, 5.5, null, 'cheese_mango.PNG', true],
+                    ['Cheese Mango',            null, 5.5, null, 'cheese_mango.PNG'],
                 ],
             ],
         ];
@@ -108,7 +108,6 @@ class BobaSeeder extends Seeder
                 [$nome, $prezzoM, $prezzoG] = [$tuple[0], $tuple[1], $tuple[2]];
                 $ingredienti = $tuple[3] ?? null;
                 $image       = $tuple[4] ?? null;
-                $topSeller   = $tuple[5] ?? false;
 
                 $drink = BobaDrink::updateOrCreate(
                     ['category_id' => $category->id, 'slug' => Str::slug($nome)],
@@ -116,7 +115,6 @@ class BobaSeeder extends Seeder
                         'nome' => $nome,
                         'ingredienti' => $ingredienti,
                         'image_path' => $image ? 'menu/boba/'.$image : null,
-                        'top_seller' => $topSeller,
                         'sort_order' => $drinkIdx,
                         'active' => true,
                     ],

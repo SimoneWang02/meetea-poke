@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('nome');
             $table->text('ingredienti')->nullable();
             $table->string('image_path')->nullable();
-            $table->boolean('top_seller')->default(false);
             $table->unsignedInteger('sort_order')->default(0);
             $table->boolean('active')->default(true);
             $table->timestamps();
