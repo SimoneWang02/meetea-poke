@@ -154,7 +154,21 @@ object SocketPrinter {
             }
             else -> {
                 val porzione = cfg["porzione"]?.toString()
-                if (!porzione.isNullOrBlank()) text("  $porzione\n")
+                val gustiList = cfg["gusti"] as? List<*>
+                val gustoSingolo = cfg["gusto"]?.toString()
+                val gustiStr = when {
+                    !gustiList.isNullOrEmpty() -> {
+                        val counts = mutableMapOf<String, Int>()
+                        gustiList.forEach { g -> g?.toString()?.let { counts[it] = (counts[it] ?: 0) + 1 } }
+                        counts.entries.joinToString(", ") { (g, n) -> if (n > 1) "${n}x $g" else g }
+                    }
+                    !gustoSingolo.isNullOrBlank() -> gustoSingolo
+                    else -> null
+                }
+                if (!porzione.isNullOrBlank()) {
+                    val suffix = if (gustiStr != null) " - $gustiStr" else ""
+                    text("  $porzione$suffix\n")
+                }
             }
         }
         esc(ESC, 0x45, 0x00)
