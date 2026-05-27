@@ -24,7 +24,7 @@
     <!-- Schema.org LocalBusiness -->
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
+        "@@context": "https://schema.org",
         "@type": "FoodEstablishment",
         "name": "MeeTea&Poke",
         "description": "Poke bowl personalizzate, bubble tea artigianale e sfizi a Carpi.",
