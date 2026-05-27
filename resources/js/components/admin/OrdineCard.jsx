@@ -69,6 +69,17 @@ function BubbleteaItem({ cfg, quantita }) {
     );
 }
 
+function formatGusti(cfg) {
+    if (cfg.gusti?.length > 0) {
+        const counts = {};
+        for (const g of cfg.gusti) counts[g] = (counts[g] || 0) + 1;
+        return Object.entries(counts)
+            .map(([g, n]) => n > 1 ? `${n}x ${g}` : g)
+            .join(", ");
+    }
+    return cfg.gusto || null;
+}
+
 function AltroItem({ cfg, quantita, tipo }) {
     const titolo = cfg.nome || tipo.charAt(0).toUpperCase() + tipo.slice(1);
     const prezzo = cfg.prezzo_base != null
@@ -83,7 +94,7 @@ function AltroItem({ cfg, quantita, tipo }) {
             </div>
             {cfg.porzione && (
                 <div className="text-xs text-stone-600 pl-3">
-                    {cfg.porzione}{cfg.gusto ? ` — ${cfg.gusto}` : ""}
+                    {cfg.porzione}{formatGusti(cfg) ? ` - ${formatGusti(cfg)}` : ""}
                 </div>
             )}
         </div>
