@@ -60,9 +60,6 @@ class PrintService : Service() {
             while (true) {
                 try {
                     val orders = api.printQueue()
-                    if (orders.isNotEmpty()) {
-                        playNotificationSound()
-                    }
                     orders.forEach { order ->
                         val printed = try {
                             ReceiptPrinter.print(order)
@@ -77,6 +74,9 @@ class PrintService : Service() {
                                 Log.e(TAG, "markStampato failed for ${order.id}", e)
                             }
                         }
+                    }
+                    if (orders.isNotEmpty()) {
+                        playNotificationSound()
                     }
                 } catch (t: Throwable) {
                     Log.e(TAG, "Poll failed", t)
@@ -112,7 +112,7 @@ class PrintService : Service() {
     private suspend fun playNotificationSound() {
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         repeat(3) { i ->
-            if (i > 0) delay(1000L)
+            if (i > 0) delay(2000L)
             withContext(Dispatchers.Main) {
                 RingtoneManager.getRingtone(applicationContext, uri)?.play()
             }
