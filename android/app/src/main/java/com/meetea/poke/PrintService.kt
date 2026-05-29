@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG = "PrintService"
 private const val CHANNEL_ID = "print_service"
@@ -60,8 +61,7 @@ class PrintService : Service() {
                 try {
                     val orders = api.printQueue()
                     if (orders.isNotEmpty()) {
-                        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-                        RingtoneManager.getRingtone(applicationContext, uri)?.play()
+                        playNotificationSound()
                     }
                     orders.forEach { order ->
                         val printed = try {
@@ -106,6 +106,16 @@ class PrintService : Service() {
             )
             getSystemService(NotificationManager::class.java)
                 .createNotificationChannel(channel)
+        }
+    }
+
+    private suspend fun playNotificationSound() {
+        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        repeat(3) { i ->
+            if (i > 0) delay(1000L)
+            withContext(Dispatchers.Main) {
+                RingtoneManager.getRingtone(applicationContext, uri)?.play()
+            }
         }
     }
 
