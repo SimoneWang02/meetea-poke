@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>MeeTea&Poke - Poke Bowl e Bubble Tea a Carpi</title>
+    <title>MeeTea&Poke - Ordina da Asporto | Poke & Bubble Tea Carpi</title>
     <link rel="icon" type="image/png" href="/images/logo.svg">
     <meta name="description" content="Poke bowl personalizzate, bubble tea artigianale e sfizi a Carpi. Ordina online e ritira in negozio in Piazzale Dante Alighieri 6.">
     <meta name="keywords" content="poke carpi, poke bowl carpi, bubble tea carpi, meetea poke, ordina poke carpi, pokè bar carpi">
@@ -14,12 +14,22 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="restaurant">
-    <meta property="og:title" content="MeeTea&Poke - Poke Bowl e Bubble Tea a Carpi">
+    <meta property="og:title" content="MeeTea&Poke - Ordina da Asporto | Poke & Bubble Tea Carpi">
     <meta property="og:description" content="Poke bowl personalizzate, bubble tea artigianale e sfizi a Carpi. Ordina online e ritira in negozio in Piazzale Dante Alighieri 6.">
     <meta property="og:url" content="https://meetea-poke.com/">
     <meta property="og:image" content="https://meetea-poke.com/images/og-image.jpg">
     <meta property="og:locale" content="it_IT">
     <meta property="og:site_name" content="MeeTea&Poke">
+
+    <!-- Schema.org WebSite (controlla il nome sito nei risultati Google) -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "MeeTea&Poke",
+        "url": "https://meetea-poke.com"
+    }
+    </script>
 
     <!-- Schema.org LocalBusiness -->
     <script type="application/ld+json">
