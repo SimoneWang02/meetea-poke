@@ -35,11 +35,18 @@ export default function HeroSection() {
             <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.5),transparent_65%)]" />
 
             <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
-                <img
-                    src="/images/name.svg"
-                    alt="MeeTea&Poke"
-                    className="w-[min(90%,540px)] drop-shadow-[0_10px_30px_rgba(0,0,0,0.25)] animate-fade-in-scale"
-                />
+                <div className="relative">
+                    {/* glow soffuso dietro al logo per uno sfondo uniforme */}
+                    <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -inset-x-10 -inset-y-8 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.55),transparent_70%)] blur-xl"
+                    />
+                    <img
+                        src="/images/name-hero.svg"
+                        alt="MeeTea&Poke"
+                        className="relative w-[min(90%,540px)] drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] drop-shadow-[0_10px_28px_rgba(0,0,0,0.45)] animate-fade-in-scale"
+                    />
+                </div>
                 <a
                     href={CONTATTI.mapsUrl}
                     target="_blank"
