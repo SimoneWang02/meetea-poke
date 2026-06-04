@@ -52,18 +52,11 @@ export default function PageLoader({
             onTransitionEnd={() => done && setRemoved(true)}
             className={`fixed inset-0 z-[100] flex items-center justify-center bg-stone-50 transition-opacity duration-500 ${done ? "opacity-0" : "opacity-100"}`}
         >
-            <div className="flex flex-col items-center gap-6">
-                <img
-                    src="/images/name.svg"
-                    alt="MeeTea&Poke"
-                    className="w-[min(70%,320px)] animate-loader-pulse"
-                />
-                <div className="flex gap-2">
-                    <span className="h-2 w-2 rounded-full bg-mint-500 animate-loader-dot" />
-                    <span className="h-2 w-2 rounded-full bg-mint-500 animate-loader-dot [animation-delay:150ms]" />
-                    <span className="h-2 w-2 rounded-full bg-mint-500 animate-loader-dot [animation-delay:300ms]" />
-                </div>
-            </div>
+            <div
+                className="h-12 w-12 rounded-full border-4 border-mint-500/20 border-t-mint-500 animate-spin"
+                role="status"
+                aria-label="Caricamento"
+            />
         </div>
     );
 }
