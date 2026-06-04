@@ -35,7 +35,7 @@ export default function HeroSection() {
             <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.5),transparent_65%)]" />
 
             <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
-                <div className="relative">
+                <div className="relative w-[min(90%,540px)]">
                     {/* glow soffuso dietro al logo per uno sfondo uniforme */}
                     <div
                         aria-hidden="true"
@@ -44,7 +44,7 @@ export default function HeroSection() {
                     <img
                         src="/images/name-hero.svg"
                         alt="MeeTea&Poke"
-                        className="relative w-[min(90%,540px)] drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] drop-shadow-[0_10px_28px_rgba(0,0,0,0.45)] animate-fade-in-scale"
+                        className="relative w-full drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] drop-shadow-[0_10px_28px_rgba(0,0,0,0.45)] animate-fade-in-scale"
                     />
                 </div>
                 <a
