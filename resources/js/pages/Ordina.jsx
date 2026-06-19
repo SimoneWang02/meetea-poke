@@ -103,7 +103,11 @@ export default function Ordina() {
     }, []);
 
     useEffect(() => {
-        writeCart(items, cliente, step === "conferma" ? "dati" : step);
+        if (step === "conferma") {
+            clearCart();
+        } else {
+            writeCart(items, cliente, step);
+        }
     }, [items, cliente, step]);
 
     const { sections, active, sectionRefs, tabRefs, scrollToSection } =
