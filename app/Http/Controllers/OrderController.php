@@ -47,9 +47,20 @@ class OrderController extends Controller
         }, $data['items']);
 
         $orario = Carbon::today()->setTimeFromTimeString($data['orario_ritiro']);
-        if ($orario->isPast()) {
+        $minutesUntilSlot = Carbon::now()->diffInMinutes($orario, false);
+        if ($minutesUntilSlot < 15) {
             return response()->json(
-                ['message' => 'Orario di ritiro non più disponibile.'],
+                ['message' => 'Puoi prenotare solo con almeno 15 minuti di anticipo.'],
+                422
+            );
+        }
+
+        $slotCount = Order::whereDate('created_at', today())
+            ->where('orario_ritiro', $data['orario_ritiro'])
+            ->count();
+        if ($slotCount >= 5) {
+            return response()->json(
+                ['message' => 'Questo slot è al completo. Scegli un altro orario.'],
                 422
             );
         }
@@ -152,5 +163,15 @@ class OrderController extends Controller
         $order->update(['stampato' => true]);
 
         return response()->json(['ok' => true]);
+    }
+
+    public function slotCounts(): JsonResponse
+    {
+        $counts = Order::whereDate('created_at', today())
+            ->selectRaw('orario_ritiro, COUNT(*) as count')
+            ->groupBy('orario_ritiro')
+            ->pluck('count', 'orario_ritiro');
+
+        return response()->json($counts);
     }
 }

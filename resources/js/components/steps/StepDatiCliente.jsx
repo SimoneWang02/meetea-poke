@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { generateSlotsRitiro } from '../../lib/options';
+import { getSlotCounts } from '../../lib/api';
+
+const MAX_PER_SLOT = 5;
+const MIN_ANTICIPO_MINUTI = 15;
 
 export default function StepDatiCliente({ cliente, onChange, onIndietro, onProcedi }) {
     const [error, setError] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [slotCounts, setSlotCounts] = useState({});
+
+    useEffect(() => {
+        getSlotCounts().then(setSlotCounts).catch(() => {});
+    }, []);
 
     const now = new Date();
     const nowMinutes = now.getHours() * 60 + now.getMinutes();
     const slots = generateSlotsRitiro().filter((s) => {
         const [h, m] = s.split(':').map(Number);
-        return h * 60 + m >= nowMinutes;
+        const slotMinutes = h * 60 + m;
+        if (slotMinutes < nowMinutes + MIN_ANTICIPO_MINUTI) return false;
+        if ((slotCounts[s] ?? 0) >= MAX_PER_SLOT) return false;
+        return true;
     });
 
     const submit = () => {
@@ -19,9 +31,11 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
         }
         const [h, m] = cliente.orario_ritiro.split(':').map(Number);
         const now = new Date();
-        if (h * 60 + m < now.getHours() * 60 + now.getMinutes()) {
+        const slotMinutes = h * 60 + m;
+        const nowMinutes = now.getHours() * 60 + now.getMinutes();
+        if (slotMinutes < nowMinutes + MIN_ANTICIPO_MINUTI) {
             onChange({ ...cliente, orario_ritiro: '' });
-            setError("L'orario selezionato è già passato. Scegli un nuovo orario.");
+            setError('Orario non più disponibile. Scegli un nuovo orario.');
             return;
         }
         setSubmitted(true);

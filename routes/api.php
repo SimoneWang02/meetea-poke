@@ -8,6 +8,7 @@ use App\Http\Middleware\PrintAuth;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/orders', [OrderController::class, 'store'])->middleware('throttle:orders');
+Route::get('/slot-counts', [OrderController::class, 'slotCounts']);
 Route::get('/ordering-status', [SettingsController::class, 'orderingStatus']);
 Route::get('/menu', [MenuController::class, 'index']);
 Route::post('/staff/login', [AdminController::class, 'login']);

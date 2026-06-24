@@ -17,3 +17,8 @@ export async function listOrders(token) {
     return data;
 }
 
+export async function getSlotCounts() {
+    const { data } = await axios.get('/slot-counts');
+    return data;
+}
+

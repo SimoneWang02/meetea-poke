@@ -29,7 +29,7 @@ class PokeSeeder extends Seeder
             ['slug' => 'proteine', 'nome' => 'Proteine', 'prezzo_extra' => 1.8],
             ['slug' => 'green',    'nome' => 'Green',    'prezzo_extra' => 1.2],
             ['slug' => 'crispy',   'nome' => 'Crispy',   'prezzo_extra' => 0.3],
-            ['slug' => 'salse',    'nome' => 'Salse',    'prezzo_extra' => 1.3],
+            ['slug' => 'salse',    'nome' => 'Salse',    'prezzo_extra' => 0.3],
         ];
         $groupIds = [];
         foreach ($groups as $i => $row) {
