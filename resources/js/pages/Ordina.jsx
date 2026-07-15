@@ -84,12 +84,15 @@ export default function Ordina() {
     const [step, setStep] = useState(() => readCart()?.step ?? "ordina");
     const [items, setItems] = useState(() => readCart()?.items ?? []);
     const [modal, setModal] = useState(null);
-    const [cliente, setCliente] = useState(() => readCart()?.cliente ?? {
-        nome: "",
-        telefono: "",
-        orario_ritiro: "",
-        note: "",
-    });
+    const [cliente, setCliente] = useState(
+        () =>
+            readCart()?.cliente ?? {
+                nome: "",
+                telefono: "",
+                orario_ritiro: "",
+                note: "",
+            },
+    );
 
     const headerRef = useRef(null);
     const [headerHeight, setHeaderHeight] = useState(120);
@@ -285,7 +288,7 @@ export default function Ordina() {
                         >
                             <path d="M15 18l-6-6 6-6" />
                         </svg>
-                        <span className="text-sm font-medium">Annulla</span>
+                        <span className="text-sm font-medium">Torna Indietro</span>
                     </Link>
                     <Link to="/" className="flex justify-center">
                         <img

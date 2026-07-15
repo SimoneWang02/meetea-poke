@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useMenu } from "../../lib/MenuProvider";
+import { scrollIntoViewSmooth } from "../../lib/scroll";
 import ModalShell from "./ModalShell";
 import { formatPrezzo, formatNumero } from "../../lib/format";
 
@@ -55,6 +56,9 @@ export default function BobaModal({
     const [quantita, setQuantita] = useState(initialQuantita);
     const [error, setError] = useState("");
     const [errorVisible, setErrorVisible] = useState(false);
+    const baseRef = useRef(null);
+    const temperaturaRef = useRef(null);
+    const toppingsRef = useRef(null);
 
     useEffect(() => {
         if (!error) {
@@ -72,6 +76,11 @@ export default function BobaModal({
     }, [error]);
 
     if (!item || !menu) return null;
+
+    const failValidation = (message, ref) => {
+        setError(message);
+        scrollIntoViewSmooth(ref.current);
+    };
 
     const toggleSingolo = (nome) => {
         setSingoli((prev) =>
@@ -114,15 +123,15 @@ export default function BobaModal({
 
     const submit = () => {
         if (basi.length > 0 && !base) {
-            setError("Scegli la base.");
+            failValidation("Scegli la base.", baseRef);
             return;
         }
         if (!temperatura) {
-            setError("Scegli la temperatura.");
+            failValidation("Scegli la temperatura.", temperaturaRef);
             return;
         }
         if (toppingsCount > MAX_TOPPINGS) {
-            setError(`Massimo ${MAX_TOPPINGS} toppings.`);
+            failValidation(`Massimo ${MAX_TOPPINGS} toppings.`, toppingsRef);
             return;
         }
         onAdd({
@@ -219,6 +228,7 @@ export default function BobaModal({
 
             {basi.length > 0 && (
                 <Section
+                    ref={baseRef}
                     titolo={
                         <>
                             Base <span className="text-red-500">*</span>
@@ -248,6 +258,7 @@ export default function BobaModal({
             )}
 
             <Section
+                ref={temperaturaRef}
                 titolo={
                     <>
                         Temperatura <span className="text-red-500">*</span>
@@ -276,6 +287,7 @@ export default function BobaModal({
             </Section>
 
             <Section
+                ref={toppingsRef}
                 titolo="Toppings"
                 badge={
                     <span
@@ -360,9 +372,12 @@ export default function BobaModal({
     );
 }
 
-function Section({ titolo, badge, children }) {
+const Section = React.forwardRef(function Section(
+    { titolo, badge, children },
+    ref,
+) {
     return (
-        <div className="mb-6">
+        <div ref={ref} className="mb-6">
             <div className="mb-2 flex items-center gap-2">
                 <span className="text-sm font-semibold uppercase tracking-wider text-stone-500">
                     {titolo}
@@ -372,4 +387,4 @@ function Section({ titolo, badge, children }) {
             {children}
         </div>
     );
-}
+});

@@ -122,12 +122,12 @@ function PokeCategoryRow({ label, items = [], extras = [] }) {
     );
 }
 
-export function ItemDetails({ item }) {
+export function ItemDetails({ item, className = "mt-3 space-y-1 text-sm text-stone-700" }) {
     const cfg = item.configurazione ?? {};
     if (item.tipo === "poke") {
         const extras = cfg.extras ?? {};
         return (
-            <ul className="mt-3 space-y-1 text-sm text-stone-700">
+            <ul className={className}>
                 <li>
                     • Dimensione:{" "}
                     <span className="font-medium capitalize">
@@ -166,7 +166,7 @@ export function ItemDetails({ item }) {
             cfg.size === "M" ? "Media" : cfg.size === "G" ? "Grande" : cfg.size;
         const toppings = cfg.toppings ?? [];
         return (
-            <ul className="mt-3 space-y-1 text-sm text-stone-700">
+            <ul className={className}>
                 <li>
                     • Dimensione:{" "}
                     <span className="font-medium">{sizeLabel}</span>
@@ -200,7 +200,7 @@ export function ItemDetails({ item }) {
     }
     if (item.tipo === "sfizio") {
         return (
-            <ul className="mt-3 space-y-1 text-sm text-stone-700">
+            <ul className={className}>
                 <li>
                     • Porzione:{" "}
                     <span className="font-medium">{cfg.porzione}</span>

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ModalShell from "./ModalShell";
 import MultiSelect from "./MultiSelect";
 import { formatPrezzo } from "../../lib/format";
+import { scrollIntoViewSmooth } from "../../lib/scroll";
 
 function buildGustiMap(gusti) {
     if (!gusti?.length) return {};
@@ -38,6 +39,7 @@ export default function SfizioModal({
         buildGustiMap(initialConfig?.gusti),
     );
     const [error, setError] = useState(null);
+    const gustiRef = useRef(null);
 
     if (!sfizio) return null;
 
@@ -71,6 +73,7 @@ export default function SfizioModal({
     const submit = () => {
         if (isMix && totalGusti < numPz) {
             setError(`Scegli ${numPz} gusti (${totalGusti}/${numPz} selezionati)`);
+            scrollIntoViewSmooth(gustiRef.current);
             return;
         }
         onAdd({
@@ -139,7 +142,7 @@ export default function SfizioModal({
             footer={footer}
         >
             {hasGusti && (
-                <div className="mb-4">
+                <div ref={gustiRef} className="mb-4">
                     {isMix ? (
                         <MultiSelect
                             titolo="Gusti"

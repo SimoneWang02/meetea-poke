@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Ordina from './pages/Ordina';
+import OrdineConfermato from './pages/OrdineConfermato';
 import Admin from './pages/Admin';
 import Privacy from './pages/Privacy';
 import { MenuProvider } from './lib/MenuProvider';
@@ -15,6 +16,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/ordina" element={<Ordina />} />
+                    <Route path="/ordina/conferma" element={<OrdineConfermato />} />
                     <Route path="/staff" element={<Admin />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="*" element={<Home />} />

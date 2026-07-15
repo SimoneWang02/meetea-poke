@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { formatPrezzo } from "../../lib/format";
 import { useMenu } from "../../lib/MenuProvider";
+import { scrollIntoViewSmooth } from "../../lib/scroll";
 import ModalShell from "./ModalShell";
 import MultiSelect from "./MultiSelect";
 
@@ -171,6 +172,8 @@ export default function PokeModal({
     const [quantita, setQuantita] = useState(initialQuantita);
     const [error, setError] = useState("");
     const [errorVisible, setErrorVisible] = useState(false);
+    const basiRef = useRef(null);
+    const posateRef = useRef(null);
 
     useEffect(() => {
         if (!error) {
@@ -188,6 +191,11 @@ export default function PokeModal({
     }, [error]);
 
     if (!dimensione || !menu) return null;
+
+    const failValidation = (message, ref) => {
+        setError(message);
+        scrollIntoViewSmooth(ref.current);
+    };
 
     const makeIncrement = (state, setState, maxHard) => (item) => {
         if (maxHard !== undefined && totalQty(state) >= maxHard) return;
@@ -211,11 +219,11 @@ export default function PokeModal({
 
     const submit = () => {
         if (totalQty(basi) === 0) {
-            setError("Scegli almeno una base.");
+            failValidation("Scegli almeno una base.", basiRef);
             return;
         }
         if (!posate) {
-            setError("Scegli le posate.");
+            failValidation("Scegli le posate.", posateRef);
             return;
         }
 
@@ -289,15 +297,17 @@ export default function PokeModal({
             footer={footer}
         >
             <div className="space-y-6">
-                <MultiSelect
-                    titolo="Basi"
-                    items={POKE_BASI}
-                    qtyMap={basi}
-                    onIncrement={makeIncrement(basi, setBasi, POKE_BASI_MAX)}
-                    onDecrement={makeDecrement(basi, setBasi)}
-                    maxIncluso={POKE_BASI_MAX}
-                    maxHard={POKE_BASI_MAX}
-                />
+                <div ref={basiRef}>
+                    <MultiSelect
+                        titolo="Basi"
+                        items={POKE_BASI}
+                        qtyMap={basi}
+                        onIncrement={makeIncrement(basi, setBasi, POKE_BASI_MAX)}
+                        onDecrement={makeDecrement(basi, setBasi)}
+                        maxIncluso={POKE_BASI_MAX}
+                        maxHard={POKE_BASI_MAX}
+                    />
+                </div>
                 <MultiSelect
                     titolo="Proteine"
                     items={POKE_PROTEINE}
@@ -404,7 +414,7 @@ export default function PokeModal({
                 </div>
 
                 {/* Posate */}
-                <div>
+                <div ref={posateRef}>
                     <h3 className="mb-2 text-sm font-semibold text-stone-800">
                         Posate <span className="text-red-500">*</span>
                     </h3>

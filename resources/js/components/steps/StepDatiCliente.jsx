@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { generateSlotsRitiro } from '../../lib/options';
+import { generateSlotsRitiro, CONTATTI } from '../../lib/options';
 import { getSlotCounts } from '../../lib/api';
 
 const MAX_PER_SLOT = 5;
@@ -109,6 +109,14 @@ export default function StepDatiCliente({ cliente, onChange, onIndietro, onProce
                         className="mt-1 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base outline-none transition focus:border-mint-500 focus:ring-2 focus:ring-mint-200"
                     />
                 </div>
+            </div>
+
+            <div className="mt-6 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800 ring-1 ring-amber-200">
+                In caso di annullamento o modifiche all'ordine, chiamaci al{' '}
+                <a href={`tel:${CONTATTI.telefonoTel}`} className="font-semibold underline hover:text-amber-900">
+                    {CONTATTI.telefono}
+                </a>
+                .
             </div>
 
             {error && (

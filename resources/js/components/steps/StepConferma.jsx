@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createOrder } from '../../lib/api';
-import { formatPrezzo } from '../../lib/format';
-import { ItemDetails } from './StepRiepilogo';
-import { clearCart } from '../../lib/cartStorage';
+import { clearCart, writeConfirmedOrder } from '../../lib/cartStorage';
 
 function itemSubtotale(item) {
     return (item.prezzo_base ?? 0) * (item.quantita ?? 1);
@@ -10,9 +9,9 @@ function itemSubtotale(item) {
 
 export default function StepConferma({ items, cliente, onReset }) {
     const [status, setStatus] = useState('loading');
-    const [result, setResult] = useState(null);
     const [error, setError] = useState('');
     const fired = useRef(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (fired.current) return;
@@ -29,9 +28,9 @@ export default function StepConferma({ items, cliente, onReset }) {
                     totale,
                     items,
                 });
-                setResult(data);
-                setStatus('success');
                 clearCart();
+                writeConfirmedOrder(data, items, cliente.note);
+                navigate('/ordina/conferma', { replace: true });
             } catch (e) {
                 const msg =
                     e?.response?.data?.message ||
@@ -41,18 +40,7 @@ export default function StepConferma({ items, cliente, onReset }) {
                 setStatus('error');
             }
         })();
-    }, [items, cliente]);
-
-    if (status === 'loading') {
-        return (
-            <div className="flex flex-col items-center py-16 text-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-mint-200 border-t-mint-600" />
-                <p className="mt-6 text-lg font-medium text-stone-700">
-                    Sto inviando il tuo ordine...
-                </p>
-            </div>
-        );
-    }
+    }, [items, cliente, navigate]);
 
     if (status === 'error') {
         return (
@@ -72,84 +60,11 @@ export default function StepConferma({ items, cliente, onReset }) {
     }
 
     return (
-        <div className="text-center">
-            <div className="text-6xl">🎉</div>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight">
-                Grazie {result.nome_cliente}!
-            </h2>
-            <p className="mt-3 text-lg text-stone-700">
-                Il tuo ordine{' '}
-                <span className="font-bold text-mint-700">{result.numero_ordine}</span>{' '}
-                è confermato.
+        <div className="flex flex-col items-center py-16 text-center">
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-mint-200 border-t-mint-600" />
+            <p className="mt-6 text-lg font-medium text-stone-700">
+                Sto inviando il tuo ordine...
             </p>
-            <p className="mt-1 text-lg text-stone-700">
-                Passa a ritirarlo alle{' '}
-                <span className="font-bold">{result.orario_ritiro}</span>.
-            </p>
-
-            <div className="mt-8 rounded-2xl bg-white p-6 text-left ring-1 ring-stone-200">
-                <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
-                    Riepilogo ordine
-                </div>
-                <ul className="mt-3 space-y-3 divide-y divide-stone-100">
-                    {items.map((item, idx) => (
-                        <li key={idx} className={idx > 0 ? 'pt-3' : ''}>
-                            <div className="flex items-baseline justify-between gap-3 text-sm">
-                                <span className="text-stone-700">
-                                    {(item.quantita ?? 1) > 1 && (
-                                        <span className="font-semibold">
-                                            {item.quantita}×{' '}
-                                        </span>
-                                    )}
-                                    <span className="font-medium">{item.nome}</span>
-                                </span>
-                                <span className="shrink-0 font-semibold text-stone-800">
-                                    {formatPrezzo(itemSubtotale(item))}
-                                </span>
-                            </div>
-                            <ItemDetails item={item} />
-                        </li>
-                    ))}
-                </ul>
-                <div className="mt-3 flex items-center justify-between border-t border-stone-100 pt-3">
-                    <span className="text-sm font-semibold uppercase tracking-wider text-stone-500">
-                        Totale
-                    </span>
-                    <span className="text-lg font-extrabold text-mint-700">
-                        {formatPrezzo(
-                            items.reduce((s, it) => s + itemSubtotale(it), 0),
-                        )}
-                    </span>
-                </div>
-                {cliente.note && (
-                    <div className="mt-4 border-t border-stone-100 pt-3">
-                        <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
-                            Note
-                        </div>
-                        <p className="mt-1 whitespace-pre-wrap text-sm text-stone-700">
-                            {cliente.note}
-                        </p>
-                    </div>
-                )}
-            </div>
-
-            <div className="mt-6 rounded-2xl bg-mint-50 p-6 text-left ring-1 ring-mint-200">
-                <div className="text-sm font-semibold uppercase tracking-wider text-mint-800">
-                    Promemoria
-                </div>
-                <ul className="mt-2 space-y-1 text-sm text-stone-700">
-                    <li>• Pagamento al ritiro in negozio</li>
-                    <li>• Ti chiameremo se serve un chiarimento</li>
-                </ul>
-            </div>
-
-            <button
-                type="button"
-                onClick={onReset}
-                className="mt-8 rounded-xl bg-mint-600 px-6 py-3 font-semibold text-white transition hover:bg-mint-700"
-            >
-                Fai un nuovo ordine
-            </button>
         </div>
     );
 }
