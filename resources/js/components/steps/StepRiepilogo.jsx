@@ -122,7 +122,7 @@ function PokeCategoryRow({ label, items = [], extras = [] }) {
     );
 }
 
-function ItemDetails({ item }) {
+export function ItemDetails({ item }) {
     const cfg = item.configurazione ?? {};
     if (item.tipo === "poke") {
         const extras = cfg.extras ?? {};

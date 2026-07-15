@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createOrder } from '../../lib/api';
+import { formatPrezzo } from '../../lib/format';
+import { ItemDetails } from './StepRiepilogo';
+import { clearCart } from '../../lib/cartStorage';
 
 function itemSubtotale(item) {
     return (item.prezzo_base ?? 0) * (item.quantita ?? 1);
@@ -28,6 +31,7 @@ export default function StepConferma({ items, cliente, onReset }) {
                 });
                 setResult(data);
                 setStatus('success');
+                clearCart();
             } catch (e) {
                 const msg =
                     e?.response?.data?.message ||
@@ -83,7 +87,53 @@ export default function StepConferma({ items, cliente, onReset }) {
                 <span className="font-bold">{result.orario_ritiro}</span>.
             </p>
 
-            <div className="mt-8 rounded-2xl bg-mint-50 p-6 text-left ring-1 ring-mint-200">
+            <div className="mt-8 rounded-2xl bg-white p-6 text-left ring-1 ring-stone-200">
+                <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
+                    Riepilogo ordine
+                </div>
+                <ul className="mt-3 space-y-3 divide-y divide-stone-100">
+                    {items.map((item, idx) => (
+                        <li key={idx} className={idx > 0 ? 'pt-3' : ''}>
+                            <div className="flex items-baseline justify-between gap-3 text-sm">
+                                <span className="text-stone-700">
+                                    {(item.quantita ?? 1) > 1 && (
+                                        <span className="font-semibold">
+                                            {item.quantita}×{' '}
+                                        </span>
+                                    )}
+                                    <span className="font-medium">{item.nome}</span>
+                                </span>
+                                <span className="shrink-0 font-semibold text-stone-800">
+                                    {formatPrezzo(itemSubtotale(item))}
+                                </span>
+                            </div>
+                            <ItemDetails item={item} />
+                        </li>
+                    ))}
+                </ul>
+                <div className="mt-3 flex items-center justify-between border-t border-stone-100 pt-3">
+                    <span className="text-sm font-semibold uppercase tracking-wider text-stone-500">
+                        Totale
+                    </span>
+                    <span className="text-lg font-extrabold text-mint-700">
+                        {formatPrezzo(
+                            items.reduce((s, it) => s + itemSubtotale(it), 0),
+                        )}
+                    </span>
+                </div>
+                {cliente.note && (
+                    <div className="mt-4 border-t border-stone-100 pt-3">
+                        <div className="text-sm font-semibold uppercase tracking-wider text-stone-500">
+                            Note
+                        </div>
+                        <p className="mt-1 whitespace-pre-wrap text-sm text-stone-700">
+                            {cliente.note}
+                        </p>
+                    </div>
+                )}
+            </div>
+
+            <div className="mt-6 rounded-2xl bg-mint-50 p-6 text-left ring-1 ring-mint-200">
                 <div className="text-sm font-semibold uppercase tracking-wider text-mint-800">
                     Promemoria
                 </div>
