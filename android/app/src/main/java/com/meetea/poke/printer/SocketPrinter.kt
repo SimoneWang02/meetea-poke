@@ -121,6 +121,10 @@ object SocketPrinter {
 
         when (item.tipo) {
             "poke" -> {
+                if (cfg["salsa_a_parte"] == true) {
+                    esc(ESC, 0x45, 0x01)      // bold
+                    text("  - Salsa a parte\n")
+                }
                 listOf("basi", "proteine", "green", "crispy", "salse").forEach { campo ->
                     (cfg[campo] as? List<*>)?.forEach { ingr ->
                         val s = ingr?.toString() ?: return@forEach
@@ -133,7 +137,6 @@ object SocketPrinter {
                         text("  ++ $nome\n")
                     }
                 }
-                if (cfg["salsa_a_parte"] == true) text("  - Salsa a parte\n")
                 val posate = cfg["posate"]?.toString()
                 if (!posate.isNullOrBlank() && posate != "Senza Posate") text("  - $posate\n")
             }

@@ -13,13 +13,13 @@ function PokeItem({ cfg, quantita }) {
         : null;
 
     const righe = [
+        ...(cfg.salsa_a_parte ? [{ sym: '-', val: 'Salsa a parte', bold: true }] : []),
         ...(cfg.basi || []).map((v) => ({ sym: '+', val: v })),
         ...(cfg.proteine || []).map((v) => ({ sym: '+', val: v })),
         ...(cfg.green || []).map((v) => ({ sym: '+', val: v })),
         ...(cfg.crispy || []).map((v) => ({ sym: '+', val: v })),
         ...(cfg.salse || []).map((v) => ({ sym: '+', val: v })),
         ...Object.values(cfg.extras || {}).flat().map((e) => ({ sym: '++', val: e.nome || e })),
-        ...(cfg.salsa_a_parte ? [{ sym: '-', val: 'Salsa a parte' }] : []),
         ...(cfg.posate && cfg.posate !== 'Senza Posate' ? [{ sym: '-', val: cfg.posate }] : []),
     ];
 
@@ -30,7 +30,10 @@ function PokeItem({ cfg, quantita }) {
                 {prezzo && <span>{prezzo}</span>}
             </div>
             {righe.map((r, i) => (
-                <div key={i} className="text-xs text-stone-600 pl-3">
+                <div
+                    key={i}
+                    className={`text-xs pl-3 ${r.bold ? 'font-bold text-stone-900' : 'text-stone-600'}`}
+                >
                     {r.sym} {r.val}
                 </div>
             ))}
