@@ -141,3 +141,12 @@ L'header per le route protette è `Authorization: Bearer <ADMIN_TOKEN>`.
   e richiamarlo dal dispatcher `send()`.
 - Il contatore `numero_ordine` riparte da `ORD-001` ogni giorno
   (basato su `whereDate('created_at', today())`).
+
+# Android Deploy
+
+cd android
+./gradlew assembleDebug
+
+& adb install -r "\\wsl.localhost\Ubuntu\home\wango\personale\meetea_poke\android\app\build\outputs\apk\debug\app-debug.apk"
+
+N.B. quest'ultimo da Windows
