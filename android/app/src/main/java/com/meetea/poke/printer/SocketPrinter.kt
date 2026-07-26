@@ -135,7 +135,7 @@ object SocketPrinter {
                 }
                 if (cfg["salsa_a_parte"] == true) {
                     esc(ESC, 0x45, 0x01)      // bold
-                    text("  - Salsa a parte\n")
+                    text("  - SALSA A PARTE\n")
                 }
                 val posate = cfg["posate"]?.toString()
                 if (!posate.isNullOrBlank() && posate != "Senza Posate") text("  - $posate\n")
