@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -15,6 +17,11 @@ import com.meetea.poke.api.models.Order
 import com.meetea.poke.api.models.OrderItem
 import com.meetea.poke.databinding.ActivityOrderDetailBinding
 import com.meetea.poke.databinding.ItemOrderDetailRowBinding
+import com.meetea.poke.printer.ReceiptPrinter
+import com.meetea.poke.printer.SocketPrinter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class OrderDetailActivity : AppCompatActivity() {
 
@@ -47,6 +54,26 @@ class OrderDetailActivity : AppCompatActivity() {
         binding.recyclerItems.adapter = ItemsAdapter(sorted)
 
         binding.btnBack.setOnClickListener { finish() }
+        binding.btnPrint.setOnClickListener { ristampa(order) }
+    }
+
+    private fun ristampa(order: Order) {
+        binding.btnPrint.isEnabled = false
+        lifecycleScope.launch {
+            val printed = withContext(Dispatchers.IO) {
+                try {
+                    ReceiptPrinter.print(order)
+                } catch (t: Throwable) {
+                    false
+                }.let { if (it) it else SocketPrinter.print(order) }
+            }
+            binding.btnPrint.isEnabled = true
+            Toast.makeText(
+                this@OrderDetailActivity,
+                if (printed) "Scontrino ristampato" else "Stampa non riuscita",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     @Suppress("OVERRIDE_DEPRECATION")
