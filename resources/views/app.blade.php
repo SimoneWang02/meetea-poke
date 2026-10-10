@@ -13,11 +13,14 @@
     <meta name="google-site-verification" content="oKZFEMyPD9UTemjMwkTTsIO-9Kb6d_h8EnnTvHiF4Eg" />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="restaurant">
+    <meta property="og:type" content="website">
     <meta property="og:title" content="MeeTea&Poke - Ordina da Asporto | Poke & Bubble Tea Carpi">
     <meta property="og:description" content="Poke bowl personalizzate, bubble tea artigianale e sfizi a Carpi. Ordina online e ritira in negozio in Piazzale Dante Alighieri 6.">
     <meta property="og:url" content="https://meetea-poke.com/">
     <meta property="og:image" content="https://meetea-poke.com/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     <meta property="og:locale" content="it_IT">
     <meta property="og:site_name" content="MeeTea&Poke">
 
